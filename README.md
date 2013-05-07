@@ -6,13 +6,15 @@ Nätverksprogrammernig - Javachat
 
 TODO
 ========
-''Server''
+Server
+--------
 
 - Dynamic chatrooms
 - Active users
 - File transfer
 
-''Client''
+Client
+--------
 
 - Something
 
