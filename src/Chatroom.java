@@ -1,15 +1,16 @@
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 
 public class Chatroom {
 	private String string;
-	private volatile List<Socket> clients;
+	private volatile Vector<Socket> clients;
+	private volatile Socket echo_client;
 	
 	public Chatroom(){
 		string = "";
-		clients = new ArrayList<Socket>();
+		clients = new Vector<Socket>();
 	}
 	
 	synchronized void add_client(Socket client) {
@@ -22,6 +23,17 @@ public class Chatroom {
 	
 	public List<Socket> get_clients() {
 		return clients;
+	}
+	
+	public Socket pop_echo_client() {
+		Socket temp = echo_client;
+		echo_client = null;
+		return temp;
+	}
+	
+	synchronized void set(String input, Socket client){
+		this.echo_client = client;
+		set(input);
 	}
 	
 	synchronized void set(String input){

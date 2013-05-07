@@ -13,8 +13,13 @@ public class WriterThread extends Thread {
 			while(true) {
 				String msg = chatroom.pop();
 				if (!msg.isEmpty()) {
-					for (Socket c : chatroom.get_clients()) {
-						c.getOutputStream().write(msg.getBytes());
+					Socket echo_client = chatroom.pop_echo_client();
+					if (echo_client != null) {
+						echo_client.getOutputStream().write(msg.getBytes());
+					} else {
+						for (Socket c : chatroom.get_clients()) {
+							c.getOutputStream().write(msg.getBytes());
+						}
 					}
 				}
 			}

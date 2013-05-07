@@ -30,7 +30,7 @@ public class ReaderThread extends Thread {
 					chatroom.set(getName()+": "+str.substring(3)+"\n");
 				}
 				else if (str.startsWith("/E ")) {
-					chatroom.set(getName()+": "+str.substring(3)+"\n");
+					chatroom.set(getName()+": "+str.substring(3)+"\n", client);
 				}
 				else if (str.startsWith("/Q")) {
 					chatroom.remove_client(client);
@@ -38,6 +38,7 @@ public class ReaderThread extends Thread {
 				}
 				else {
 					chatroom.set(getName()+": "+str+"\n");
+					System.out.println(getName()+": "+str+"\n");
 				}
 			}
 		} catch (Exception e) {
