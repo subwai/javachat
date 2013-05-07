@@ -1,4 +1,5 @@
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -8,9 +9,9 @@ public class Chatroom {
 	private volatile Vector<Socket> clients;
 	private volatile Socket echo_client;
 	
-	public Chatroom(){
+	public Chatroom(Socket firstUser){
 		string = "";
-		clients = new Vector<Socket>();
+		clients = new Vector<Socket>(Arrays.asList(firstUser));
 	}
 	
 	synchronized void add_client(Socket client) {

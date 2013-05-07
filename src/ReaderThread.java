@@ -6,16 +6,17 @@ import java.net.Socket;
 public class ReaderThread extends Thread {
 	private Socket client;
 	private BufferedReader reader;
-	private Chatroom chatroom;
+	private ChatMessageHandler handler;
 	
-	public ReaderThread(String name, Socket client, Chatroom chatroom) {
+	public ReaderThread(String name, Socket client, ChatMessageHandler handler) {
 		super(name);
 		try {
 			this.client = client;
-			this.chatroom = chatroom;
+			this.handler = handler;
 			
 			reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			System.out.println("test");
+			handler.joinChatroom(0, client);
+			System.out.println("SYSTEM: Client joined chatroom: "+getName()+handler.getChatroom(0));
 		} catch (Exception e) {
 			
 		}
@@ -27,18 +28,7 @@ public class ReaderThread extends Thread {
 			while(true) {
 				String str = reader.readLine();
 				if (str.startsWith("/M ")) {
-					chatroom.set(getName()+": "+str.substring(3)+"\n");
-				}
-				else if (str.startsWith("/E ")) {
-					chatroom.set(getName()+": "+str.substring(3)+"\n", client);
-				}
-				else if (str.startsWith("/Q")) {
-					chatroom.remove_client(client);
-					client.close();
-				}
-				else {
-					chatroom.set(getName()+": "+str+"\n");
-					System.out.println(getName()+": "+str+"\n");
+					//chatroom.set(getName()+": "+str.substring(3)+"\n");
 				}
 			}
 		} catch (Exception e) {
