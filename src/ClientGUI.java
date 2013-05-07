@@ -1,7 +1,13 @@
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+
+
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 
 /*
@@ -27,6 +33,9 @@ public class ClientGUI extends JFrame implements ActionListener {
 	// the default port number
 	private int defaultPort;
 	private String defaultHost;
+	
+	private DefaultListModel nameListModel;
+	private JList nameList;
 
 	// Constructor connection receiving a socket number
 	ClientGUI(String host, int port) {
@@ -37,21 +46,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		
 		// The NorthPanel with:
 		JPanel northPanel = new JPanel(new GridLayout(3,1));
-		// the server name and the port number
-		JPanel serverAndPort = new JPanel(new GridLayout(1,5, 1, 3));
-		// the two JTextField with default value for server address and port number
-		tfServer = new JTextField(host);
-		tfPort = new JTextField("" + port);
-		tfPort.setHorizontalAlignment(SwingConstants.RIGHT);
-
-		serverAndPort.add(new JLabel("Server Address:  "));
-		serverAndPort.add(tfServer);
-		serverAndPort.add(new JLabel("Port Number:  "));
-		serverAndPort.add(tfPort);
-		serverAndPort.add(new JLabel(""));
-		// adds the Server an port field to the GUI
-		northPanel.add(serverAndPort);
-
 		// the Label and the TextField
 		label = new JLabel("Enter your username below", SwingConstants.CENTER);
 		northPanel.add(label);
@@ -66,6 +60,20 @@ public class ClientGUI extends JFrame implements ActionListener {
 		centerPanel.add(new JScrollPane(ta));
 		ta.setEditable(false);
 		add(centerPanel, BorderLayout.CENTER);
+		
+		//east namepanel
+		label = new JLabel("Online Users", SwingConstants.CENTER);
+		nameListModel = new DefaultListModel();
+		nameList = new JList(nameListModel);
+		nameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		nameList.setPrototypeCellValue("123456789012");
+		nameList.addListSelectionListener(new NameSelectionListener());
+		JScrollPane p1 = new JScrollPane(nameList);
+		JPanel eastpanel = new JPanel();
+		eastpanel.setLayout(new BorderLayout(2, 1));
+		eastpanel.add(label,BorderLayout.NORTH);
+		eastpanel.add(p1, BorderLayout.CENTER);
+		add(eastpanel,BorderLayout.EAST);
 
 		// the 3 buttons
 		login = new JButton("Login");
@@ -73,14 +81,10 @@ public class ClientGUI extends JFrame implements ActionListener {
 		logout = new JButton("Logout");
 		logout.addActionListener(this);
 		logout.setEnabled(false);		// you have to login before being able to logout
-		whoIsIn = new JButton("Who is in");
-		whoIsIn.addActionListener(this);
-		whoIsIn.setEnabled(false);		// you have to login before being able to Who is in
 
 		JPanel southPanel = new JPanel();
 		southPanel.add(login);
 		southPanel.add(logout);
-		southPanel.add(whoIsIn);
 		add(southPanel, BorderLayout.SOUTH);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -164,22 +168,22 @@ public class ClientGUI extends JFrame implements ActionListener {
 			// try creating a new Client with GUI
 			//client = new Client(server, port, username, this);
 			// test if we can start the Client
-		//	if(!client.start()) 
-				return;
-			//tf.setText("");
-		//	label.setText("Enter your message below");
-			//connected = true;
+			//if(!client.start()) 
+			//	return;
+//			tf.setText("");
+//			label.setText("Enter your message below");
+//			connected = true;
 			
-			// disable login button
-	//		login.setEnabled(false);
+			// disable login button/
+//				login.setEnabled(false);
 			// enable the 2 buttons
-		//	logout.setEnabled(true);
-	//		whoIsIn.setEnabled(true);
+//			logout.setEnabled(true);
+//			whoIsIn.setEnabled(true);
 			// disable the Server and Port JTextField
-		//	tfServer.setEditable(false);
-		//	tfPort.setEditable(false);
+//			tfServer.setEditable(false);
+//			tfPort.setEditable(false);
 			// Action listener for when the user enter a message
-	//		tf.addActionListener(this);
+//		tf.addActionListener(this);
 		}
 
 	}
@@ -188,6 +192,35 @@ public class ClientGUI extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		new ClientGUI("localhost", 1500);
 	}
+	
+	private void UpdateNameList() {
+		nameListModel.removeAllElements();
+        ArrayList<String> names =  null;
+        for(String name: names){
+        	nameListModel.addElement(name);
+        }
+	}
 
+}
+
+/**
+ * A class that listens for clicks in the name list.
+ */
+class NameSelectionListener implements ListSelectionListener {
+	/**
+	 * Called when the user selects a name in the name list. Fetches
+	 * performance dates from the database and displays them in the date
+	 * list.
+	 * 
+	 * @param e
+	 *            The selected list item.
+	 */
+	public void valueChanged(ListSelectionEvent e) {
+//		if (nameList.isSelectionEmpty()) {
+//			return;
+//		}
+//		String Name = (String) nameList.getSelectedValue();
+//		fillNameList(name);
+	}
 }
 
