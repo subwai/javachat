@@ -15,20 +15,15 @@ public class ChatServer {
 			SocketAddress address = new InetSocketAddress(port); 
 			ServerSocket socket = new ServerSocket();
 			socket.bind(address);
-
-			Vector<Thread> participants = new Vector<Thread>(); 
+			
+			ChatMessageHandler handler = new ChatMessageHandler();
 			Socket client;
-			Chatroom chatroom = new Chatroom();
-			WriterThread out = new WriterThread(chatroom);
-			out.start();
 			
 			int n = 1;
 			while(true){
 				client = socket.accept();
-				Thread in = new ReaderThread("Guest"+n, client, chatroom);
-				participants.add(in);
+				Thread in = new ReaderThread("Guest "+n, client, handler);
 				in.start();
-				chatroom.add_client(client);
 				System.out.println("Client connected: " + client.getInetAddress());
 				n++;
 			}

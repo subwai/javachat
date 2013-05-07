@@ -4,7 +4,7 @@ javachat
 Nätverksprogrammernig - Javachat
 
 
-TODO
+TODO:
 ========
 Server
 --------
