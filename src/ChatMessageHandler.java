@@ -14,7 +14,7 @@ public class ChatMessageHandler {
 	public void addChatroom(Socket user) {
 		Chatroom chatroom = new Chatroom(user);
 		chatrooms.put(chatrooms.size(), chatroom);
-		WriterThread out = new WriterThread(chatroom);
+		NotifierThread out = new NotifierThread(chatroom);
 		out.start();
 	}
 	
@@ -22,17 +22,17 @@ public class ChatMessageHandler {
 		return chatrooms.get(id);
 	}
 	
-	public void joinChatroom(Integer id, Socket client) {
+	public void joinChatroom(Integer id, Socket user) {
 		if (chatrooms.get(id) == null) {
-			createChatroom(id, client);
+			createChatroom(id, user);
 		} else {
-			chatrooms.get(id).add_client(client);
+			chatrooms.get(id).addUser(user);
 		}
 	}
 	
-	public Chatroom createChatroom(Integer id, Socket client) {
-		Chatroom chatroom = new Chatroom(client);
-		WriterThread out = new WriterThread(chatroom);
+	public Chatroom createChatroom(Integer id, Socket user) {
+		Chatroom chatroom = new Chatroom(user);
+		NotifierThread out = new NotifierThread(chatroom);
 		out.start();
 		return chatroom;
 	}

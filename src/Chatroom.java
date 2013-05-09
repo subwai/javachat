@@ -6,38 +6,26 @@ import java.util.Vector;
 
 public class Chatroom {
 	private String string;
-	private volatile Vector<Socket> clients;
-	private volatile Socket echo_client;
+	private volatile Vector<Socket> users;
 	
 	public Chatroom(Socket firstUser){
 		string = "";
-		clients = new Vector<Socket>(Arrays.asList(firstUser));
+		users = new Vector<Socket>(Arrays.asList(firstUser));
 	}
 	
-	synchronized void add_client(Socket client) {
-		clients.add(client);
+	synchronized void addUser(Socket user) {
+		users.add(user);
 	}
 	
-	synchronized void remove_client(Socket client) {
-		clients.remove(client);
+	synchronized void removeUser(Socket user) {
+		users.remove(user);
 	}
 	
-	public List<Socket> get_clients() {
-		return clients;
+	public List<Socket> getUsers() {
+		return users;
 	}
 	
-	public Socket pop_echo_client() {
-		Socket temp = echo_client;
-		echo_client = null;
-		return temp;
-	}
-	
-	synchronized void set(String input, Socket client){
-		this.echo_client = client;
-		set(input);
-	}
-	
-	synchronized void set(String input){
+	synchronized void pushMessage(String input){
 		try {
 			while (!string.isEmpty()) {
 				wait();
@@ -50,7 +38,7 @@ public class Chatroom {
 		string = input;
 	}
 	
-	synchronized public String pop(){
+	synchronized public String popMessage(){
 		try {
 			while (string.isEmpty()) {
 				wait();

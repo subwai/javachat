@@ -22,7 +22,7 @@ public class ChatServer {
 			int n = 1;
 			while(true){
 				client = socket.accept();
-				Thread in = new ReaderThread("Guest "+n, client, handler);
+				Thread in = new ListenerThread("Guest "+n, client, handler);
 				in.start();
 				System.out.println("Client connected: " + client.getInetAddress());
 				n++;
