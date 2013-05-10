@@ -6,25 +6,25 @@ import java.util.Vector;
 
 public class Chatroom {
 	private String string;
-	private volatile Vector<User> users;
+	private Vector<User> users;
 	
 	public Chatroom(User firstUser){
 		string = "";
 		users = new Vector<User>(Arrays.asList(firstUser));
 	}
 	
-	synchronized void addUser(User user) {
+	public List<User> getUsers() {
+		return users;
+	}
+	
+	public void addUser(User user) {
 		pushMessage("User has joined the chat: "+user.getName());
 		users.add(user);
 	}
 	
-	synchronized void removeUser(User user) {
+	public void removeUser(User user) {
 		users.remove(user);
 		pushMessage("User has left the chat: "+user.getName());
-	}
-	
-	public List<User> getUsers() {
-		return users;
 	}
 	
 	synchronized void pushMessage(String input){

@@ -9,6 +9,7 @@ import java.util.HashMap;
 public class ChatServer {
 	
 	private volatile HashMap<Integer, Chatroom> chatrooms;
+	private int chat_id = 0;
 
 	public static void main(String[] args) {
 		int port = 3000;
@@ -54,23 +55,32 @@ public class ChatServer {
 	}
 	
 	public synchronized void createChatroom(User user) {
-		int id = chatrooms.size();
-		createChatroom(id, user);
+		createChatroom(chat_id, user);
 	}
 	
 	public synchronized void createChatroom(int id, User user) {
 		user.joinChatroom(id);
 		Chatroom chatroom = new Chatroom(user);
-		chatrooms.put(chatrooms.size(), chatroom);
+		chatrooms.put(id, chatroom);
 		SenderThread out = new SenderThread(chatroom);
 		out.start();
+		chat_id++;
+	}
+	
+	public void leaveChatroom(int id, User user) {
+		Chatroom c = chatrooms.get(id);
+		if (c != null) {
+			user.leaveChatroom(id);
+			c.removeUser(user);
+			if (c.getUsers().isEmpty()) {
+				chatrooms.remove(id);
+			}
+		}
 	}
 
 	public void leaveAllChatrooms(User user) {
 		for(int id : user.getChatrooms()) {
-			user.leaveChatroom(id);
-			chatrooms.get(id).removeUser(user);
+			leaveChatroom(id, user);
 		}
 	}
-
 }
