@@ -6,8 +6,6 @@ import javax.swing.event.ListSelectionListener;
 
 import shared.ChatProtocol;
 
-
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -34,7 +32,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 	
 	private DefaultListModel<String> nameListModel;
 	private JList<String> nameList;
-
+	
+	public static void main(String[] args) {
+		new ClientGUI("localhost", 3000);
+	}
+	
 	// Constructor connection receiving a socket number
 	ClientGUI(String host, int port) {
 		super("Chat Client");
@@ -150,11 +152,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 			tf.addActionListener(this);
 		}
 
-	}
-	
-	// to start the whole thing the server
-	public static void main(String[] args) {
-		new ClientGUI("localhost", 1500);
 	}
 	
 	private void UpdateNameList() {
