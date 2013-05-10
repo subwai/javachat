@@ -11,8 +11,8 @@ import shared.ChatProtocol;
 
 public class ListenerThread extends Thread {
 	public static final int DEFAULT_CHATROOM = 0;
-	public static final int SUCCESS = 1;
-	public static final int FAIL = 0;
+	public static final String SUCCESS = "1";
+	public static final String FAIL = "0";
 	
 	private User user;
 	private BufferedReader reader;
@@ -40,6 +40,7 @@ public class ListenerThread extends Thread {
 		try {
 			while(running) {
 				str = reader.readLine();
+				System.out.println(str);
 				String[] args = str.split(" ");
 				switch(ChatProtocol.valueOf(args[0])) {
 					case MESSAGE:
@@ -48,42 +49,61 @@ public class ListenerThread extends Thread {
 						chat.pushMessage(this.getName()+": "+args[2]+"\n");
 						break;
 					case LOGIN:
-						this.setName(args[1]);
-						writer.write(ChatProtocol.LOGIN+" "+SUCCESS);
+						user.setName(args[1]);
+						sendMessage(ChatProtocol.LOGIN, SUCCESS);
 						break;
 					case LOGOUT:
 						server.leaveAllChatrooms(user);
-						writer.write(ChatProtocol.LOGOUT+" "+SUCCESS);
+						sendMessage(ChatProtocol.LOGOUT, SUCCESS);
 						user.closeConnection();
 						running = false;
 						break;
 					case JOIN_CHATROOM:
 						id = Integer.valueOf(args[1]);
 						server.joinChatroom(id, user);
-						writer.write(ChatProtocol.JOIN_CHATROOM+" "+SUCCESS);
+						sendMessage(ChatProtocol.JOIN_CHATROOM, SUCCESS);
 						break;
 					case LEAVE_CHATROOM:
 						id = Integer.valueOf(args[1]);
 						server.leaveChatroom(id, user);
-						writer.write(ChatProtocol.LEAVE_CHATROOM+" "+SUCCESS);
+						sendMessage(ChatProtocol.LEAVE_CHATROOM, SUCCESS);
 						break;
 					case CREATE_CHATROOM:
 						server.createChatroom(user);
-						writer.write(ChatProtocol.CREATE_CHATROOM+" "+SUCCESS);
+						sendMessage(ChatProtocol.CREATE_CHATROOM, SUCCESS);
 						break;
 					case SET_CHATROOM_TITLE:
 						id = Integer.valueOf(args[1]);
 						chat = server.getChatroom(id);
 						chat.setTitle(args[2]);
-						writer.write(ChatProtocol.SET_CHATROOM_TITLE+" "+SUCCESS);
+						sendMessage(ChatProtocol.SET_CHATROOM_TITLE, SUCCESS);
 						break;
 					default:
 						writer.write(args[0]+" "+FAIL);
+						writer.newLine();
+						writer.flush();
 						throw new Exception();
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("ERROR - Invalid command: '"+str+"', by: "+this.getName());
+			e.printStackTrace();
+			System.out.println("ERROR - Invalid command: '"+str+"', by: "+user.getName());
+		}
+	}
+	
+	public void sendMessage(ChatProtocol type, String... args) {
+		StringBuilder sb = new StringBuilder(type.toString());
+		for(String arg : args) {
+			sb.append(" "+arg);
+		}
+		
+		try {
+			writer.write(sb.toString());
+			writer.newLine();
+			writer.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

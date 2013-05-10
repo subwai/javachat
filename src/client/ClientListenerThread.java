@@ -11,11 +11,13 @@ public class ClientListenerThread extends Thread {
 	public static final int SUCCESS = 1;
 	public static final int FAIL = 0;
 	
+	private Socket socket;
 	private BufferedReader reader;
 	
-	public ClientListenerThread(Socket client) {
+	public ClientListenerThread(Socket socket) {
 		try {
-			reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			this.socket = socket;
+			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -26,8 +28,8 @@ public class ClientListenerThread extends Thread {
 	public void run() {
 		String str = new String();
 		try {
-			while(true) {
-				str = reader.readLine();
+			while((str = reader.readLine()) != null) {
+				System.out.println("SERVER: "+str);
 				String[] args = str.split(" ");
 				switch(ChatProtocol.valueOf(args[0])) {
 					case MESSAGE:
@@ -42,7 +44,7 @@ public class ClientListenerThread extends Thread {
 						break;
 					case LOGOUT:
 						if (Integer.valueOf(args[1]) == SUCCESS) {
-							// Enable login buttons
+							socket.close();
 						}
 						break;
 					case JOIN_CHATROOM:
@@ -69,6 +71,7 @@ public class ClientListenerThread extends Thread {
 						throw new Exception();
 				}
 			}
+			socket.close();
 		} catch (Exception e) {
 			System.out.println("ERROR - Invalid command: '"+str+"', by: SERVER");
 		}

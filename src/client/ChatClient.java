@@ -40,10 +40,11 @@ public class ChatClient {
 		
 		try {
 			writer.write(sb.toString());
+			writer.newLine();
+			writer.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 }

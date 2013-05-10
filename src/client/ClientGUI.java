@@ -138,10 +138,9 @@ public class ClientGUI extends JFrame implements ActionListener {
 			// ok it is a connection request
 			String username = tf.getText().trim();
 			// empty username ignore it
-			if(username.length() == 0) {
-				username = "guest";
+			if(username.length() != 0) {
+				client.sendMessage(ChatProtocol.LOGIN, username);
 			}
-			client.sendMessage(ChatProtocol.LOGIN, username);
 			// disable login button/
 			login.setEnabled(false);
 			// enable the 2 buttons
