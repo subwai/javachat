@@ -9,7 +9,8 @@ public class Chatroom {
 	private String nextMessage;
 	private Vector<User> users;
 	
-	public Chatroom(User firstUser){
+	public Chatroom(User firstUser) {
+		title = "#";
 		nextMessage = "";
 		users = new Vector<User>(Arrays.asList(firstUser));
 	}
