@@ -1,5 +1,4 @@
-package clientpackage;
-import java.io.IOException;
+package client;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -11,6 +10,7 @@ public class ClientReaderThread extends Thread {
 		this.client = client;
 	}
 	
+	@Override
 	public void run() {
 		try {
 			Scanner scan = new Scanner(System.in);

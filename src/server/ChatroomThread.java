@@ -1,5 +1,4 @@
-import java.net.Socket;
-import java.util.Vector;
+package server;
 
 
 public class ChatroomThread extends Thread {
@@ -8,6 +7,7 @@ public class ChatroomThread extends Thread {
 		super(title);
 	}
 	
+	@Override
 	public void run() {
 		
 	}

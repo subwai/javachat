@@ -1,0 +1,12 @@
+package shared;
+
+public enum ChatProtocol {
+	MESSAGE,
+	LOGIN,
+	LOGOUT,
+	JOIN_CHATROOM,
+	LEAVE_CHATROOM,
+	CREATE_CHATROOM,
+	GET_CHATROOM_TITLE,
+	SET_CHATROOM_TITLE
+}

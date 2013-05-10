@@ -1,4 +1,4 @@
-package clientpackage;
+package client;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -111,6 +111,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	/*
 	* Button or JTextField clicked
 	*/
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		// if it is the Logout button
@@ -146,10 +147,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 
 	}
 
-	// to start the whole thing the server
-	public static void main(String[] args) {
-		new ClientGUI();
-	}
 	
 	private void UpdateNameList() {
 		nameListModel.removeAllElements();
@@ -172,6 +169,7 @@ class NameSelectionListener implements ListSelectionListener {
 	 * @param e
 	 *            The selected list item.
 	 */
+	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (nameList.isSelectionEmpty()) {
 			return;

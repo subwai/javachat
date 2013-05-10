@@ -1,10 +1,9 @@
-package clientpackage;
+package client;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 
 public class ChatClient {
@@ -13,15 +12,16 @@ public class ChatClient {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		InetAddress address;
-		Socket socket;
-		try{
-			address = InetAddress.getByName(args[0]);
-			socket = new Socket(address, Integer.valueOf(args[1]));
+		String address = args[0];
+		int port = Integer.valueOf(args[1]);
+		
+		try {
+			Socket socket = new Socket(InetAddress.getByName(address), port);
+			ClientGUI gui = new ClientGUI();
 			
 			Thread reader = new ClientReaderThread(socket);
-			Thread writer = new ClientWriterThread(socket);
 			reader.start();
+			Thread writer = new ClientWriterThread(socket);
 			writer.start();
 			
 			System.out.println("Start chatting:");
