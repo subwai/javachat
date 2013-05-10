@@ -1,5 +1,4 @@
 package server;
-import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
@@ -7,22 +6,24 @@ import java.util.Vector;
 
 public class Chatroom {
 	private String string;
-	private volatile Vector<Socket> users;
+	private volatile Vector<User> users;
 	
-	public Chatroom(Socket firstUser){
+	public Chatroom(User firstUser){
 		string = "";
-		users = new Vector<Socket>(Arrays.asList(firstUser));
+		users = new Vector<User>(Arrays.asList(firstUser));
 	}
 	
-	synchronized void addUser(Socket user) {
+	synchronized void addUser(User user) {
+		pushMessage("User has joined the chat: "+user.getName());
 		users.add(user);
 	}
 	
-	synchronized void removeUser(Socket user) {
+	synchronized void removeUser(User user) {
 		users.remove(user);
+		pushMessage("User has left the chat: "+user.getName());
 	}
 	
-	public List<Socket> getUsers() {
+	public List<User> getUsers() {
 		return users;
 	}
 	

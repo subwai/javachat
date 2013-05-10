@@ -1,33 +1,33 @@
 package server;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Socket;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import shared.ChatProtocol;
 
 
 public class ListenerThread extends Thread {
-	private Socket user;
-	private BufferedReader reader;
-	private ChatMessageHandler handler;
+	public static final int DEFAULT_CHATROOM = 0;
 	
-	public ListenerThread(String name, Socket user, ChatMessageHandler handler) {
+	private User user;
+	private BufferedReader reader;
+	private ChatServer server;
+	
+	
+	public ListenerThread(String name, User user, ChatServer server) {
 		super(name);
 		try {
 			this.user = user;
-			this.handler = handler;
+			this.server = server;
 			
 			reader = new BufferedReader(new InputStreamReader(user.getInputStream()));
-			handler.joinChatroom(0, user);
-			System.out.println("SYSTEM: Client joined chatroom: "+getName()+handler.getChatroom(0));
-		} catch (Exception e) {
-			
+			server.joinChatroom(DEFAULT_CHATROOM, user);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
+	@Override
 	public void run() {
 		String str = new String();
 		boolean running = true;
@@ -38,24 +38,23 @@ public class ListenerThread extends Thread {
 				switch(ChatProtocol.valueOf(args[0])) {
 					case MESSAGE:
 						int id = Integer.valueOf(args[1]);
-						Chatroom chat = handler.getChatroom(id);
+						Chatroom chat = server.getChatroom(id);
 						chat.pushMessage(this.getName()+": "+args[2]+"\n");
 						break;
 					case LOGIN:
 						this.setName(args[1]);
 						break;
 					case LOGOUT:
-						handler.leaveAllChatrooms(user);
-						user.close();
+						server.leaveAllChatrooms(user);
+						user.closeConnection();
 						running = false;
 						break;
 					case JOIN_CHATROOM:
 						id = Integer.valueOf(args[1]);
-						handler.joinChatroom(id, user);
+						server.joinChatroom(id, user);
 						break;
 					case CREATE_CHATROOM:
-						id = Integer.valueOf(args[1]);
-						handler.createChatroom(id, user);
+						server.createChatroom(user);
 						break;
 					default:
 						throw new Exception();

@@ -35,8 +35,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 	private int defaultPort;
 	private String defaultHost;
 	
-	private DefaultListModel nameListModel;
-	private JList nameList;
+	private DefaultListModel<String> nameListModel;
+	private JList<String> nameList;
 
 	// Constructor connection receiving a socket number
 	ClientGUI(String host, int port) {
@@ -64,8 +64,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 		
 		//east namepanel
 		JLabel users = new JLabel("Online Users", SwingConstants.CENTER);
-		nameListModel = new DefaultListModel();
-		nameList = new JList(nameListModel);
+		nameListModel = new DefaultListModel<String>();
+		nameList = new JList<String>(nameListModel);
 		nameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		nameList.setPrototypeCellValue("123456789012");
 		nameList.addListSelectionListener(new NameSelectionListener());
@@ -121,6 +121,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	/*
 	* Button or JTextField clicked
 	*/
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		// if it is the Logout button
@@ -178,6 +179,7 @@ class NameSelectionListener implements ListSelectionListener {
 	 * @param e
 	 *            The selected list item.
 	 */
+	@Override
 	public void valueChanged(ListSelectionEvent e) {
 //		if (nameList.isSelectionEmpty()) {
 //			return;

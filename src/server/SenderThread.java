@@ -1,5 +1,4 @@
 package server;
-import java.net.Socket;
 
 
 public class SenderThread extends Thread {
@@ -9,12 +8,13 @@ public class SenderThread extends Thread {
 		this.chatroom = chatroom;
 	}
 	
+	@Override
 	public void run() {
 		try {
 			while(true) {
 				String msg = chatroom.popMessage();
 				if (!msg.isEmpty()) {
-					for (Socket user : chatroom.getUsers()) {
+					for (User user : chatroom.getUsers()) {
 						user.getOutputStream().write(msg.getBytes());
 					}
 				}
