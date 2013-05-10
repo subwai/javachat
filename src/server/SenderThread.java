@@ -2,10 +2,10 @@ package server;
 import java.net.Socket;
 
 
-public class NotifierThread extends Thread {
+public class SenderThread extends Thread {
 	private Chatroom chatroom;
 	
-	public NotifierThread(Chatroom chatroom) {
+	public SenderThread(Chatroom chatroom) {
 		this.chatroom = chatroom;
 	}
 	

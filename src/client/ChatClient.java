@@ -14,10 +14,14 @@ public class ChatClient {
 	 */
 	public static void main(String[] args) {
 		InetAddress address;
+		int port = Integer.valueOf(args[1]);
 		Socket socket;
 		try{
 			address = InetAddress.getByName(args[0]);
-			socket = new Socket(address, Integer.valueOf(args[1]));
+			socket = new Socket(address, port);
+			
+			
+			ClientGUI gui = new ClientGUI(args[0], port);
 			
 			Thread reader = new ClientReaderThread(socket);
 			Thread writer = new ClientWriterThread(socket);

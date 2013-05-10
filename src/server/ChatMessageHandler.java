@@ -15,7 +15,7 @@ public class ChatMessageHandler {
 	public void addChatroom(Socket user) {
 		Chatroom chatroom = new Chatroom(user);
 		chatrooms.put(chatrooms.size(), chatroom);
-		NotifierThread out = new NotifierThread(chatroom);
+		SenderThread out = new SenderThread(chatroom);
 		out.start();
 	}
 	
@@ -33,8 +33,13 @@ public class ChatMessageHandler {
 	
 	public Chatroom createChatroom(Integer id, Socket user) {
 		Chatroom chatroom = new Chatroom(user);
-		NotifierThread out = new NotifierThread(chatroom);
+		SenderThread out = new SenderThread(chatroom);
 		out.start();
 		return chatroom;
+	}
+
+	public void leaveAllChatrooms(Socket user) {
+		// TODO Auto-generated method stub
+		
 	}
 }

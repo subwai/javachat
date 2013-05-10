@@ -3,8 +3,10 @@ package server;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import shared.MessageType;
+import shared.ChatProtocol;
 
 
 public class ListenerThread extends Thread {
@@ -28,29 +30,39 @@ public class ListenerThread extends Thread {
 	
 	public void run() {
 		String str = new String();
+		boolean running = true;
 		try {
-			while(true) {
+			while(running) {
 				str = reader.readLine();
-				switch(MessageType.valueOf(str.substring(0, 1))) {
+				String[] args = str.split(" ");
+				switch(ChatProtocol.valueOf(args[0])) {
 					case MESSAGE:
-						char id = str.charAt(3);
-						Chatroom chat = handler.getChatroom(Integer.valueOf(id));
-						chat.pushMessage(getName()+": "+str.substring(3)+"\n");
+						int id = Integer.valueOf(args[1]);
+						Chatroom chat = handler.getChatroom(id);
+						chat.pushMessage(this.getName()+": "+args[2]+"\n");
 						break;
-					case JOIN:
-						id = str.charAt(3);
-						handler.joinChatroom(Integer.valueOf(id), user);
+					case LOGIN:
+						this.setName(args[1]);
 						break;
-					case CREATE:
-						id = str.charAt(3);
-						handler.createChatroom(Integer.valueOf(id), user);
+					case LOGOUT:
+						handler.leaveAllChatrooms(user);
+						user.close();
+						running = false;
+						break;
+					case JOIN_CHATROOM:
+						id = Integer.valueOf(args[1]);
+						handler.joinChatroom(id, user);
+						break;
+					case CREATE_CHATROOM:
+						id = Integer.valueOf(args[1]);
+						handler.createChatroom(id, user);
 						break;
 					default:
 						throw new Exception();
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("ERROR - Invalid command: '"+str+"', by: "+getName());
+			System.out.println("ERROR - Invalid command: '"+str+"', by: "+this.getName());
 		}
 	}
 }
