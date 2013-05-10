@@ -37,7 +37,6 @@ public class User {
 	}
 	
 	public void closeConnection() throws IOException {
-		getOutputStream().write("GOODBYE".getBytes());
 		socket.close();
 	}
 

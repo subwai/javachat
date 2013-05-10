@@ -5,11 +5,12 @@ import java.util.Vector;
 
 
 public class Chatroom {
-	private String string;
+	private String title;
+	private String nextMessage;
 	private Vector<User> users;
 	
 	public Chatroom(User firstUser){
-		string = "";
+		nextMessage = "";
 		users = new Vector<User>(Arrays.asList(firstUser));
 	}
 	
@@ -27,9 +28,17 @@ public class Chatroom {
 		pushMessage("User has left the chat: "+user.getName());
 	}
 	
+	public String getTitle() {
+		return title;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
 	synchronized void pushMessage(String input){
 		try {
-			while (!string.isEmpty()) {
+			while (!nextMessage.isEmpty()) {
 				wait();
 			}
 		} catch (InterruptedException e) {
@@ -37,20 +46,20 @@ public class Chatroom {
 			e.printStackTrace();
 		}
 		notifyAll();
-		string = input;
+		nextMessage = input;
 	}
 	
 	synchronized public String popMessage(){
 		try {
-			while (string.isEmpty()) {
+			while (nextMessage.isEmpty()) {
 				wait();
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String temp = string;
-		string = "";
+		String temp = nextMessage;
+		nextMessage = "";
 		notifyAll();
 		return temp;
 	}
