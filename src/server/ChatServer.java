@@ -62,7 +62,7 @@ public class ChatServer {
 		user.joinChatroom(id);
 		Chatroom chatroom = new Chatroom(user);
 		chatrooms.put(id, chatroom);
-		SenderThread out = new SenderThread(chatroom);
+		SenderThread out = new SenderThread(chatroom, id);
 		out.start();
 		chat_id++;
 	}

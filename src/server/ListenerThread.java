@@ -11,8 +11,8 @@ import shared.ChatProtocol;
 
 public class ListenerThread extends Thread {
 	public static final int DEFAULT_CHATROOM = 0;
-	public static final int SUCCESSED = 1;
-	public static final int FAILED = 0;
+	public static final int SUCCESS = 1;
+	public static final int FAIL = 0;
 	
 	private User user;
 	private BufferedReader reader;
@@ -49,35 +49,36 @@ public class ListenerThread extends Thread {
 						break;
 					case LOGIN:
 						this.setName(args[1]);
-						writer.write(ChatProtocol.LOGIN+" "+SUCCESSED);
+						writer.write(ChatProtocol.LOGIN+" "+SUCCESS);
 						break;
 					case LOGOUT:
 						server.leaveAllChatrooms(user);
-						writer.write(ChatProtocol.LOGOUT+" "+SUCCESSED);
+						writer.write(ChatProtocol.LOGOUT+" "+SUCCESS);
 						user.closeConnection();
 						running = false;
 						break;
 					case JOIN_CHATROOM:
 						id = Integer.valueOf(args[1]);
 						server.joinChatroom(id, user);
-						writer.write(ChatProtocol.JOIN_CHATROOM+" "+SUCCESSED);
+						writer.write(ChatProtocol.JOIN_CHATROOM+" "+SUCCESS);
 						break;
 					case LEAVE_CHATROOM:
 						id = Integer.valueOf(args[1]);
 						server.leaveChatroom(id, user);
-						writer.write(ChatProtocol.LEAVE_CHATROOM+" "+SUCCESSED);
+						writer.write(ChatProtocol.LEAVE_CHATROOM+" "+SUCCESS);
 						break;
 					case CREATE_CHATROOM:
 						server.createChatroom(user);
-						writer.write(ChatProtocol.CREATE_CHATROOM+" "+SUCCESSED);
+						writer.write(ChatProtocol.CREATE_CHATROOM+" "+SUCCESS);
 						break;
 					case SET_CHATROOM_TITLE:
 						id = Integer.valueOf(args[1]);
 						chat = server.getChatroom(id);
 						chat.setTitle(args[2]);
-						writer.write(ChatProtocol.SET_CHATROOM_TITLE+" "+SUCCESSED);
+						writer.write(ChatProtocol.SET_CHATROOM_TITLE+" "+SUCCESS);
+						break;
 					default:
-						writer.write(FAILED);
+						writer.write(args[0]+" "+FAIL);
 						throw new Exception();
 				}
 			}

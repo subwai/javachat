@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import shared.ChatProtocol;
+
 
 
 import java.awt.*;
@@ -35,6 +37,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 	private int defaultPort;
 	private String defaultHost;
 	
+	private ChatClient client;
+	
 	private DefaultListModel<String> nameListModel;
 	private JList<String> nameList;
 
@@ -44,6 +48,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		super("Chat Client");
 		defaultPort = port;
 		defaultHost = host;
+		client = new ChatClient(host, port);
 		
 		// The NorthPanel with:
 		JPanel northPanel = new JPanel(new GridLayout(3,1));
@@ -126,13 +131,13 @@ public class ClientGUI extends JFrame implements ActionListener {
 		Object o = e.getSource();
 		// if it is the Logout button
 		if(o == logout) {
-		//	client.sendMessage(new ChatMessage(ChatMessage.LOGOUT, ""));
+			client.sendMessage(ChatProtocol.LOGOUT, "");
 			return;
 		}
 		// ok it is coming from the JTextField
 		if(connected) {
 			// just have to send the message
-		//	client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, tf.getText()));				
+			client.sendMessage(ChatProtocol.MESSAGE, tf.getText());				
 			tf.setText("");
 			return;
 		}
@@ -142,19 +147,25 @@ public class ClientGUI extends JFrame implements ActionListener {
 			// ok it is a connection request
 			String username = tf.getText().trim();
 			// empty username ignore it
-			if(username.length() == 0)
+			if(username.length() == 0) {
 				return;
-			
+			}
+			client.sendMessage(ChatProtocol.LOGIN, username);
 			// disable login button/
-				login.setEnabled(false);
+			login.setEnabled(false);
 			// enable the 2 buttons
 			logout.setEnabled(true);
 
 			// disable the Server and Port JTextField
 			// Action listener for when the user enter a message
-		tf.addActionListener(this);
+			tf.addActionListener(this);
 		}
 
+	}
+	
+	// to start the whole thing the server
+	public static void main(String[] args) {
+		new ClientGUI("localhost", 1500);
 	}
 	
 	private void UpdateNameList() {
