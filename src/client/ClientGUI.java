@@ -23,19 +23,12 @@ public class ClientGUI extends JFrame implements ActionListener {
 	private JLabel label;
 	// to hold the Username and later on the messages
 	private JTextField tf;
-	// to hold the server address an the port number
-	private JTextField tfServer, tfPort;
 	// to Logout and get the list of the users
-	private JButton login, logout, whoIsIn;
+	private JButton login, logout;
 	// for the chat room
 	private JTextArea ta;
 	// if it is for connection
 	private boolean connected;
-	// the Client object
-	//private Client client;
-	// the default port number
-	private int defaultPort;
-	private String defaultHost;
 	
 	private ChatClient client;
 	
@@ -44,33 +37,30 @@ public class ClientGUI extends JFrame implements ActionListener {
 
 	// Constructor connection receiving a socket number
 	ClientGUI(String host, int port) {
-
 		super("Chat Client");
-		defaultPort = port;
-		defaultHost = host;
 		client = new ChatClient(host, port);
 		
-		// The NorthPanel with:
-		JPanel northPanel = new JPanel(new GridLayout(3,1));
+		// The northPanel which is the chat room
+		ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
+		JPanel northPanel = new JPanel(new GridLayout(1,1));
+		northPanel.add(new JScrollPane(ta));
+		ta.setEditable(false);
+		
+		// The centerPanel with:
+		JPanel centerPanel = new JPanel(new GridLayout(3,1));
 		// the Label and the TextField
 		label = new JLabel("Enter your username below", SwingConstants.CENTER);
-		northPanel.add(label);
+		centerPanel.add(label);
 		tf = new JTextField("Anonymous");
 		tf.setBackground(Color.WHITE);
-		northPanel.add(tf);
-		add(northPanel, BorderLayout.NORTH);
+		centerPanel.add(tf);
 
-		// The CenterPanel which is the chat room
-		ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
-		JPanel centerPanel = new JPanel(new GridLayout(1,1));
-		centerPanel.add(new JScrollPane(ta));
-		ta.setEditable(false);
-		add(centerPanel, BorderLayout.CENTER);
+		
 		
 		//east namepanel
 		JLabel users = new JLabel("Online Users", SwingConstants.CENTER);
-		nameListModel = new DefaultListModel<String>();
-		nameList = new JList<String>(nameListModel);
+		nameListModel = new DefaultListModel();
+		nameList = new JList(nameListModel);
 		nameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		nameList.setPrototypeCellValue("123456789012");
 		nameList.addListSelectionListener(new NameSelectionListener());
@@ -79,7 +69,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		eastpanel.setLayout(new BorderLayout(2, 1));
 		eastpanel.add(users,BorderLayout.NORTH);
 		eastpanel.add(p1, BorderLayout.CENTER);
-		add(eastpanel,BorderLayout.EAST);
 
 		// the 3 buttons
 		login = new JButton("Login");
@@ -89,8 +78,14 @@ public class ClientGUI extends JFrame implements ActionListener {
 		logout.setEnabled(false);		// you have to login before being able to logout
 
 		JPanel southPanel = new JPanel();
-		southPanel.add(login);
-		southPanel.add(logout);
+		southPanel.setLayout(new BorderLayout(1, 2));
+		southPanel.add(login, BorderLayout.WEST);
+		southPanel.add(logout, BorderLayout.EAST);
+		
+		add(centerPanel, BorderLayout.NORTH);
+		add(northPanel, BorderLayout.CENTER);
+		
+		add(eastpanel,BorderLayout.EAST);
 		add(southPanel, BorderLayout.SOUTH);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -112,12 +107,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		logout.setEnabled(false);
 		label.setText("Enter your username below");
 		tf.setText("Anonymous");
-		// reset port number and host name as a construction time
-		tfPort.setText("" + defaultPort);
-		tfServer.setText(defaultHost);
-		// let the user change them
-		tfServer.setEditable(false);
-		tfPort.setEditable(false);
 		// don't react to a <CR> after the username
 		tf.removeActionListener(this);
 		connected = false;
@@ -148,15 +137,15 @@ public class ClientGUI extends JFrame implements ActionListener {
 			String username = tf.getText().trim();
 			// empty username ignore it
 			if(username.length() == 0) {
-				return;
+				username = "guest";
 			}
 			client.sendMessage(ChatProtocol.LOGIN, username);
 			// disable login button/
 			login.setEnabled(false);
 			// enable the 2 buttons
 			logout.setEnabled(true);
-
-			// disable the Server and Port JTextField
+			
+			//TODO Send login request to server.
 			// Action listener for when the user enter a message
 			tf.addActionListener(this);
 		}
@@ -175,28 +164,29 @@ public class ClientGUI extends JFrame implements ActionListener {
         	nameListModel.addElement(name);
         }
 	}
+	
 
-}
-
-/**
- * A class that listens for clicks in the name list.
- */
-class NameSelectionListener implements ListSelectionListener {
 	/**
-	 * Called when the user selects a name in the name list. Fetches
-	 * performance dates from the database and displays them in the date
-	 * list.
-	 * 
-	 * @param e
-	 *            The selected list item.
+	 * A class that listens for clicks in the name list.
 	 */
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-//		if (nameList.isSelectionEmpty()) {
-//			return;
-//		}
-//		String Name = (String) nameList.getSelectedValue();
-//		fillNameList(name);
+	class NameSelectionListener implements ListSelectionListener {
+		/**
+		 * Called when the user selects a name in the name list. Fetches
+		 * performance dates from the database and displays them in the date
+		 * list.
+		 * 
+		 * @param e
+		 *            The selected list item.
+		 */
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (nameList.isSelectionEmpty()) {
+				return;
+			}
+			String Name = (String) nameList.getSelectedValue();
+			//TODO send chatroom request to server with wanted chatpartner "Name"
+		}
 	}
 }
+
 
