@@ -1,11 +1,15 @@
 package server;
 
+import shared.ChatProtocol;
+
 
 public class SenderThread extends Thread {
 	private Chatroom chatroom;
+	private int id;
 	
-	public SenderThread(Chatroom chatroom) {
+	public SenderThread(Chatroom chatroom, int id) {
 		this.chatroom = chatroom;
+		this.id = id;
 	}
 	
 	@Override
@@ -15,7 +19,7 @@ public class SenderThread extends Thread {
 				String msg = chatroom.popMessage();
 				if (!msg.isEmpty()) {
 					for (User user : chatroom.getUsers()) {
-						user.getOutputStream().write(msg.getBytes());
+						user.getOutputStream().write((ChatProtocol.MESSAGE+" "+id+" "+msg).getBytes());
 					}
 				}
 			}

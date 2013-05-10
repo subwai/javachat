@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-
+import shared.ChatProtocol;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -28,13 +28,19 @@ public class ClientGUI extends JFrame implements ActionListener {
 	// if it is for connection
 	private boolean connected;
 	
+	private ChatClient client;
+	
 	private DefaultListModel nameListModel;
 	private JList nameList;
-
+	
+	public static void main(String[] args) {
+		new ClientGUI("localhost", 3000);
+	}
+	
 	// Constructor connection receiving a socket number
-	ClientGUI() {
-
+	ClientGUI(String host, int port) {
 		super("Chat Client");
+		client = new ChatClient(host, port);
 		
 		// The northPanel which is the chat room
 		ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
@@ -116,13 +122,14 @@ public class ClientGUI extends JFrame implements ActionListener {
 		Object o = e.getSource();
 		// if it is the Logout button
 		if(o == logout) {
-			//TODO send logout message to server.
+			client.sendMessage(ChatProtocol.LOGOUT, "");
 			return;
 		}
 		// ok it is coming from the JTextField
 		if(connected) {
 			// just have to send the message
 		//TODO send message tf.getText() to server.	
+			client.sendMessage(ChatProtocol.MESSAGE, tf.getText());				
 			tf.setText("");
 			return;
 		}
@@ -132,11 +139,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 			// ok it is a connection request
 			String username = tf.getText().trim();
 			// empty username ignore it
-			if(username.length() == 0)
-				username = "guest";
-			
+			if(username.length() != 0) {
+				client.sendMessage(ChatProtocol.LOGIN, username);
+			}
 			// disable login button/
-				login.setEnabled(false);
+			login.setEnabled(false);
 			// enable the 2 buttons
 			logout.setEnabled(true);
 			
@@ -146,7 +153,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		}
 
 	}
-
 	
 	private void UpdateNameList() {
 		nameListModel.removeAllElements();
@@ -157,28 +163,27 @@ public class ClientGUI extends JFrame implements ActionListener {
 	}
 	
 
-/**
- * A class that listens for clicks in the name list.
- */
-class NameSelectionListener implements ListSelectionListener {
 	/**
-	 * Called when the user selects a name in the name list. Fetches
-	 * performance dates from the database and displays them in the date
-	 * list.
-	 * 
-	 * @param e
-	 *            The selected list item.
+	 * A class that listens for clicks in the name list.
 	 */
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		if (nameList.isSelectionEmpty()) {
-			return;
+	class NameSelectionListener implements ListSelectionListener {
+		/**
+		 * Called when the user selects a name in the name list. Fetches
+		 * performance dates from the database and displays them in the date
+		 * list.
+		 * 
+		 * @param e
+		 *            The selected list item.
+		 */
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (nameList.isSelectionEmpty()) {
+				return;
+			}
+			String Name = (String) nameList.getSelectedValue();
+			//TODO send chatroom request to server with wanted chatpartner "Name"
 		}
-		String Name = (String) nameList.getSelectedValue();
-		//TODO send chatroom request to server with wanted chatpartner "Name"
 	}
-}
-
 }
 
 

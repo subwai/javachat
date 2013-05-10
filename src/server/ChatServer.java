@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.HashMap;
+import java.util.Vector;
 
 public class ChatServer {
 	
@@ -20,6 +21,7 @@ public class ChatServer {
 			socket.bind(address);
 			
 			ChatServer server = new ChatServer();
+			System.out.println("Chat server - started!");
 			
 			int n = 1;
 			while(true) {
@@ -62,7 +64,7 @@ public class ChatServer {
 		user.joinChatroom(id);
 		Chatroom chatroom = new Chatroom(user);
 		chatrooms.put(id, chatroom);
-		SenderThread out = new SenderThread(chatroom);
+		SenderThread out = new SenderThread(chatroom, id);
 		out.start();
 		chat_id++;
 	}
@@ -79,7 +81,8 @@ public class ChatServer {
 	}
 
 	public void leaveAllChatrooms(User user) {
-		for(int id : user.getChatrooms()) {
+		Vector<Integer> chatrooms = new Vector<Integer>(user.getChatrooms());
+		for(int id : chatrooms) {
 			leaveChatroom(id, user);
 		}
 	}

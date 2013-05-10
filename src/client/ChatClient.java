@@ -1,31 +1,25 @@
 package client;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import shared.ChatProtocol;
+
 
 public class ChatClient {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		String address = args[0];
-		int port = Integer.valueOf(args[1]);
-		
+	private BufferedWriter writer;
+	
+	public ChatClient(String address, int port) {
 		try {
 			Socket socket = new Socket(InetAddress.getByName(address), port);
-			ClientGUI gui = new ClientGUI();
-			
-			Thread reader = new ClientReaderThread(socket);
+			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			Thread reader = new ClientListenerThread(socket);
 			reader.start();
-			Thread writer = new ClientWriterThread(socket);
-			writer.start();
-			
-			System.out.println("Start chatting:");
-			
 		} catch (UnknownHostException e){
 			System.out.println("Felaktig serveradress");
 			System.exit(0);
@@ -35,6 +29,22 @@ public class ChatClient {
 		} catch (IOException e){
 			e.printStackTrace();
 			System.exit(0);
+		}
+	}
+	
+	public void sendMessage(ChatProtocol type, String... args) {
+		StringBuilder sb = new StringBuilder(type.toString());
+		for(String arg : args) {
+			sb.append(" "+arg);
+		}
+		
+		try {
+			writer.write(sb.toString());
+			writer.newLine();
+			writer.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

@@ -14,6 +14,7 @@ public class User {
 	public User(String name, Socket socket) {
 		this.name = name;
 		this.socket = socket;
+		currentChatrooms = new Vector<Integer>();
 	}
 	
 	public String getName() {
