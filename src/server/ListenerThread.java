@@ -53,6 +53,10 @@ public class ListenerThread extends Thread {
 						id = Integer.valueOf(args[1]);
 						server.joinChatroom(id, user);
 						break;
+					case LEAVE_CHATROOM:
+						id = Integer.valueOf(args[1]);
+						server.leaveChatroom(id, user);
+						break;
 					case CREATE_CHATROOM:
 						server.createChatroom(user);
 						break;

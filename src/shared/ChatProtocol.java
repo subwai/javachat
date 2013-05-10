@@ -5,5 +5,6 @@ public enum ChatProtocol {
 	LOGIN,
 	LOGOUT,
 	JOIN_CHATROOM,
+	LEAVE_CHATROOM,
 	CREATE_CHATROOM
 }
