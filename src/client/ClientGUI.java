@@ -1,4 +1,4 @@
-package clientpackage;
+package client;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

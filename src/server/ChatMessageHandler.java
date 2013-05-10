@@ -1,3 +1,4 @@
+package server;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Vector;
