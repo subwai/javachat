@@ -25,6 +25,7 @@ public class ListenerThread extends Thread {
 			this.user = user;
 			this.server = server;
 			
+			int i;
 			reader = new BufferedReader(new InputStreamReader(user.getInputStream()));
 			writer = new BufferedWriter(new OutputStreamWriter(user.getOutputStream()));
 			server.joinChatroom(DEFAULT_CHATROOM, user);
