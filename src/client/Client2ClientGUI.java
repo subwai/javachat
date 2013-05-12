@@ -33,14 +33,11 @@ import java.util.ArrayList;
 		// the name of the other chatter
 		private String chatee;
 		
-		private DefaultListModel nameListModel;
-		private JList nameList;
-		
 		private Socket socket;
 		
 		// Constructor connection receiving a socket number
 		Client2ClientGUI(String host, int port, String user) {
-			super("Chat Client 2");
+			super("Chat Client");
 			client = new ChatClient(host, port);
 			chatee = user;
 			
@@ -98,7 +95,7 @@ import java.util.ArrayList;
 		public void actionPerformed(ActionEvent e) {
 			Object o = e.getSource();
 			if(o == file){
-				JFrame j = new FileTransferGUI(socket, "Naxon");
+				JFrame j = new FileTransferGUI(socket, chatee);
 				j.setVisible(true);
 			} else if(o == close){setVisible(false);} else
 			{

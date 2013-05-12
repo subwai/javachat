@@ -145,6 +145,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 			return;
 		}
 		if(o == startSession){
+			client.sendMessage(ChatProtocol.CREATE_CHATROOM);
 			JFrame j = new Client2ClientGUI("localhost", 3000, selectedUser);
 			j.setVisible(true);
 			return;
@@ -205,6 +206,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		public void valueChanged(ListSelectionEvent e) {
 			if (nameList.isSelectionEmpty()) {
 				startSession.setEnabled(false);
+				selectedUser = "";
 				return;
 				
 			}

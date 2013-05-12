@@ -69,6 +69,21 @@ public class ChatServer {
 		chat_id++;
 	}
 	
+	public synchronized void createPrivateChatroom(User user1, User user2) {
+		createPrivateChatroom(chat_id, user1, user2);
+	}
+	
+	public synchronized void createPrivateChatroom(int id, User user1, User user2) {
+		Chatroom chatroom = new Chatroom(user1);
+		chatrooms.put(id, chatroom);
+		user1.joinChatroom(id);
+		chatroom.addUser(user2);
+		user2.joinChatroom(id);
+		SenderThread out = new SenderThread(chatroom, id);
+		out.start();
+		chat_id++;
+	}
+	
 	public void leaveChatroom(int id, User user) {
 		Chatroom c = chatrooms.get(id);
 		if (c != null) {
