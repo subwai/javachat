@@ -63,7 +63,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		
 		//east namepanel
 		JLabel users = new JLabel("Online Users", SwingConstants.CENTER);
-		nameListModel = new DefaultListModel<String>();
+		nameListModel = new DefaultListModel();
 		nameList = new JList(nameListModel);
 		nameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		nameList.setPrototypeCellValue("123456789012");
