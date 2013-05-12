@@ -38,14 +38,11 @@ import java.util.ArrayList;
 		
 		private Socket socket;
 		
-		public static void main(String[] args) {
-			new Client2ClientGUI("localhost", 3000);
-		}
-		
 		// Constructor connection receiving a socket number
-		Client2ClientGUI(String host, int port) {
+		Client2ClientGUI(String host, int port, String user) {
 			super("Chat Client 2");
 			client = new ChatClient(host, port);
+			chatee = user;
 			
 			// The northPanel which is the chat room
 			ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
@@ -103,7 +100,7 @@ import java.util.ArrayList;
 			if(o == file){
 				JFrame j = new FileTransferGUI(socket, "Naxon");
 				j.setVisible(true);
-			} else if(o == close){} else
+			} else if(o == close){setVisible(false);} else
 			{
 				// just have to send the message
 			//TODO send message tf.getText() to server.	

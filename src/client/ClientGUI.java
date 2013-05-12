@@ -22,7 +22,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	// to hold the Username and later on the messages
 	private JTextField tf;
 	// to Logout and get the list of the users
-	private JButton login, logout;
+	private JButton login, logout, startSession;
 	// for the chat room
 	private JTextArea ta;
 	// if it is for connection
@@ -32,6 +32,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 	
 	private DefaultListModel nameListModel;
 	private JList nameList;
+	
+	private String selectedUser;
 	
 	public static void main(String[] args) {
 		new ClientGUI("localhost", 3000);
@@ -61,11 +63,12 @@ public class ClientGUI extends JFrame implements ActionListener {
 		
 		//east namepanel
 		JLabel users = new JLabel("Online Users", SwingConstants.CENTER);
-		nameListModel = new DefaultListModel();
+		nameListModel = new DefaultListModel<String>();
 		nameList = new JList(nameListModel);
 		nameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		nameList.setPrototypeCellValue("123456789012");
 		nameList.addListSelectionListener(new NameSelectionListener());
+		nameListModel.add(0, "Tobbe"); // TEST
 		JScrollPane p1 = new JScrollPane(nameList);
 		JPanel eastpanel = new JPanel();
 		eastpanel.setLayout(new BorderLayout(2, 1));
@@ -77,12 +80,19 @@ public class ClientGUI extends JFrame implements ActionListener {
 		login.addActionListener(this);
 		logout = new JButton("Logout");
 		logout.addActionListener(this);
+		startSession = new JButton("Start private session");
+		startSession.setToolTipText("Start Private Session with the user selected in the list");
+		startSession.addActionListener(this);
+		startSession.setVisible(true); // set to FALSE when done testing
+		startSession.setEnabled(false);
 		logout.setEnabled(false);		// you have to login before being able to logout
 
 		JPanel southPanel = new JPanel();
-		southPanel.setLayout(new BorderLayout(1, 2));
+		southPanel.setLayout(new BorderLayout(100, 2));
 		southPanel.add(login, BorderLayout.WEST);
 		southPanel.add(logout, BorderLayout.EAST);
+		southPanel.add(startSession, BorderLayout.CENTER);
+		
 		
 		add(centerPanel, BorderLayout.NORTH);
 		add(northPanel, BorderLayout.CENTER);
@@ -109,6 +119,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 		logout.setEnabled(false);
 		label.setText("Enter your username below");
 		tf.setText("Anonymous");
+		startSession.setVisible(false);
+		startSession.setEnabled(false);
 		// don't react to a <CR> after the username
 		tf.removeActionListener(this);
 		connected = false;
@@ -117,12 +129,24 @@ public class ClientGUI extends JFrame implements ActionListener {
 	/*
 	* Button or JTextField clicked
 	*/
+	public void mouseClicked(MouseEvent event)
+	{
+	  if (event.getClickCount() == 2) {
+	    System.out.println("double clicked");
+	  }
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		// if it is the Logout button
 		if(o == logout) {
 			client.sendMessage(ChatProtocol.LOGOUT, "");
+			return;
+		}
+		if(o == startSession){
+			JFrame j = new Client2ClientGUI("localhost", 3000, selectedUser);
+			j.setVisible(true);
 			return;
 		}
 		// ok it is coming from the JTextField
@@ -146,6 +170,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 			login.setEnabled(false);
 			// enable the 2 buttons
 			logout.setEnabled(true);
+			startSession.setVisible(true);
+			startSession.setEnabled(false);
 			
 			//TODO Send login request to server.
 			// Action listener for when the user enter a message
@@ -178,9 +204,12 @@ public class ClientGUI extends JFrame implements ActionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			if (nameList.isSelectionEmpty()) {
+				startSession.setEnabled(false);
 				return;
+				
 			}
-			String Name = (String) nameList.getSelectedValue();
+			selectedUser = (String) nameList.getSelectedValue();
+			startSession.setEnabled(true);
 			//TODO send chatroom request to server with wanted chatpartner "Name"
 		}
 	}
