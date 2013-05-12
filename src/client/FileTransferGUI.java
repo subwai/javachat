@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.Socket;
 
 import javax.swing.JButton;
@@ -16,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
 
 import shared.UneditableTextField;
 
@@ -63,9 +65,10 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 			
 		} else if (e.getSource() == browse){
 			JFrame j = new JFrame();
-			j.add(chooser);
-			j.setSize(600, 400);
-			j.setVisible(true);
+			if(chooser.showOpenDialog(j) == JFileChooser.APPROVE_OPTION){
+				File file = chooser.getSelectedFile();
+				String name = chooser.getName(file);
+			}
 		}
 		
 	}
