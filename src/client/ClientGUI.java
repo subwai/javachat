@@ -22,7 +22,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	// to hold the Username and later on the messages
 	private JTextField tf;
 	// to Logout and get the list of the users
-	private JButton login, logout, file;
+	private JButton login, logout;
 	// for the chat room
 	private JTextArea ta;
 	// if it is for connection
@@ -77,9 +77,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		login.addActionListener(this);
 		logout = new JButton("Logout");
 		logout.addActionListener(this);
-		file = new JButton("Transfer File");
-		file.setVisible(false);
-		file.setToolTipText("Select a user in the list to transfer the file to");
 		logout.setEnabled(false);		// you have to login before being able to logout
 
 		JPanel southPanel = new JPanel();
@@ -110,7 +107,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 	void connectionFailed() {
 		login.setEnabled(true);
 		logout.setEnabled(false);
-		file.setVisible(true);
 		label.setText("Enter your username below");
 		tf.setText("Anonymous");
 		// don't react to a <CR> after the username
@@ -138,10 +134,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 			return;
 		}
 		
-		if(o == file){
-			
-		}
-		
 
 		if(o == login) {
 			// ok it is a connection request
@@ -154,7 +146,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 			login.setEnabled(false);
 			// enable the 2 buttons
 			logout.setEnabled(true);
-			file.setVisible(true);
 			
 			//TODO Send login request to server.
 			// Action listener for when the user enter a message

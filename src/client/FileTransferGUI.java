@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -27,8 +28,9 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 	JPanel topPanel;
 	UneditableTextField searchPath;
 	UneditableTextField progress;
+	Socket socket;
 	
-	FileTransferGUI(String user){
+	FileTransferGUI(Socket socket, String user){
 		super("Send file to " +user);
 		chooser = new JFileChooser();
 		Border border = new LineBorder(Color.black);
@@ -51,7 +53,7 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 	}
 	
 	public static void main(String[] args){
-		JFrame j = new FileTransferGUI("Naxon");
+		JFrame j = new FileTransferGUI(new Socket(), "Naxon");
 		j.setVisible(true);
 	}
 
