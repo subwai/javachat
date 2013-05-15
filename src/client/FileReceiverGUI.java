@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 
 import javax.swing.JButton;
@@ -37,9 +41,14 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 	private JFileChooser chooser;
 
 	private String choosertitle, searchPath;
+	
+	private File file2;
+	
+	private File file;
 
-	public FileReceiverGUI() {
-
+	public FileReceiverGUI(Socket socket, String userRecieveFrom, File file) {
+		super("File from " + userRecieveFrom);
+		this.file = file;
 		Border border = new LineBorder(Color.black);
 		setLayout(new BorderLayout());
 		setSize(700, 200);
@@ -54,7 +63,7 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 		fd.setColumns(40);
 		fd.setBorder(border);
 
-		fn = new UneditableTextField("");
+		fn = new UneditableTextField(file.getName());
 		fn.setColumns(21);
 		fn.setBorder(border);
 
@@ -68,7 +77,7 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 
 		chooser = new JFileChooser();
 
-		fileType = new JLabel("Type of file");
+		fileType = new JLabel("File of interest");
 
 		centerPanel = new JPanel();
 		centerNorth = new JPanel();
@@ -89,13 +98,13 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 		add(topPanel, BorderLayout.NORTH);
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		chooser = new JFileChooser();
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == browse) {
-			chooser = new JFileChooser();
 			chooser.setCurrentDirectory(new java.io.File("."));
 			chooser.setDialogTitle(choosertitle);
 			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -107,13 +116,24 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 				System.out.println("getSelectedFile() : "
 						+ chooser.getSelectedFile());
 				searchPath = chooser.getSelectedFile().toString();
+				file2 = chooser.getSelectedFile();
 				fd.setText(searchPath);
 			} else {
 				System.out.println("No Selection ");
 			}
 
 		} else if (e.getSource() == accept) {
-
+			File newFile = new File(file2.getAbsolutePath() + file.getName());
+			OutputStream out;
+			try {
+				out = new FileOutputStream(newFile);
+				out.close();
+				System.out.println(newFile.getName());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		} else if (e.getSource() == decline) {
 
 		}
@@ -121,7 +141,15 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-		JFrame j = new FileReceiverGUI();
+		File f = new File("C:\\a\\b\\javachat.txt");
+		f.mkdirs();
+		try {
+			f.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(f.getAbsolutePath());
+		JFrame j = new FileReceiverGUI(new Socket(), "Max", f);
 		j.setVisible(true);
 	}
 
