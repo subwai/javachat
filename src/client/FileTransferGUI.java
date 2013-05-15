@@ -52,6 +52,7 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 		progress = new UneditableTextField("");
 		progress.setBorder(new TitledBorder(border, "Status"));
 		add(progress, BorderLayout.SOUTH);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	public static void main(String[] args){

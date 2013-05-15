@@ -87,6 +87,8 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 		topPanel.add(new UneditableTextField("Please make a choice"),
 				BorderLayout.EAST);
 		add(topPanel, BorderLayout.NORTH);
+		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 	}
 
