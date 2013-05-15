@@ -8,6 +8,7 @@ import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -24,15 +25,19 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 	private UneditableTextField fn;
 	//buttons for deciding to download or not
 	private JButton accept, decline;
+	private JButton browseForDest;
 	
 	private JPanel topPanel, centerPanel, bottomPanel;
+	private JPanel centerNorth, centerSouth;
+	
+	private JLabel fileType;
 	
 	
 	public FileReceiverGUI(){
 		
 		Border border = new LineBorder(Color.black);
 		setLayout(new BorderLayout());
-		setSize(400, 170);
+		setSize(400, 200);
 		accept = new JButton("Accept");
 		accept.addActionListener(this);
 		//knapparna fungerar inte än
@@ -44,7 +49,7 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 		fd.setColumns(21);
 		fd.setBorder(border);
 		
-		fn = new UneditableTextField("Type of file");
+		fn = new UneditableTextField("");
 		fn.setColumns(21);
 		fn.setBorder(border);
 		
@@ -53,9 +58,22 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 		bottomPanel.add(decline, BorderLayout.WEST);
 		add(bottomPanel, BorderLayout.SOUTH);
 		
+		browseForDest = new JButton("Browse");
+		browseForDest.addActionListener(this);
+		
+		fileType = new JLabel("Type of file");
+		
 		centerPanel = new JPanel();
-		centerPanel.add(fd, BorderLayout.NORTH);
-		centerPanel.add(fn, BorderLayout.SOUTH);
+		centerNorth = new JPanel();
+		centerSouth = new JPanel();
+		
+		centerNorth.add(fd, BorderLayout.NORTH);
+		centerNorth.add(browseForDest, BorderLayout.WEST);
+		centerSouth.add(fn, BorderLayout.SOUTH);
+		centerSouth.add(fileType, BorderLayout.WEST);
+		centerPanel.add(centerNorth, BorderLayout.NORTH);
+		centerPanel.add(centerSouth, BorderLayout.SOUTH);
+		
 		add(centerPanel, BorderLayout.CENTER);
 		
 		topPanel = new JPanel();
