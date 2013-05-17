@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /*
  * The Client with its GUI
  */
-public class ClientGUI extends JFrame implements ActionListener {
+public class AdminGUI extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	// will first hold "Username:", later on "Enter message"
@@ -22,7 +22,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	// to hold the Username and later on the messages
 	private JTextField tf;
 	// to Logout and get the list of the users
-	private JButton login, logout, startSession;
+	private JButton login, logout,startSession, kick;
 	// for the chat room
 	private JTextArea ta;
 	// if it is for connection
@@ -40,9 +40,9 @@ public class ClientGUI extends JFrame implements ActionListener {
 	}
 	
 	// Constructor connection receiving a socket number
-	ClientGUI(String host, int port) {
+	AdminGUI(ChatClient client) {
 		super("Chat Client");
-		new ChatClient(host, port);
+		this.client = client;
 		
 		// The northPanel which is the chat room
 		ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
@@ -70,10 +70,15 @@ public class ClientGUI extends JFrame implements ActionListener {
 		nameList.addListSelectionListener(new NameSelectionListener());
 		nameListModel.add(0, "Tobbe"); // TEST
 		JScrollPane p1 = new JScrollPane(nameList);
+		kick = new JButton("Kick user");
+		kick.setToolTipText("Kick selected user");
+		kick.addActionListener(this);
+		kick.setVisible(true);
 		JPanel eastpanel = new JPanel();
-		eastpanel.setLayout(new BorderLayout(2, 1));
+		eastpanel.setLayout(new BorderLayout(3, 1));
 		eastpanel.add(users,BorderLayout.NORTH);
 		eastpanel.add(p1, BorderLayout.CENTER);
+		eastpanel.add(kick, BorderLayout.SOUTH);
 
 		// the 3 buttons
 		login = new JButton("Login");
@@ -125,16 +130,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		tf.removeActionListener(this);
 		connected = false;
 	}
-		
-	/*
-	* Button or JTextField clicked
-	*/
-	public void mouseClicked(MouseEvent event)
-	{
-	  if (event.getClickCount() == 2) {
-	    System.out.println("double clicked");
-	  }
-	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -153,7 +148,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		// ok it is coming from the JTextField
 		if(connected) {
 			// just have to send the message
-		//TODO send message tf.getText() to server.	
 			client.sendMessage(ChatProtocol.MESSAGE, tf.getText());				
 			tf.setText("");
 			return;
@@ -165,20 +159,15 @@ public class ClientGUI extends JFrame implements ActionListener {
 			String username = tf.getText().trim();
 			// empty username ignore it
 			if(username.length() != 0) {
-				if(username.equals("admin")){
-					AdminGUI gui = new AdminGUI(client);
-					this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-				}else{
-					client.sendMessage(ChatProtocol.LOGIN, username);
-					// disable login button/
-					login.setEnabled(false);
-					// enable the 2 buttons
-					logout.setEnabled(true);
-					startSession.setVisible(true);
-					startSession.setEnabled(false);
-					// Action listener for when the user enter a message
-					tf.addActionListener(this);
-				}
+				client.sendMessage(ChatProtocol.LOGIN, username);
+				// disable login button/
+				login.setEnabled(false);
+				// enable the 2 buttons
+				logout.setEnabled(true);
+				startSession.setVisible(true);
+				startSession.setEnabled(false);
+				// Action listener for when the user enter a message
+				tf.addActionListener(this);
 			}
 		}
 
@@ -215,7 +204,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 			}
 			selectedUser = (String) nameList.getSelectedValue();
 			startSession.setEnabled(true);
-			//TODO send chatroom request to server with wanted chatpartner "Name"
+			kick.setEnabled(true);
 		}
 	}
 }
