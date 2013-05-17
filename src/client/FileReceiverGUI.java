@@ -4,12 +4,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -151,13 +156,14 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-		File f = new File("C:\\javachat.txt");
-		f.mkdirs();
+		File f = new File("javachat.txt");
+		boolean flag = false;
 		try {
-			f.createNewFile();
+		    flag = f.createNewFile();
 		} catch (IOException e) {
-			e.printStackTrace();
+		     System.out.println("Error while Creating File in Java" + e);
 		}
+
 		System.out.println(f.getAbsolutePath());
 		JFrame j = new FileReceiverGUI(new Socket(), "Max", f);
 		j.setVisible(true);
