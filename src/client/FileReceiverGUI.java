@@ -122,26 +122,36 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 				System.out.println("No Selection ");
 			}
 
-		} else if (e.getSource() == accept) {
-			File newFile = new File(file2.getAbsolutePath() + file.getName());
-			OutputStream out;
-			try {
-				out = new FileOutputStream(newFile);
-				out.close();
-				System.out.println(newFile.getName());
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+		} else if (e.getSource() == accept && file2 != null) {
+			JFileChooser fc = new JFileChooser(file2.getAbsolutePath());
+			fc.addChoosableFileFilter(new jpgSaveFilter());
+			fc.addChoosableFileFilter(new txtSaveFilter());
+			int retrival=fc.showSaveDialog(null);
+			fc.setSelectedFile(new File(file2.getAbsolutePath(), file.getName()));
+			if (retrival == fc.APPROVE_OPTION) 
+			   {
+				String ext="";
+
+		        String extension=fc.getFileFilter().getDescription();
+		        
+		        if(extension.equals("*.jpg,*.JPG"))
+		        { 
+		            ext=".jpg";
+		        }
+		        if(extension.equals("*.txt")){
+		        	ext=".txt";
+		        }
+
+			   }
 			
 		} else if (e.getSource() == decline) {
-
+			dispose();
 		}
 
 	}
 
 	public static void main(String[] args) {
-		File f = new File("C:\\a\\b\\javachat.txt");
+		File f = new File("C:\\javachat.txt");
 		f.mkdirs();
 		try {
 			f.createNewFile();
