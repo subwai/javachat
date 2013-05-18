@@ -14,7 +14,7 @@ public class Chatroom {
 	
 	public Chatroom(User firstUser) {
 		title = "#";
-		nextMessage = new SimpleEntry<ChatProtocol,String>(ChatProtocol.MESSAGE,"");
+		nextMessage = null;
 		users = new Vector<User>(Arrays.asList(firstUser));
 	}
 	
@@ -42,7 +42,7 @@ public class Chatroom {
 	
 	synchronized void pushMessage(ChatProtocol type, String input){
 		try {
-			while (!nextMessage.getValue().isEmpty()) {
+			while (nextMessage != null) {
 				wait();
 			}
 		} catch (InterruptedException e) {
@@ -55,7 +55,7 @@ public class Chatroom {
 	
 	synchronized public SimpleEntry<ChatProtocol,String> popMessage(){
 		try {
-			while (nextMessage.getValue().isEmpty()) {
+			while (nextMessage == null) {
 				wait();
 			}
 		} catch (InterruptedException e) {
@@ -63,7 +63,7 @@ public class Chatroom {
 			e.printStackTrace();
 		}
 		SimpleEntry<ChatProtocol,String> temp = nextMessage;
-		nextMessage.setValue("");
+		nextMessage = null;
 		notifyAll();
 		return temp;
 	}
