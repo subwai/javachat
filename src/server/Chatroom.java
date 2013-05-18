@@ -62,7 +62,7 @@ public class Chatroom {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		SimpleEntry temp = nextMessage;
+		SimpleEntry<ChatProtocol,String> temp = nextMessage;
 		nextMessage.setValue("");
 		notifyAll();
 		return temp;
