@@ -1,5 +1,7 @@
 package server;
 
+import java.util.AbstractMap.SimpleEntry;
+
 import shared.ChatProtocol;
 
 
@@ -16,11 +18,9 @@ public class SenderThread extends Thread {
 	public void run() {
 		try {
 			while(true) {
-				String msg = chatroom.popMessage();
-				if (!msg.isEmpty()) {
-					for (User user : chatroom.getUsers()) {
-						user.getOutputStream().write((ChatProtocol.MESSAGE+" "+id+" "+msg).getBytes());
-					}
+				SimpleEntry<ChatProtocol, String> msg = chatroom.popMessage();
+				for (User user : chatroom.getUsers()) {
+					user.getOutputStream().write((msg.getKey()+" "+id+" "+msg.getValue()).getBytes());
 				}
 			}
 		} catch (Exception e) {
