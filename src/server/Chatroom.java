@@ -1,17 +1,20 @@
 package server;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
+import shared.ChatProtocol;
+
 
 public class Chatroom {
 	private String title;
-	private String nextMessage;
+	private SimpleEntry<ChatProtocol,String> nextMessage;
 	private Vector<User> users;
 	
 	public Chatroom(User firstUser) {
 		title = "#";
-		nextMessage = "";
+		nextMessage = new SimpleEntry<ChatProtocol,String>(ChatProtocol.MESSAGE,"");
 		users = new Vector<User>(Arrays.asList(firstUser));
 	}
 	
@@ -20,13 +23,13 @@ public class Chatroom {
 	}
 	
 	public void addUser(User user) {
-		pushMessage("User has joined the chat: "+user.getName());
+		pushMessage(ChatProtocol.MESSAGE,"User has joined the chat: "+user.getName());
 		users.add(user);
 	}
 	
 	public void removeUser(User user) {
 		users.remove(user);
-		pushMessage("User has left the chat: "+user.getName());
+		pushMessage(ChatProtocol.MESSAGE,"User has left the chat: "+user.getName());
 	}
 	
 	public String getTitle() {
@@ -37,9 +40,9 @@ public class Chatroom {
 		this.title = title;
 	}
 	
-	synchronized void pushMessage(String input){
+	synchronized void pushMessage(ChatProtocol type, String input){
 		try {
-			while (!nextMessage.isEmpty()) {
+			while (!nextMessage.getValue().isEmpty()) {
 				wait();
 			}
 		} catch (InterruptedException e) {
@@ -47,20 +50,20 @@ public class Chatroom {
 			e.printStackTrace();
 		}
 		notifyAll();
-		nextMessage = input;
+		nextMessage = new SimpleEntry<ChatProtocol, String>(type,input);
 	}
 	
-	synchronized public String popMessage(){
+	synchronized public SimpleEntry<ChatProtocol,String> popMessage(){
 		try {
-			while (nextMessage.isEmpty()) {
+			while (nextMessage.getValue().isEmpty()) {
 				wait();
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String temp = nextMessage;
-		nextMessage = "";
+		SimpleEntry temp = nextMessage;
+		nextMessage.setValue("");
 		notifyAll();
 		return temp;
 	}
