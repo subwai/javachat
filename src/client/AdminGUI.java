@@ -33,16 +33,17 @@ public class AdminGUI extends JFrame implements ActionListener {
 	private DefaultListModel nameListModel;
 	private JList nameList;
 	
-	private String selectedUser;
+	private String selectedUser, username;
 	
 	public static void main(String[] args) {
 		new ClientGUI("localhost", 3000);
 	}
 	
 	// Constructor connection receiving a socket number
-	AdminGUI(ChatClient client) {
+	AdminGUI(ChatClient client, String username) {
 		super("Chat Client");
 		this.client = client;
+		this.username = username;
 		
 		// The northPanel which is the chat room
 		ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
@@ -104,6 +105,15 @@ public class AdminGUI extends JFrame implements ActionListener {
 		
 		add(eastpanel,BorderLayout.EAST);
 		add(southPanel, BorderLayout.SOUTH);
+		
+		// disable login button/
+		login.setEnabled(false);
+		// enable the 2 buttons
+		logout.setEnabled(true);
+		startSession.setVisible(true);
+		startSession.setEnabled(false);
+		// Action listener for when the user enter a message
+		tf.addActionListener(this);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(600, 600);
@@ -203,8 +213,13 @@ public class AdminGUI extends JFrame implements ActionListener {
 				
 			}
 			selectedUser = (String) nameList.getSelectedValue();
-			startSession.setEnabled(true);
-			kick.setEnabled(true);
+			if(selectedUser.equals(username)){
+				startSession.setEnabled(false);
+				kick.setEnabled(false);
+			}else{
+				startSession.setEnabled(true);
+				kick.setEnabled(true);
+			}
 		}
 	}
 }

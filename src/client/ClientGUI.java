@@ -33,7 +33,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	private DefaultListModel nameListModel;
 	private JList nameList;
 	
-	private String selectedUser;
+	private String selectedUser, username;
 	
 	public static void main(String[] args) {
 		new ClientGUI("localhost", 3000);
@@ -136,6 +136,10 @@ public class ClientGUI extends JFrame implements ActionListener {
 	  }
 	}
 	
+	public void pushText(String message){
+		ta.append(message);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -153,7 +157,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		// ok it is coming from the JTextField
 		if(connected) {
 			// just have to send the message
-		//TODO send message tf.getText() to server.	
 			client.sendMessage(ChatProtocol.MESSAGE, tf.getText());				
 			tf.setText("");
 			return;
@@ -162,12 +165,15 @@ public class ClientGUI extends JFrame implements ActionListener {
 
 		if(o == login) {
 			// ok it is a connection request
-			String username = tf.getText().trim();
+			username = tf.getText().trim();
 			// empty username ignore it
 			if(username.length() != 0) {
 				if(username.equals("admin")){
-					AdminGUI gui = new AdminGUI(client);
-					this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+					String password = JOptionPane.showInputDialog(this, "Admin password:");
+					if(password.equals("admin")){
+						AdminGUI gui = new AdminGUI(client,username);
+						this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+					}
 				}else{
 					client.sendMessage(ChatProtocol.LOGIN, username);
 					// disable login button/
@@ -214,7 +220,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 				
 			}
 			selectedUser = (String) nameList.getSelectedValue();
-			startSession.setEnabled(true);
+			if(selectedUser.equals(username)){
+				startSession.setEnabled(false);
+			}else{
+				startSession.setEnabled(true);
+			}
 			//TODO send chatroom request to server with wanted chatpartner "Name"
 		}
 	}
