@@ -16,7 +16,7 @@ import shared.ChatProtocol;
 
 
 public class ListenerThread extends Thread {
-	public static final int DEFAULT_CHATROOM = 0;
+	public static final String DEFAULT_CHATROOM = "0";
 	public static final String SUCCESS = "1";
 	public static final String FAIL = "0";
 	
@@ -25,8 +25,7 @@ public class ListenerThread extends Thread {
 	private BufferedWriter writer;
 	private ChatServer server;
 	
-	public ListenerThread(String name, User user, ChatServer server) {
-		super(name);
+	public ListenerThread(User user, ChatServer server) {
 		try {
 			this.user = user;
 			this.server = server;
@@ -34,7 +33,6 @@ public class ListenerThread extends Thread {
 			int i;
 			reader = new BufferedReader(new InputStreamReader(user.getInputStream()));
 			writer = new BufferedWriter(new OutputStreamWriter(user.getOutputStream()));
-			server.joinChatroom(DEFAULT_CHATROOM, user);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -63,7 +61,8 @@ public class ListenerThread extends Thread {
 							break;
 						case LOGIN:
 							user.setName(args[1]);
-							sendMessage(ChatProtocol.LOGIN, SUCCESS);
+							sendMessage(ChatProtocol.LOGIN, SUCCESS, String.valueOf(user.getId()), args[1]);
+							server.joinChatroom(Integer.valueOf(DEFAULT_CHATROOM), user);
 							break;
 						case ADMIN_LOGIN:
 							user.setName(args[1]);
@@ -82,7 +81,7 @@ public class ListenerThread extends Thread {
 						case JOIN_CHATROOM:
 							id = Integer.valueOf(args[1]);
 							server.joinChatroom(id, user);
-							sendMessage(ChatProtocol.JOIN_CHATROOM, SUCCESS);
+							sendMessage(ChatProtocol.JOIN_CHATROOM, SUCCESS, args[1]);
 							break;
 						case LEAVE_CHATROOM:
 							id = Integer.valueOf(args[1]);
@@ -90,8 +89,11 @@ public class ListenerThread extends Thread {
 							sendMessage(ChatProtocol.LEAVE_CHATROOM, SUCCESS);
 							break;
 						case CREATE_CHATROOM:
-							server.createChatroom(user);
-							sendMessage(ChatProtocol.CREATE_CHATROOM, SUCCESS);
+							int userId = Integer.valueOf(args[1]);
+							id = server.createChatroom(user);
+							server.joinChatroom(id, server.getUser(userId));
+							chat = server.getChatroom(id);
+							chat.pushMessage(ChatProtocol.CREATE_CHATROOM, SUCCESS);
 							break;
 						case SET_CHATROOM_TITLE:
 							id = Integer.valueOf(args[1]);
@@ -109,8 +111,10 @@ public class ListenerThread extends Thread {
 							writer.flush();
 							throw new Exception();
 					}
-				} catch (Exception e) {
+				} catch (UnsupportedOperationException e) {
 					System.out.println("ERROR - Invalid command: '"+str+"', by: "+user.getName());
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		} catch (SocketException e) {

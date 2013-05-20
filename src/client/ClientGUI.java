@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.AbstractMap.SimpleEntry;
 
 
 /*
@@ -35,7 +36,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 	private DefaultListModel nameListModel;
 	private JList nameList;
 	
-	private HashMap<Integer,Client2ClientGUI> chatrooms;
+	private HashMap<String, Integer> userIds;
+	private HashMap<Integer, Client2ClientGUI> chatrooms;
 	
 	private String selectedUser, username;
 	
@@ -51,13 +53,13 @@ public class ClientGUI extends JFrame implements ActionListener {
 		ta.setEditable(false);
 		
 		//east namepanel
+		userIds = new HashMap<String, Integer>();
 		JLabel users = new JLabel("Online Users", SwingConstants.CENTER);
 		nameListModel = new DefaultListModel();
 		nameList = new JList(nameListModel);
 		nameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		nameList.setPrototypeCellValue("123456789012");
 		nameList.addListSelectionListener(new NameSelectionListener());
-		nameListModel.add(0, "Tobbe"); // TEST
 		JScrollPane p1 = new JScrollPane(nameList);
 		kick = new JButton("Kick user");
 		kick.setToolTipText("Kick selected user");
@@ -166,11 +168,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 			return;
 		}
 		if(o == startSession){
-			client.sendMessage(ChatProtocol.CREATE_CHATROOM, selectedUser);
+			client.sendMessage(ChatProtocol.CREATE_CHATROOM, String.valueOf(userIds.get(selectedUser)));
 			return;
 		}
 		if(o == kick){
-			client.sendMessage(ChatProtocol.USER_KICKED, selectedUser);
+			client.sendMessage(ChatProtocol.USER_KICKED, String.valueOf(userIds.get(selectedUser)));
 			return;
 		}
 		if(o == login) {
@@ -199,22 +201,18 @@ public class ClientGUI extends JFrame implements ActionListener {
 		}
 	}
 	
-	protected void addChat(int chatID, String chatpartner){
-		Client2ClientGUI p2p = new Client2ClientGUI(chatpartner);
-		chatrooms.put(chatID, p2p);
+	protected void addChat(int chatID){
+		if (chatID != 0) {
+			Client2ClientGUI p2p = new Client2ClientGUI("Temp");
+			chatrooms.put(chatID, p2p);
+		} else {
+			// fetch already logged in users
+		}
 	}
 	protected void removeChat(int chatID){
 		Client2ClientGUI p2p = chatrooms.remove(chatID);
 		p2p.dispose();
-	}
-	
-	protected void newUser(){
-		ta.setText("Welcome to the Chat room\n");
-		connected = false;
-		admin = false;
-		tf.setText("Anonymous");
-	}
-	
+	}	
 
 	protected void login(Boolean admin){
 		this.admin = admin;
@@ -248,16 +246,19 @@ public class ClientGUI extends JFrame implements ActionListener {
 		startSession.setEnabled(false);
 		// Action listener for when the user enter a message
 		tf.removeActionListener(this);
+		userIds = new HashMap<String, Integer>();
+		nameListModel.clear();
 		connected = false;
 		tf.setText("Anonymous");
 	}
-	
-	private void UpdateNameList() {
-		nameListModel.removeAllElements();
-        ArrayList<String> names =  null;
-        for(String name: names){
-        	nameListModel.addElement(name);
-        }
+
+	protected void addLoggedinUser(int chatID, int userid, String name) {
+		if (chatID != 0) {
+			chatrooms.get(chatID); // add to this chatroom
+		} else {
+			userIds.put(name, userid);
+			nameListModel.addElement(name);
+		}
 	}
 	
 
@@ -281,7 +282,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 				return;
 				
 			}
-			selectedUser = (String) nameList.getSelectedValue();
+			selectedUser = (String)nameList.getSelectedValue();
 			if(admin){
 				if(selectedUser.equals(username)){
 					startSession.setEnabled(false);

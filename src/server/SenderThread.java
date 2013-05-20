@@ -18,9 +18,15 @@ public class SenderThread extends Thread {
 	public void run() {
 		try {
 			while(true) {
-				SimpleEntry<ChatProtocol, String> msg = chatroom.popMessage();
+				SimpleEntry<ChatProtocol, String[]> msg = chatroom.popMessage();
+				StringBuilder sb = new StringBuilder(msg.getKey().toString());
+				sb.append(" "+id);
+				for(String arg : msg.getValue()) {
+					sb.append(" "+arg);
+				}
+				sb.append("\n");
 				for (User user : chatroom.getUsers()) {
-					user.getOutputStream().write((msg.getKey()+" "+id+" "+msg.getValue()+"\n").getBytes());
+					user.getOutputStream().write(sb.toString().getBytes());
 				}
 			}
 		} catch (Exception e) {

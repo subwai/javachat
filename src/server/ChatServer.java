@@ -7,30 +7,38 @@ import java.net.SocketAddress;
 import java.util.HashMap;
 import java.util.Vector;
 
+import shared.ChatProtocol;
+
+
 public class ChatServer {
-	
+	public static final String SUCCESS = "1";
+	public static final String FAIL = "0";
+
 	private volatile HashMap<Integer, Chatroom> chatrooms;
+	private volatile HashMap<Integer, User> users;
 	private int chat_id = 0;
 
 	public static void main(String[] args) {
-		int port = 3000;
+		new ChatServer(3000);
+	}
+	
+	public ChatServer(int port) {
+		chatrooms = new HashMap<Integer, Chatroom>();
+		users = new HashMap<Integer, User>();
 		
 		try {
 			SocketAddress address = new InetSocketAddress(port); 
 			ServerSocket socket = new ServerSocket();
 			socket.bind(address);
-			
-			ChatServer server = new ChatServer();
 			System.out.println("Chat server - started!");
 			
-			int n = 1;
 			while(true) {
 				Socket client = socket.accept();
-				User user = new User("Guest "+n, client);
-				Thread in = new ListenerThread("Guest "+n, user, server);
+				User user = new User(users.size(), "Guest "+users.size(), client);
+				Thread in = new ListenerThread(user, this);
 				in.start();
 				System.out.println("Client connected: " + client.getInetAddress());
-				n++;
+				users.put(users.size(), user);
 			}
 
 		} catch(IOException e) {
@@ -38,10 +46,10 @@ public class ChatServer {
 		}
 	}
 	
-	public ChatServer() {
-		chatrooms = new HashMap<Integer, Chatroom>();
+	public User getUser(Integer id) {
+		return users.get(id);
 	}
-	
+
 	public Chatroom getChatroom(Integer id) {
 		return chatrooms.get(id);
 	}
@@ -56,17 +64,19 @@ public class ChatServer {
 		}
 	}
 	
-	public synchronized void createChatroom(User user) {
-		createChatroom(chat_id, user);
+	public synchronized int createChatroom(User user) {
+		return createChatroom(chat_id, user);
 	}
 	
-	public synchronized void createChatroom(int id, User user) {
+	public synchronized int createChatroom(int id, User user) {
 		user.joinChatroom(id);
-		Chatroom chatroom = new Chatroom(user);
-		chatrooms.put(id, chatroom);
-		SenderThread out = new SenderThread(chatroom, id);
+		Chatroom chat = new Chatroom(user);
+		chatrooms.put(id, chat);
+		SenderThread out = new SenderThread(chat, id);
 		out.start();
-		chat_id++;
+		chat.pushMessage(ChatProtocol.MESSAGE,"\"User has joined the chat: "+user.getName()+"\"");
+		chat.pushMessage(ChatProtocol.USER_JOINED, SUCCESS, String.valueOf(user.getId()), user.getName());
+		return chat_id++;
 	}
 	
 	public synchronized void createPrivateChatroom(User user1, User user2) {

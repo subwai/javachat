@@ -8,9 +8,12 @@ import shared.ChatProtocol;
 
 
 public class Chatroom {
+	public static final String SUCCESS = "1";
+	public static final String FAIL = "0";
+
 	private String title;
-	private SimpleEntry<ChatProtocol,String> nextMessage;
-	private Vector<User> users;
+	private volatile SimpleEntry<ChatProtocol,String[]> nextMessage;
+	private volatile Vector<User> users;
 	
 	public Chatroom(User firstUser) {
 		title = "#";
@@ -18,29 +21,31 @@ public class Chatroom {
 		users = new Vector<User>(Arrays.asList(firstUser));
 	}
 	
-	public List<User> getUsers() {
+	synchronized public List<User> getUsers() {
 		return users;
 	}
 	
-	public void addUser(User user) {
-		pushMessage(ChatProtocol.MESSAGE,"User has joined the chat: "+user.getName());
+	synchronized public void addUser(User user) {
+		pushMessage(ChatProtocol.MESSAGE,"\"User has joined the chat: "+user.getName()+"\"");
+		pushMessage(ChatProtocol.USER_JOINED, SUCCESS, String.valueOf(user.getId()), user.getName());
 		users.add(user);
 	}
 	
-	public void removeUser(User user) {
+	synchronized public void removeUser(User user) {
 		users.remove(user);
-		pushMessage(ChatProtocol.MESSAGE,"User has left the chat: "+user.getName());
+		pushMessage(ChatProtocol.MESSAGE,"\"User has left the chat: "+user.getName()+"\"");
+		pushMessage(ChatProtocol.USER_LEFT, SUCCESS, String.valueOf(user.getId()), user.getName());
 	}
 	
-	public String getTitle() {
+	synchronized public String getTitle() {
 		return title;
 	}
 	
-	public void setTitle(String title) {
+	synchronized public void setTitle(String title) {
 		this.title = title;
 	}
 	
-	synchronized void pushMessage(ChatProtocol type, String input){
+	synchronized void pushMessage(ChatProtocol type, String... args){
 		try {
 			while (nextMessage != null) {
 				wait();
@@ -50,10 +55,10 @@ public class Chatroom {
 			e.printStackTrace();
 		}
 		notifyAll();
-		nextMessage = new SimpleEntry<ChatProtocol, String>(type,input);
+		nextMessage = new SimpleEntry<ChatProtocol, String[]>(type, args);
 	}
 	
-	synchronized public SimpleEntry<ChatProtocol,String> popMessage(){
+	synchronized public SimpleEntry<ChatProtocol,String[]> popMessage(){
 		try {
 			while (nextMessage == null) {
 				wait();
@@ -62,7 +67,7 @@ public class Chatroom {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		SimpleEntry<ChatProtocol,String> temp = nextMessage;
+		SimpleEntry<ChatProtocol,String[]> temp = nextMessage;
 		nextMessage = null;
 		notifyAll();
 		return temp;

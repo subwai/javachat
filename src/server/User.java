@@ -7,14 +7,20 @@ import java.net.Socket;
 import java.util.Vector;
 
 public class User {
+	private int id;
 	private String name;
 	private Vector<Integer> currentChatrooms;
 	private Socket socket;
 	
-	public User(String name, Socket socket) {
+	public User(int id, String name, Socket socket) {
+		this.id = id;
 		this.name = name;
 		this.socket = socket;
 		currentChatrooms = new Vector<Integer>();
+	}
+
+	public int getId() {
+		return id;
 	}
 	
 	public String getName() {
