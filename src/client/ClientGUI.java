@@ -182,10 +182,12 @@ public class ClientGUI extends JFrame implements ActionListener {
 		}
 		// ok it is coming from the JTextField
 		if((o == send && connected) || connected) {
-			// just have to send the message
-			client.sendMessage(ChatProtocol.MESSAGE, String.valueOf(chatroom), "\""+tf.getText()+"\"");				
-			tf.setText("");
-			tf.requestFocus();
+			if (!tf.getText().equals("")) {
+				// just have to send the message
+				client.sendMessage(ChatProtocol.MESSAGE, String.valueOf(chatroom), "\""+tf.getText()+"\"");				
+				tf.setText("");
+				tf.requestFocus();
+			}
 			return;
 		}
 	}
