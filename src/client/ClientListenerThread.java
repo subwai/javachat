@@ -41,17 +41,12 @@ public class ClientListenerThread extends Thread {
 			while((str = reader.readLine()) != null) {
 				try {
 					System.out.println("SERVER: "+str);
-<<<<<<< HEAD
-					String[] args = str.split(" ");
-					int id = 0;
-=======
 					Matcher m = p.matcher(str);
 					List<String> matches = new ArrayList<String>();
 					while(m.find()){
 					    matches.add(m.group());
 					}
 					String[] args = matches.toArray(new String[0]);
->>>>>>> ac48377fcdcc14c7287c17276ba0831d3e51d364
 					switch(ChatProtocol.valueOf(args[0])) {
 						case MESSAGE:
 							int id = Integer.valueOf(args[1]);
@@ -118,16 +113,10 @@ public class ClientListenerThread extends Thread {
 						default:
 							throw new UnsupportedOperationException();
 					}
-<<<<<<< HEAD
-				} catch (Exception e) {
-					e.printStackTrace();
-=======
+					
 				} catch (UnsupportedOperationException e) {
->>>>>>> ac48377fcdcc14c7287c17276ba0831d3e51d364
 					System.out.println("ERROR - Invalid command: '"+str+"', by: SERVER");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+			}
 			}
 		} catch (SocketException e) {
 			System.out.println("ERROR - Server disconnected.");
