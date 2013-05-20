@@ -58,7 +58,7 @@ public class ClientListenerThread extends Thread {
 						break;	
 					case LOGOUT:
 						if (Integer.valueOf(args[1]) == SUCCESS) {
-							socket.close();
+							// Enable login buttons
 						}
 						break;
 					case JOIN_CHATROOM:

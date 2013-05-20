@@ -15,6 +15,11 @@ public class ChatClient {
 	private ClientGUI gui;
 	private BufferedWriter writer;
 	
+
+	public static void main(String[] args) {
+		new ClientGUI("localhost", 3000);
+	}
+	
 	public ChatClient(String address, int port, ClientGUI gui) {
 		try {
 			Socket socket = new Socket(InetAddress.getByName(address), port);
