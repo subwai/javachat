@@ -1,9 +1,11 @@
 package client;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -18,6 +20,7 @@ public class ChatClient {
 	private String address;
 	private int port;
 	
+	private File file;
 
 	public static void main(String[] args) {
 		new ClientGUI("localhost", 3000);
@@ -71,7 +74,28 @@ public class ChatClient {
 		}
 	}
 	
-	public void sendFile(Object[] args) {
-			sendMessage(ChatProtocol.SEND_FILE, (String) args[1]);
+	public void sendFileToServer(Object[] args) {
+		ServerSocket serverSocket;
+		String[] sendingInfo = new String[2];
+		try {
+			serverSocket = new ServerSocket();
+			int i = serverSocket.getLocalPort();
+			Thread sender = new FileSenderThread(serverSocket, (File) args[0]);
+			sender.start();
+			sendingInfo[0] = String.valueOf(i);
+			sendingInfo[1] = (String) args[1];
+			sendingInfo[2] = String.valueOf(((File) args[0]).length());
+			sendMessage(ChatProtocol.SEND_FILE, sendingInfo);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		
+		public void receiveFile(InetAddress address, int port, File file, int size) {
+			Thread receiver = new FileReceiverThread(address, port, file, size);
+			receiver.start();
+			sendMessage(ChatProtocol.RECEIVE_FILE);
 	}
+	
 }

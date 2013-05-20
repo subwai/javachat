@@ -55,10 +55,12 @@ public class ChatServer {
 	}
 	
 	public synchronized void joinChatroom(Integer id, User user) {
-		Chatroom c = chatrooms.get(id);
-		if (c != null) {
+		Chatroom chat = chatrooms.get(id);
+		if (chat != null) {
 			user.joinChatroom(id);
-			c.addUser(user);
+			chat.addUser(user);
+			chat.pushMessage(ChatProtocol.MESSAGE,"\"User has joined the chat: "+user.getName()+"\"");
+			chat.pushMessage(ChatProtocol.USER_JOINED, SUCCESS, String.valueOf(user.getId()), user.getName());
 		} else {
 			createChatroom(id, user);
 		}

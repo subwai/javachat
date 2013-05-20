@@ -39,9 +39,10 @@ public class ClientListenerThread extends Thread {
 	@Override
 	public void run() {
 		String str = new String();
+		boolean running = true;
 		Pattern p = Pattern.compile("(?=\").+|[^\\s]+",Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 		try {
-			while((str = reader.readLine()) != null) {
+			while(running && (str = reader.readLine()) != null) {
 				try {
 					System.out.println("SERVER: "+str);
 					Matcher m = p.matcher(str);
@@ -77,6 +78,7 @@ public class ClientListenerThread extends Thread {
 							if (args[1].equals(SUCCESS)) {
 								// Enable login buttons
 								gui.logout();
+								running = false;
 							}
 							break;
 						case JOIN_CHATROOM: // Already existing chatroom with more than 2 users

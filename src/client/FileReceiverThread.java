@@ -2,16 +2,28 @@ package client;
 
 import java.net.*;
 import java.io.*;
-public class FileReceiverThread {
+public class FileReceiverThread extends Thread  {
+	
+	int size;
+	File file;
+	InetAddress address;
+	int port;
+	
+	public FileReceiverThread(InetAddress address, int port, File file, int size){
+		this.size = size;
+		this.file = file;
+		 this.address = address;
+		 this.port = port;
+	}
  
-    public static void main (String [] args ) throws IOException {
-        int filesize=1022386;
+    public void run() {
+        try{
         int bytesRead;
         int currentTot = 0;
-        Socket socket = new Socket("127.0.0.1",15123);
-        byte [] bytearray  = new byte [filesize];
+        Socket socket = new Socket(address,port);
+        byte [] bytearray  = new byte [size];
         InputStream is = socket.getInputStream();
-        FileOutputStream fos = new FileOutputStream("copy.doc");
+        FileOutputStream fos = new FileOutputStream(file);
         BufferedOutputStream bos = new BufferedOutputStream(fos);
         bytesRead = is.read(bytearray,0,bytearray.length);
         currentTot = bytesRead;
@@ -26,5 +38,9 @@ public class FileReceiverThread {
         bos.flush();
         bos.close();
         socket.close();
+        }
+        catch(Exception e){
+        	e.printStackTrace();
+        }
       }
 }
