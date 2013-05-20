@@ -166,28 +166,29 @@ public class ClientGUI extends JFrame implements ActionListener {
 
 		if(o == login) {
 			// ok it is a connection request
+
 			username = tf.getText().trim();
 			// empty username ignore it
 			if(username.length() != 0) {
 				if(username.equals("admin")){
 					String password = JOptionPane.showInputDialog(this, "Admin password:");
 					client.sendMessage(ChatProtocol.ADMIN_LOGIN, username, password);
-
-					}
-				}else{
+				} else {
+					client.connectToServer();
 					client.sendMessage(ChatProtocol.LOGIN, username);
 				}
 			}
+		}
 }
 
 	
 	
-	protected void loggedIn(Boolean admin){
+	protected void login(Boolean admin){
 		this.admin = admin;
 		if(admin){
 			kick.setVisible(true);
 		}
-		// disable login button/
+		// disable login button
 		login.setEnabled(false);
 		// enable the 2 buttons
 		logout.setEnabled(true);
@@ -195,6 +196,19 @@ public class ClientGUI extends JFrame implements ActionListener {
 		startSession.setEnabled(false);
 		// Action listener for when the user enter a message
 		tf.addActionListener(this);
+	}
+
+	protected void logout() {
+		this.admin = false;
+		kick.setVisible(false);
+		// enable login button
+		login.setEnabled(true);
+		// disable the 2 buttons
+		logout.setEnabled(false);
+		startSession.setVisible(false);
+		startSession.setEnabled(true);
+		// Action listener for when the user enter a message
+		tf.removeActionListener(this);
 	}
 	
 	private void UpdateNameList() {

@@ -39,9 +39,8 @@ public class ListenerThread extends Thread {
 		String str = new String();
 		boolean running = true;
 		try {
-			while(running) {
-				str = reader.readLine();
-				System.out.println(str);
+			while(running && (str = reader.readLine()) != null) {
+				System.out.println("CLIENT: "+str);
 				String[] args = str.split(" ");
 				switch(ChatProtocol.valueOf(args[0])) {
 					case MESSAGE:
@@ -65,7 +64,6 @@ public class ListenerThread extends Thread {
 					case LOGOUT:
 						server.leaveAllChatrooms(user);
 						sendMessage(ChatProtocol.LOGOUT, SUCCESS);
-						user.closeConnection();
 						running = false;
 						break;
 					case JOIN_CHATROOM:
@@ -99,6 +97,7 @@ public class ListenerThread extends Thread {
 						throw new Exception();
 				}
 			}
+			user.closeConnection();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("ERROR - Invalid command: '"+str+"', by: "+user.getName());
