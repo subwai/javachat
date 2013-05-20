@@ -185,19 +185,18 @@ public class ClientGUI extends JFrame implements ActionListener {
 		}
 }
 	
-	
-<<<<<<< HEAD
 	protected void addChatWindow(){
 		
 	}
-	protected void clean(){
-		
+	protected void newUser(){
+		ta.setText("Welcome to the Chat room\n");
+		connected = false;
+		admin = false;
+		tf.setText("Anonymous");
 	}
 	
-	protected void loggedIn(Boolean admin){
-=======
+
 	protected void login(Boolean admin){
->>>>>>> bfe964b1de9f0e725afd75455855f1f11ebf01ec
 		this.admin = admin;
 		if(admin){
 			kick.setVisible(true);
