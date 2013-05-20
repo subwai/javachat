@@ -38,7 +38,6 @@ import java.util.ArrayList;
 		// Constructor connection receiving a socket number
 		Client2ClientGUI(String host, int port, String user) {
 			super("Chat Client");
-			client = new ChatClient(host, port);
 			chatee = user;
 			
 			// The northPanel which is the chat room

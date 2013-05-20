@@ -74,7 +74,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 		kick = new JButton("Kick user");
 		kick.setToolTipText("Kick selected user");
 		kick.addActionListener(this);
-		kick.setVisible(true);
+		kick.setVisible(false);
 		kick.setEnabled(false);
 		JPanel eastpanel = new JPanel();
 		eastpanel.setLayout(new BorderLayout(3, 1));

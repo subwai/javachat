@@ -53,6 +53,15 @@ public class ListenerThread extends Thread {
 						user.setName(args[1]);
 						sendMessage(ChatProtocol.LOGIN, SUCCESS);
 						break;
+					case ADMIN_LOGIN:
+						user.setName(args[1]);
+						String pw = args[2];
+						if(pw.equals("admin")){
+							sendMessage(ChatProtocol.ADMIN_LOGIN, SUCCESS);
+							break;
+						}
+						sendMessage(ChatProtocol.ADMIN_LOGIN, FAIL);
+						break;
 					case LOGOUT:
 						server.leaveAllChatrooms(user);
 						sendMessage(ChatProtocol.LOGOUT, SUCCESS);
@@ -78,6 +87,10 @@ public class ListenerThread extends Thread {
 						chat = server.getChatroom(id);
 						chat.setTitle(args[2]);
 						sendMessage(ChatProtocol.SET_CHATROOM_TITLE, SUCCESS);
+						break;
+					case USER_KICKED:
+						String kickName = args[1];
+						//kick user with name kickName.
 						break;
 					default:
 						writer.write(args[0]+" "+FAIL);
