@@ -95,8 +95,8 @@ public class ClientListenerThread extends Thread {
 							}
 							break;
 						case CREATE_CHATROOM: // Newly created chatroom. Both of the two initial users will call this.
-							if (args[1].equals(SUCCESS)) {
-								id = Integer.valueOf(args[2]);
+							if (args[2].equals(SUCCESS)) {
+								id = Integer.valueOf(args[1]);
 								gui.addChat(id);
 							}
 							break;

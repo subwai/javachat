@@ -101,7 +101,7 @@ public class ListenerThread extends Thread {
 							other.joinChatroom(id);
 							chat = server.getChatroom(id);
 							chat.addUser(other);
-							chat.pushMessage(ChatProtocol.CREATE_CHATROOM, SUCCESS, String.valueOf(id));
+							chat.pushMessage(ChatProtocol.CREATE_CHATROOM, SUCCESS);
 							break;
 						case SET_CHATROOM_TITLE:
 							id = Integer.valueOf(args[1]);
