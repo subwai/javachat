@@ -22,11 +22,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 	// to hold the Username and later on the messages
 	private JTextField tf;
 	// to Logout and get the list of the users
-	private JButton login, logout, startSession;
+	private JButton login, logout, startSession, kick;
 	// for the chat room
 	private JTextArea ta;
 	// if it is for connection
-	private boolean connected;
+	private boolean connected, admin;
 	
 	private ChatClient client;
 	
@@ -42,7 +42,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	// Constructor connection receiving a socket number
 	ClientGUI(String host, int port) {
 		super("Chat Client");
-		new ChatClient(host, port);
+		new ChatClient(host, port, this);
 		
 		// The northPanel which is the chat room
 		ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
@@ -70,10 +70,17 @@ public class ClientGUI extends JFrame implements ActionListener {
 		nameList.addListSelectionListener(new NameSelectionListener());
 		nameListModel.add(0, "Tobbe"); // TEST
 		JScrollPane p1 = new JScrollPane(nameList);
+		kick = new JButton("Kick user");
+		kick.setToolTipText("Kick selected user");
+		kick.addActionListener(this);
+		kick.setVisible(false);
+		kick.setEnabled(false);
 		JPanel eastpanel = new JPanel();
 		eastpanel.setLayout(new BorderLayout(2, 1));
 		eastpanel.add(users,BorderLayout.NORTH);
 		eastpanel.add(p1, BorderLayout.CENTER);
+		eastpanel.add(kick, BorderLayout.SOUTH);
+
 
 		// the 3 buttons
 		login = new JButton("Login");
@@ -149,9 +156,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 			return;
 		}
 		if(o == startSession){
-			client.sendMessage(ChatProtocol.CREATE_CHATROOM);
-			JFrame j = new Client2ClientGUI("localhost", 3000, selectedUser);
-			j.setVisible(true);
+			client.sendMessage(ChatProtocol.CREATE_CHATROOM, selectedUser);
 			return;
 		}
 		// ok it is coming from the JTextField
@@ -170,24 +175,30 @@ public class ClientGUI extends JFrame implements ActionListener {
 			if(username.length() != 0) {
 				if(username.equals("admin")){
 					String password = JOptionPane.showInputDialog(this, "Admin password:");
-					if(password.equals("admin")){
-						AdminGUI gui = new AdminGUI(client,username);
-						this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+					client.sendMessage(ChatProtocol.ADMIN_LOGIN, username, password);
+
 					}
 				}else{
 					client.sendMessage(ChatProtocol.LOGIN, username);
-					// disable login button/
-					login.setEnabled(false);
-					// enable the 2 buttons
-					logout.setEnabled(true);
-					startSession.setVisible(true);
-					startSession.setEnabled(false);
-					// Action listener for when the user enter a message
-					tf.addActionListener(this);
 				}
 			}
-		}
+}
 
+	
+	
+	protected void loggedIn(Boolean admin){
+		this.admin = admin;
+		if(admin){
+			kick.setVisible(true);
+		}
+		// disable login button/
+		login.setEnabled(false);
+		// enable the 2 buttons
+		logout.setEnabled(true);
+		startSession.setVisible(true);
+		startSession.setEnabled(false);
+		// Action listener for when the user enter a message
+		tf.addActionListener(this);
 	}
 	
 	private void UpdateNameList() {
@@ -220,12 +231,21 @@ public class ClientGUI extends JFrame implements ActionListener {
 				
 			}
 			selectedUser = (String) nameList.getSelectedValue();
-			if(selectedUser.equals(username)){
-				startSession.setEnabled(false);
+			if(admin){
+				if(selectedUser.equals(username)){
+					startSession.setEnabled(false);
+					kick.setEnabled(false);
+				}else{
+					startSession.setEnabled(true);
+					kick.setEnabled(true);
+				}
 			}else{
-				startSession.setEnabled(true);
+				if(selectedUser.equals(username)){
+					startSession.setEnabled(false);
+				}else{
+					startSession.setEnabled(true);
+				}
 			}
-			//TODO send chatroom request to server with wanted chatpartner "Name"
 		}
 	}
 }

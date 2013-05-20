@@ -13,10 +13,12 @@ public class ClientListenerThread extends Thread {
 	public static final int SUCCESS = 1;
 	public static final int FAIL = 0;
 	
+	private ClientGUI gui;
 	private Socket socket;
 	private BufferedReader reader;
 	
-	public ClientListenerThread(Socket socket) {
+	public ClientListenerThread(Socket socket, ClientGUI gui) {
+		this.gui = gui;
 		try {
 			this.socket = socket;
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -43,8 +45,17 @@ public class ClientListenerThread extends Thread {
 					case LOGIN:
 						if (Integer.valueOf(args[1]) == SUCCESS) {
 							// Disable login buttons
+							Boolean admin = false;
+							gui.loggedIn(admin);
 						}
 						break;
+					case ADMIN_LOGIN:
+						if (Integer.valueOf(args[1]) == SUCCESS) {
+							// Disable login buttons
+							Boolean admin = true;
+							gui.loggedIn(admin);
+						}
+						break;	
 					case LOGOUT:
 						if (Integer.valueOf(args[1]) == SUCCESS) {
 							socket.close();

@@ -11,14 +11,16 @@ import shared.ChatProtocol;
 
 
 public class ChatClient {
-
+	
+	private ClientGUI gui;
 	private BufferedWriter writer;
 	
-	public ChatClient(String address, int port) {
+	public ChatClient(String address, int port, ClientGUI gui) {
 		try {
 			Socket socket = new Socket(InetAddress.getByName(address), port);
 			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			Thread reader = new ClientListenerThread(socket);
+			this.gui = gui;
+			Thread reader = new ClientListenerThread(socket, gui);
 			reader.start();
 		} catch (UnknownHostException e){
 			System.out.println("Felaktig serveradress");
@@ -30,6 +32,7 @@ public class ChatClient {
 			e.printStackTrace();
 			System.exit(0);
 		}
+		
 	}
 	
 	public void sendMessage(ChatProtocol type, String... args) {
