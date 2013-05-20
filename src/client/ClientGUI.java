@@ -35,14 +35,10 @@ public class ClientGUI extends JFrame implements ActionListener {
 	
 	private String selectedUser, username;
 	
-	public static void main(String[] args) {
-		new ClientGUI("localhost", 3000);
-	}
-	
 	// Constructor connection receiving a socket number
 	ClientGUI(String host, int port) {
 		super("Chat Client");
-		new ChatClient(host, port);
+		client = new ChatClient(host, port);
 		
 		// The northPanel which is the chat room
 		ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
