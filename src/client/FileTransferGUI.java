@@ -68,7 +68,7 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == send){
 			if(args[0] != null || args[1] != null){
-			client.sendFile(args);
+			client.sendFileToServer(args);
 			args = new Object[2];
 			
 		} else if (e.getSource() == browse){
