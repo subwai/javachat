@@ -9,6 +9,7 @@ import shared.ChatProtocol;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /*
@@ -33,6 +34,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 	
 	private DefaultListModel nameListModel;
 	private JList nameList;
+	
+	private HashMap<Integer,Client2ClientGUI> chatrooms;
 	
 	private String selectedUser, username;
 	
@@ -151,7 +154,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		} else {
 			// push text to other chatwindow
 		}
-		
 	}
 	
 	@Override
@@ -190,15 +192,22 @@ public class ClientGUI extends JFrame implements ActionListener {
 		// ok it is coming from the JTextField
 		if((o == send && connected) || connected) {
 			// just have to send the message
-			client.sendMessage(ChatProtocol.MESSAGE, String.valueOf(chatroom), tf.getText());				
+			client.sendMessage(ChatProtocol.MESSAGE, String.valueOf(chatroom), "\""+tf.getText()+"\"");				
 			tf.setText("");
+			tf.requestFocus();
 			return;
 		}
 	}
 	
-	protected void addChatWindow(){
-		
+	protected void addChat(int chatID, String chatpartner){
+		Client2ClientGUI p2p = new Client2ClientGUI(chatpartner);
+		chatrooms.put(chatID, p2p);
 	}
+	protected void removeChat(int chatID){
+		Client2ClientGUI p2p = chatrooms.remove(chatID);
+		p2p.dispose();
+	}
+	
 	protected void newUser(){
 		ta.setText("Welcome to the Chat room\n");
 		connected = false;
@@ -223,6 +232,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		// Action listener for when the user enter a message
 		tf.addActionListener(this);
 		connected = true;
+		ta.setText("Welcome to the Chat room\n");
 	}
 
 	protected void logout() {
@@ -235,10 +245,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 		send.setEnabled(false);
 		logout.setEnabled(false);
 		startSession.setVisible(false);
-		startSession.setEnabled(true);
+		startSession.setEnabled(false);
 		// Action listener for when the user enter a message
 		tf.removeActionListener(this);
 		connected = false;
+		tf.setText("Anonymous");
 	}
 	
 	private void UpdateNameList() {

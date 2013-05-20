@@ -5,6 +5,10 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import java.net.SocketException;
 
@@ -40,16 +44,22 @@ public class ListenerThread extends Thread {
 	public void run() {
 		String str = new String();
 		boolean running = true;
+		Pattern p = Pattern.compile("(?=\").+|[^\\s]+", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 		try {
 			while(running && (str = reader.readLine()) != null) {
-				System.out.println("CLIENT: "+str);
-				String[] args = str.split(" ");
 				try {
+					System.out.println("CLIENT: "+str);
+					Matcher m = p.matcher(str);
+					List<String> matches = new ArrayList<String>();
+					while(m.find()){
+					    matches.add(m.group());
+					}
+					String[] args = matches.toArray(new String[0]);
 					switch(ChatProtocol.valueOf(args[0])) {
 						case MESSAGE:
 							int id = Integer.valueOf(args[1]);
 							Chatroom chat = server.getChatroom(id);
-							chat.pushMessage(ChatProtocol.MESSAGE, "\""+user.getName()+": "+args[2]+"\"\n");
+							chat.pushMessage(ChatProtocol.MESSAGE, "\""+user.getName()+": "+args[2].substring(1, args[2].length() - 1)+"\"");
 							break;
 						case LOGIN:
 							user.setName(args[1]);

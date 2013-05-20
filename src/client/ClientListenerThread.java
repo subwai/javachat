@@ -36,7 +36,7 @@ public class ClientListenerThread extends Thread {
 	@Override
 	public void run() {
 		String str = new String();
-		Pattern p = Pattern.compile("(?=\").+|[^\\s]+",Pattern.CASE_INSENSITIVE);
+		Pattern p = Pattern.compile("(?=\").+|[^\\s]+",Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 		try {
 			while((str = reader.readLine()) != null) {
 				try {
@@ -82,14 +82,16 @@ public class ClientListenerThread extends Thread {
 						case LEAVE_CHATROOM:
 							if (Integer.valueOf(args[1]) == SUCCESS) {
 								// Remove chatroom window
+								id = Integer.valueOf(args[1]);
+								gui.removeChat(id);
 							}
 							break;
 						case CREATE_CHATROOM:
 							if (Integer.valueOf(args[1]) == SUCCESS) {
 								String selectedUser = args[2];
 								// Open chatroom window
-								JFrame j = new Client2ClientGUI("localhost", 3000, selectedUser);
-								j.setVisible(true);
+								id = Integer.valueOf(args[1]);
+								gui.addChat(id, selectedUser);
 							}
 							break;
 						case SET_CHATROOM_TITLE:
