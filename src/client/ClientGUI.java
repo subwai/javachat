@@ -153,8 +153,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		Object o = e.getSource();
 		// if it is the Logout button
 		if(o == logout) {
-			client.sendMessage(ChatProtocol.LOGOUT, "");
-			client.disconnectFromServer();
+			client.sendMessage(ChatProtocol.LOGOUT);
 			return;
 		}
 		if(o == startSession){
@@ -171,12 +170,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 			username = tf.getText().trim();
 			// empty username ignore it
 			if(username.length() != 0) {
+				client.connectToServer();
 				if(username.equals("admin")){
 					String password = JOptionPane.showInputDialog(this, "Admin password:");
-					client.connectToServer();
 					client.sendMessage(ChatProtocol.ADMIN_LOGIN, username, password);
 				} else {
-					client.connectToServer();
 					client.sendMessage(ChatProtocol.LOGIN, username);
 				}
 				tf.setText("");
@@ -242,6 +240,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		connected = false;
 		tf.setText("Anonymous");
 		username = null;
+		client.disconnectFromServer();
 	}
 
 	protected void addLoggedinUser(int chatID, int userid, String name) {
