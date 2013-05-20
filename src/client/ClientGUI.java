@@ -159,6 +159,10 @@ public class ClientGUI extends JFrame implements ActionListener {
 			client.sendMessage(ChatProtocol.CREATE_CHATROOM, selectedUser);
 			return;
 		}
+		if(o == kick){
+			client.sendMessage(ChatProtocol.USER_KICKED, selectedUser);
+			return;
+		}
 		// ok it is coming from the JTextField
 		if(connected) {
 			// just have to send the message
@@ -185,9 +189,18 @@ public class ClientGUI extends JFrame implements ActionListener {
 			}
 		}
 }
+	
+	protected void addChatWindow(){
+		
+	}
+	protected void newUser(){
+		ta.setText("Welcome to the Chat room\n");
+		connected = false;
+		admin = false;
+		tf.setText("Anonymous");
+	}
+	
 
-	
-	
 	protected void login(Boolean admin){
 		this.admin = admin;
 		if(admin){
