@@ -9,6 +9,7 @@ import shared.ChatProtocol;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /*
@@ -32,6 +33,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 	
 	private DefaultListModel nameListModel;
 	private JList nameList;
+	
+	private HashMap<Integer,Client2ClientGUI> chatrooms;
 	
 	private String selectedUser, username;
 	
@@ -142,7 +145,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	  }
 	}
 	
-	public void pushText(String message){
+	public void pushText(int id, String message){
 		ta.append(message);
 	}
 	
@@ -190,9 +193,15 @@ public class ClientGUI extends JFrame implements ActionListener {
 		}
 }
 	
-	protected void addChatWindow(){
-		
+	protected void addChat(int chatID, String chatpartner){
+		Client2ClientGUI p2p = new Client2ClientGUI(chatpartner);
+		chatrooms.put(chatID, p2p);
 	}
+	protected void removeChat(int chatID){
+		Client2ClientGUI p2p = chatrooms.remove(chatID);
+		p2p.dispose();
+	}
+	
 	protected void newUser(){
 		ta.setText("Welcome to the Chat room\n");
 		connected = false;
@@ -228,9 +237,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 		send.setEnabled(false);
 		logout.setEnabled(false);
 		startSession.setVisible(false);
-		startSession.setEnabled(true);
+		startSession.setEnabled(false);
 		// Action listener for when the user enter a message
 		tf.removeActionListener(this);
+		tf.setText("Anonymous");
+		ta.setText("Welcome to the Chat room\n");
 	}
 	
 	private void UpdateNameList() {

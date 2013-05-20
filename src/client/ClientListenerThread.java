@@ -37,11 +37,13 @@ public class ClientListenerThread extends Thread {
 				try {
 					System.out.println("SERVER: "+str);
 					String[] args = str.split(" ");
+					int id = null;
 					switch(ChatProtocol.valueOf(args[0])) {
 						case MESSAGE:
-							int id = Integer.valueOf(args[1]);
+							id = Integer.valueOf(args[1]);
 							String chatMessage = args[2];
 							// Update the tab with chatroom: id.
+							gui.pushText(id,chatMessage);
 							
 							break;
 						case LOGIN:
@@ -72,14 +74,16 @@ public class ClientListenerThread extends Thread {
 						case LEAVE_CHATROOM:
 							if (Integer.valueOf(args[1]) == SUCCESS) {
 								// Remove chatroom window
+								id = Integer.valueOf(args[1]);
+								gui.removeChat(id);
 							}
 							break;
 						case CREATE_CHATROOM:
 							if (Integer.valueOf(args[1]) == SUCCESS) {
 								String selectedUser = args[2];
 								// Open chatroom window
-								JFrame j = new Client2ClientGUI("localhost", 3000, selectedUser);
-								j.setVisible(true);
+								id = Integer.valueOf(args[1]);
+								gui.addChat(id, selectedUser);
 							}
 							break;
 						case SET_CHATROOM_TITLE:

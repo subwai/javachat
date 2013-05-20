@@ -36,7 +36,7 @@ import java.util.ArrayList;
 		private Socket socket;
 		
 		// Constructor connection receiving a socket number
-		Client2ClientGUI(String host, int port, String user) {
+		Client2ClientGUI(String user) {
 			super("Chat Client");
 			chatee = user;
 			
