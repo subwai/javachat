@@ -194,7 +194,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	
 	protected void addChat(int chatID){
 		if (chatID != 0) {
-			Client2ClientGUI p2p = new Client2ClientGUI("Temp");
+			Client2ClientGUI p2p = new Client2ClientGUI("Privat chat");
 			chatrooms.put(chatID, p2p);
 		} else {
 			// fetch already logged in users

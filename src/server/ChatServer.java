@@ -55,10 +55,12 @@ public class ChatServer {
 	}
 	
 	public synchronized void joinChatroom(Integer id, User user) {
-		Chatroom c = chatrooms.get(id);
-		if (c != null) {
+		Chatroom chat = chatrooms.get(id);
+		if (chat != null) {
 			user.joinChatroom(id);
-			c.addUser(user);
+			chat.addUser(user);
+			chat.pushMessage(ChatProtocol.MESSAGE,"\"User has joined the chat: "+user.getName()+"\"");
+			chat.pushMessage(ChatProtocol.USER_JOINED, SUCCESS, String.valueOf(user.getId()), user.getName());
 		} else {
 			createChatroom(id, user);
 		}
@@ -95,11 +97,13 @@ public class ChatServer {
 	}
 	
 	public void leaveChatroom(int id, User user) {
-		Chatroom c = chatrooms.get(id);
-		if (c != null) {
+		Chatroom chat = chatrooms.get(id);
+		if (chat != null) {
 			user.leaveChatroom(id);
-			c.removeUser(user);
-			if (c.getUsers().isEmpty()) {
+			chat.removeUser(user);
+			chat.pushMessage(ChatProtocol.MESSAGE,"\"User has left the chat: "+user.getName()+"\"");
+			chat.pushMessage(ChatProtocol.USER_LEFT, SUCCESS, String.valueOf(user.getId()), user.getName());
+			if (chat.getUsers().isEmpty()) {
 				chatrooms.remove(id);
 			}
 		}
