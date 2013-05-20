@@ -59,11 +59,12 @@ public class ChatServer {
 		if (chat != null) {
 			user.joinChatroom(id);
 			chat.addUser(user);
-			chat.pushMessage(ChatProtocol.MESSAGE,"\"User has joined the chat: "+user.getName()+"\"");
-			chat.pushMessage(ChatProtocol.USER_JOINED, SUCCESS, String.valueOf(user.getId()), user.getName());
 		} else {
 			createChatroom(id, user);
+			chat = chatrooms.get(id);
 		}
+		chat.pushMessage(ChatProtocol.MESSAGE,"\"User has joined the chat: "+user.getName()+"\"");
+		chat.pushMessage(ChatProtocol.USER_JOINED, SUCCESS, String.valueOf(user.getId()), user.getName());
 	}
 	
 	public synchronized int createChatroom(User user) {
@@ -76,8 +77,6 @@ public class ChatServer {
 		chatrooms.put(id, chat);
 		SenderThread out = new SenderThread(chat, id);
 		out.start();
-		chat.pushMessage(ChatProtocol.MESSAGE,"\"User has joined the chat: "+user.getName()+"\"");
-		chat.pushMessage(ChatProtocol.USER_JOINED, SUCCESS, String.valueOf(user.getId()), user.getName());
 		return chat_id++;
 	}
 	

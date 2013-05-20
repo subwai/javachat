@@ -45,6 +45,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	ClientGUI(String host, int port) {
 		super("Chat Client");
 		client = new ChatClient(host, port, this);
+		chatrooms = new HashMap<Integer, Client2ClientGUI>();
 		
 		// The northPanel which is the chat room
 		ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
