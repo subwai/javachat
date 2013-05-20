@@ -62,7 +62,6 @@ public class ListenerThread extends Thread {
 						case LOGIN:
 							user.setName(args[1]);
 							sendMessage(ChatProtocol.LOGIN, SUCCESS, String.valueOf(user.getId()), args[1]);
-							server.joinChatroom(Integer.valueOf(DEFAULT_CHATROOM), user);
 							break;
 						case ADMIN_LOGIN:
 							String pw = args[2];
@@ -82,6 +81,13 @@ public class ListenerThread extends Thread {
 							id = Integer.valueOf(args[1]);
 							server.joinChatroom(id, user);
 							sendMessage(ChatProtocol.JOIN_CHATROOM, SUCCESS, args[1]);
+							if(Integer.valueOf(DEFAULT_CHATROOM)==id){
+								chat = server.getChatroom(0);
+								for(User u: chat.getUsers()){
+									if(u.getId() != user.getId())
+										sendMessage(ChatProtocol.USER_JOINED, SUCCESS, String.valueOf(u.getId()), u.getName());
+								}
+							}
 							break;
 						case LEAVE_CHATROOM:
 							id = Integer.valueOf(args[1]);

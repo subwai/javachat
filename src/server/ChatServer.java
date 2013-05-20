@@ -64,6 +64,17 @@ public class ChatServer {
 		}
 	}
 	
+	public void leaveChatroom(int id, User user) {
+		Chatroom c = chatrooms.get(id);
+		if (c != null) {
+			user.leaveChatroom(id);
+			c.removeUser(user);
+			if (c.getUsers().isEmpty()) {
+				chatrooms.remove(id);
+			}
+		}
+	}
+	
 	public synchronized int createChatroom(User user) {
 		return createChatroom(chat_id, user);
 	}
@@ -92,17 +103,6 @@ public class ChatServer {
 		SenderThread out = new SenderThread(chatroom, id);
 		out.start();
 		chat_id++;
-	}
-	
-	public void leaveChatroom(int id, User user) {
-		Chatroom c = chatrooms.get(id);
-		if (c != null) {
-			user.leaveChatroom(id);
-			c.removeUser(user);
-			if (c.getUsers().isEmpty()) {
-				chatrooms.remove(id);
-			}
-		}
 	}
 
 	public void leaveAllChatrooms(User user) {

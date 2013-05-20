@@ -33,8 +33,7 @@ public class ChatClient {
 		try {
 			Socket socket = new Socket(InetAddress.getByName(address), port);
 			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			this.gui = gui;
-			Thread reader = new ClientListenerThread(socket, gui);
+			Thread reader = new ClientListenerThread(socket, gui, this);
 			reader.start();
 		} catch (UnknownHostException e){
 			System.out.println("Felaktig serveradress");
