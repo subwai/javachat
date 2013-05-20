@@ -49,7 +49,7 @@ public class ListenerThread extends Thread {
 						case MESSAGE:
 							int id = Integer.valueOf(args[1]);
 							Chatroom chat = server.getChatroom(id);
-							chat.pushMessage(ChatProtocol.MESSAGE, this.getName()+": "+args[2]+"\n");
+							chat.pushMessage(ChatProtocol.MESSAGE, "\""+user.getName()+": "+args[2]+"\"\n");
 							break;
 						case LOGIN:
 							user.setName(args[1]);

@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 
@@ -32,17 +36,23 @@ public class ClientListenerThread extends Thread {
 	@Override
 	public void run() {
 		String str = new String();
+		Pattern p = Pattern.compile("(?=\").+|[^\\s]+",Pattern.CASE_INSENSITIVE);
 		try {
 			while((str = reader.readLine()) != null) {
 				try {
 					System.out.println("SERVER: "+str);
-					String[] args = str.split(" ");
+					Matcher m = p.matcher(str);
+					List<String> matches = new ArrayList<String>();
+					while(m.find()){
+					    matches.add(m.group());
+					}
+					String[] args = matches.toArray(new String[0]);
 					switch(ChatProtocol.valueOf(args[0])) {
 						case MESSAGE:
 							int id = Integer.valueOf(args[1]);
-							String chatMessage = args[2];
+							String message = args[2];
 							// Update the tab with chatroom: id.
-							
+							gui.pushText(id, message.substring(1, message.length() - 1));
 							break;
 						case LOGIN:
 							if (Integer.valueOf(args[1]) == SUCCESS) {
@@ -94,10 +104,12 @@ public class ClientListenerThread extends Thread {
 							}
 							break;
 						default:
-							throw new Exception();
+							throw new UnsupportedOperationException();
 					}
-				} catch (Exception e) {
+				} catch (UnsupportedOperationException e) {
 					System.out.println("ERROR - Invalid command: '"+str+"', by: SERVER");
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		} catch (SocketException e) {
