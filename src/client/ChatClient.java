@@ -47,6 +47,14 @@ public class ChatClient {
 			System.exit(0);
 		}
 	}
+
+	public void disconnectFromServer() {
+		try {
+			writer.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void sendMessage(ChatProtocol type, String... args) {
 		StringBuilder sb = new StringBuilder(type.toString());

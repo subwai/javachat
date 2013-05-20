@@ -22,7 +22,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	// to hold the Username and later on the messages
 	private JTextField tf;
 	// to Logout and get the list of the users
-	private JButton login, logout, startSession, kick;
+	private JButton login, logout, startSession, kick, send;
 	// for the chat room
 	private JTextArea ta;
 	// if it is for connection
@@ -45,17 +45,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		JPanel northPanel = new JPanel(new GridLayout(1,1));
 		northPanel.add(new JScrollPane(ta));
 		ta.setEditable(false);
-		
-		// The centerPanel with:
-		JPanel centerPanel = new JPanel(new GridLayout(3,1));
-		// the Label and the TextField
-		label = new JLabel("Enter your username below", SwingConstants.CENTER);
-		centerPanel.add(label);
-		tf = new JTextField("Anonymous");
-		tf.setBackground(Color.WHITE);
-		centerPanel.add(tf);
-
-		
 		
 		//east namepanel
 		JLabel users = new JLabel("Online Users", SwingConstants.CENTER);
@@ -90,16 +79,30 @@ public class ClientGUI extends JFrame implements ActionListener {
 		startSession.setEnabled(false);
 		logout.setEnabled(false);		// you have to login before being able to logout
 
+
+		// The centerPanel with:
+		JPanel centerPanel = new JPanel();
+		// the Label and the TextField
+		label = new JLabel("Enter your username below", SwingConstants.CENTER);
+		tf = new JTextField("Anonymous");
+		tf.setBackground(Color.WHITE);
+		send = new JButton("Send");
+		send.setEnabled(false);
+		centerPanel.setLayout(new BorderLayout(0, 2));
+		centerPanel.add(label, BorderLayout.NORTH);
+		centerPanel.add(tf, BorderLayout.CENTER);
+		centerPanel.add(send, BorderLayout.EAST);
+		
+
 		JPanel southPanel = new JPanel();
 		southPanel.setLayout(new BorderLayout(100, 2));
 		southPanel.add(login, BorderLayout.WEST);
 		southPanel.add(logout, BorderLayout.EAST);
 		southPanel.add(startSession, BorderLayout.CENTER);
+		southPanel.add(centerPanel, BorderLayout.NORTH);
+
 		
-		
-		add(centerPanel, BorderLayout.NORTH);
 		add(northPanel, BorderLayout.CENTER);
-		
 		add(eastpanel,BorderLayout.EAST);
 		add(southPanel, BorderLayout.SOUTH);
 
@@ -149,6 +152,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		// if it is the Logout button
 		if(o == logout) {
 			client.sendMessage(ChatProtocol.LOGOUT, "");
+			client.disconnectFromServer();
 			return;
 		}
 		if(o == startSession){
@@ -177,6 +181,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 					client.connectToServer();
 					client.sendMessage(ChatProtocol.LOGIN, username);
 				}
+				tf.setText("");
 			}
 		}
 }
@@ -190,8 +195,10 @@ public class ClientGUI extends JFrame implements ActionListener {
 		}
 		// disable login button
 		login.setEnabled(false);
-		// enable the 2 buttons
+		label.setVisible(false);
+		// enable the 3 buttons
 		logout.setEnabled(true);
+		send.setEnabled(true);
 		startSession.setVisible(true);
 		startSession.setEnabled(false);
 		// Action listener for when the user enter a message
@@ -203,7 +210,9 @@ public class ClientGUI extends JFrame implements ActionListener {
 		kick.setVisible(false);
 		// enable login button
 		login.setEnabled(true);
-		// disable the 2 buttons
+		label.setVisible(true);
+		// disable the 3 buttons
+		send.setEnabled(false);
 		logout.setEnabled(false);
 		startSession.setVisible(false);
 		startSession.setEnabled(true);

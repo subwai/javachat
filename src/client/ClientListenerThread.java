@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.SocketException;
 
 import javax.swing.JFrame;
 
@@ -33,71 +34,87 @@ public class ClientListenerThread extends Thread {
 		String str = new String();
 		try {
 			while((str = reader.readLine()) != null) {
-				System.out.println("SERVER: "+str);
-				String[] args = str.split(" ");
-				switch(ChatProtocol.valueOf(args[0])) {
-					case MESSAGE:
-						int id = Integer.valueOf(args[1]);
-						String chatMessage = args[2];
-						// Update the tab with chatroom: id.
-						
-						break;
-					case LOGIN:
-						if (Integer.valueOf(args[1]) == SUCCESS) {
-							// Disable login buttons
-							Boolean admin = false;
-							gui.login(admin);
-						}
-						break;
-					case ADMIN_LOGIN:
-						if (Integer.valueOf(args[1]) == SUCCESS) {
-							// Disable login buttons
-							Boolean admin = true;
-							gui.login(admin);
-						}
-						break;	
-					case LOGOUT:
-						if (Integer.valueOf(args[1]) == SUCCESS) {
-							// Enable login buttons
-							gui.logout();
-						}
-						break;
-					case JOIN_CHATROOM:
-						if (Integer.valueOf(args[1]) == SUCCESS) {
-							// Open chatroom window
-						}
-						break;
-					case LEAVE_CHATROOM:
-						if (Integer.valueOf(args[1]) == SUCCESS) {
-							// Remove chatroom window
-						}
-						break;
-					case CREATE_CHATROOM:
-						if (Integer.valueOf(args[1]) == SUCCESS) {
-							String selectedUser = args[2];
-							// Open chatroom window
-							JFrame j = new Client2ClientGUI("localhost", 3000, selectedUser);
-							j.setVisible(true);
-						}
-						break;
-					case SET_CHATROOM_TITLE:
-						if (Integer.valueOf(args[1]) == SUCCESS) {
-							// Set chatroom title
-						}
-						break;
-					case USER_KICKED:
-						if (Integer.valueOf(args[1]) == SUCCESS) {
-							// kick user
-							String selectedUser = args[2];
-						}
-						break;
-					default:
-						throw new Exception();
+				try {
+					System.out.println("SERVER: "+str);
+					String[] args = str.split(" ");
+					switch(ChatProtocol.valueOf(args[0])) {
+						case MESSAGE:
+							int id = Integer.valueOf(args[1]);
+							String chatMessage = args[2];
+							// Update the tab with chatroom: id.
+							
+							break;
+						case LOGIN:
+							if (Integer.valueOf(args[1]) == SUCCESS) {
+								// Disable login buttons
+								Boolean admin = false;
+								gui.login(admin);
+							}
+							break;
+						case ADMIN_LOGIN:
+							if (Integer.valueOf(args[1]) == SUCCESS) {
+								// Disable login buttons
+								Boolean admin = true;
+								gui.login(admin);
+							}
+							break;	
+						case LOGOUT:
+							if (Integer.valueOf(args[1]) == SUCCESS) {
+								// Enable login buttons
+								gui.logout();
+							}
+							break;
+						case JOIN_CHATROOM:
+							if (Integer.valueOf(args[1]) == SUCCESS) {
+								// Open chatroom window
+							}
+							break;
+						case LEAVE_CHATROOM:
+							if (Integer.valueOf(args[1]) == SUCCESS) {
+								// Remove chatroom window
+							}
+							break;
+						case CREATE_CHATROOM:
+							if (Integer.valueOf(args[1]) == SUCCESS) {
+								String selectedUser = args[2];
+								// Open chatroom window
+								JFrame j = new Client2ClientGUI("localhost", 3000, selectedUser);
+								j.setVisible(true);
+							}
+							break;
+						case SET_CHATROOM_TITLE:
+							if (Integer.valueOf(args[1]) == SUCCESS) {
+								// Set chatroom title
+							}
+							break;
+						case USER_KICKED:
+							if (Integer.valueOf(args[1]) == SUCCESS) {
+								// kick user
+								String selectedUser = args[2];
+							}
+							break;
+						default:
+							throw new Exception();
+					}
+				} catch (Exception e) {
+					System.out.println("ERROR - Invalid command: '"+str+"', by: SERVER");
 				}
 			}
+		} catch (SocketException e) {
+			System.out.println("ERROR - Server disconnected.");
+			gui.logout();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		disconnect();
+	}
+
+	private void disconnect() {
+		try {
+			reader.close();
 			socket.close();
-		} catch (Exception e) {
-			System.out.println("ERROR - Invalid command: '"+str+"', by: SERVER");
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
