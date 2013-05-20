@@ -113,10 +113,18 @@ public class ClientListenerThread extends Thread {
 						default:
 							throw new UnsupportedOperationException();
 					}
+<<<<<<< HEAD
 					
 				} catch (UnsupportedOperationException e) {
 					System.out.println("ERROR - Invalid command: '"+str+"', by: SERVER");
 			}
+=======
+				} catch (UnsupportedOperationException e) {
+					System.out.println("ERROR - Invalid command: '"+str+"', by: SERVER");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+>>>>>>> ac48377fcdcc14c7287c17276ba0831d3e51d364
 			}
 		} catch (SocketException e) {
 			System.out.println("ERROR - Server disconnected.");
