@@ -71,4 +71,8 @@ public class ChatClient {
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendFile(Object[] args) {
+			sendMessage(ChatProtocol.SEND_FILE, (String) args[1]);
+	}
 }

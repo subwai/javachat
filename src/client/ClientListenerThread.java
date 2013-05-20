@@ -37,7 +37,7 @@ public class ClientListenerThread extends Thread {
 				try {
 					System.out.println("SERVER: "+str);
 					String[] args = str.split(" ");
-					int id = null;
+					int id = 0;
 					switch(ChatProtocol.valueOf(args[0])) {
 						case MESSAGE:
 							id = Integer.valueOf(args[1]);
@@ -96,11 +96,17 @@ public class ClientListenerThread extends Thread {
 								// kick user
 								String selectedUser = args[2];
 							}
+						case SEND_FILE:
+							if (Integer.valueOf(args[1]) == SUCCESS) {
+								
+								String selectedUser = args[2];
+							}
 							break;
 						default:
 							throw new Exception();
 					}
 				} catch (Exception e) {
+					e.printStackTrace();
 					System.out.println("ERROR - Invalid command: '"+str+"', by: SERVER");
 				}
 			}
