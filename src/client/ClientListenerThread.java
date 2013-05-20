@@ -46,19 +46,20 @@ public class ClientListenerThread extends Thread {
 						if (Integer.valueOf(args[1]) == SUCCESS) {
 							// Disable login buttons
 							Boolean admin = false;
-							gui.loggedIn(admin);
+							gui.login(admin);
 						}
 						break;
 					case ADMIN_LOGIN:
 						if (Integer.valueOf(args[1]) == SUCCESS) {
 							// Disable login buttons
 							Boolean admin = true;
-							gui.loggedIn(admin);
+							gui.login(admin);
 						}
 						break;	
 					case LOGOUT:
 						if (Integer.valueOf(args[1]) == SUCCESS) {
 							// Enable login buttons
+							gui.logout();
 						}
 						break;
 					case JOIN_CHATROOM:

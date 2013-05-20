@@ -14,13 +14,22 @@ public class ChatClient {
 	
 	private ClientGUI gui;
 	private BufferedWriter writer;
+
+	private String address;
+	private int port;
 	
 
 	public static void main(String[] args) {
 		new ClientGUI("localhost", 3000);
 	}
-	
+
 	public ChatClient(String address, int port, ClientGUI gui) {
+		this.address = address;
+		this.port = port;
+		this.gui = gui;
+	}
+
+	public void connectToServer() {
 		try {
 			Socket socket = new Socket(InetAddress.getByName(address), port);
 			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -37,7 +46,6 @@ public class ChatClient {
 			e.printStackTrace();
 			System.exit(0);
 		}
-		
 	}
 	
 	public void sendMessage(ChatProtocol type, String... args) {
