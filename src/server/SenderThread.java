@@ -20,7 +20,7 @@ public class SenderThread extends Thread {
 			while(true) {
 				SimpleEntry<ChatProtocol, String> msg = chatroom.popMessage();
 				for (User user : chatroom.getUsers()) {
-					user.getOutputStream().write((msg.getKey()+" "+id+" "+msg.getValue()).getBytes());
+					user.getOutputStream().write((msg.getKey()+" "+id+" "+msg.getValue()+"\n").getBytes());
 				}
 			}
 		} catch (Exception e) {

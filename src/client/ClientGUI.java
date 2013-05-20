@@ -18,6 +18,7 @@ import java.util.HashMap;
 public class ClientGUI extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
+	private final int chatroom = 0;
 	// will first hold "Username:", later on "Enter message"
 	private JLabel label;
 	// to hold the Username and later on the messages
@@ -89,8 +90,10 @@ public class ClientGUI extends JFrame implements ActionListener {
 		label = new JLabel("Enter your username below", SwingConstants.CENTER);
 		tf = new JTextField("Anonymous");
 		tf.setBackground(Color.WHITE);
+		tf.addActionListener(this);
 		send = new JButton("Send");
 		send.setEnabled(false);
+		send.addActionListener(this);
 		centerPanel.setLayout(new BorderLayout(0, 2));
 		centerPanel.add(label, BorderLayout.NORTH);
 		centerPanel.add(tf, BorderLayout.CENTER);
@@ -118,7 +121,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 
 	// called by the Client to append text in the TextArea 
 	void append(String str) {
-		ta.append(str);
+		ta.append(str+System.getProperty("line.separator"));
 		ta.setCaretPosition(ta.getText().length() - 1);
 	}
 	// called by the GUI is the connection failed
@@ -146,7 +149,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 	}
 	
 	public void pushText(int id, String message){
-		ta.append(message);
+		if (id == chatroom) {
+			append(message);
+		} else {
+			// push text to other chatwindow
+		}
 	}
 	
 	@Override
@@ -166,15 +173,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 			client.sendMessage(ChatProtocol.USER_KICKED, selectedUser);
 			return;
 		}
-		// ok it is coming from the JTextField
-		if(connected) {
-			// just have to send the message
-			client.sendMessage(ChatProtocol.MESSAGE, tf.getText());				
-			tf.setText("");
-			return;
-		}
-		
-
 		if(o == login) {
 			// ok it is a connection request
 
@@ -191,7 +189,15 @@ public class ClientGUI extends JFrame implements ActionListener {
 				tf.setText("");
 			}
 		}
-}
+		// ok it is coming from the JTextField
+		if((o == send && connected) || connected) {
+			// just have to send the message
+			client.sendMessage(ChatProtocol.MESSAGE, String.valueOf(chatroom), "\""+tf.getText()+"\"");				
+			tf.setText("");
+			tf.requestFocus();
+			return;
+		}
+	}
 	
 	protected void addChat(int chatID, String chatpartner){
 		Client2ClientGUI p2p = new Client2ClientGUI(chatpartner);
@@ -225,6 +231,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 		startSession.setEnabled(false);
 		// Action listener for when the user enter a message
 		tf.addActionListener(this);
+		connected = true;
+		ta.setText("Welcome to the Chat room\n");
 	}
 
 	protected void logout() {
@@ -240,8 +248,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 		startSession.setEnabled(false);
 		// Action listener for when the user enter a message
 		tf.removeActionListener(this);
+		connected = false;
 		tf.setText("Anonymous");
-		ta.setText("Welcome to the Chat room\n");
 	}
 	
 	private void UpdateNameList() {
