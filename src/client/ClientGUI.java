@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.AbstractMap.SimpleEntry;
 
 
 /*
@@ -35,7 +36,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 	private DefaultListModel nameListModel;
 	private JList nameList;
 	
-	private HashMap<Integer,Client2ClientGUI> chatrooms;
+	private HashMap<String, Integer> userIds;
+	private HashMap<Integer, Client2ClientGUI> chatrooms;
 	
 	private String selectedUser, username;
 	
@@ -51,13 +53,13 @@ public class ClientGUI extends JFrame implements ActionListener {
 		ta.setEditable(false);
 		
 		//east namepanel
+		userIds = new HashMap<String, Integer>();
 		JLabel users = new JLabel("Online Users", SwingConstants.CENTER);
 		nameListModel = new DefaultListModel();
 		nameList = new JList(nameListModel);
 		nameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		nameList.setPrototypeCellValue("123456789012");
 		nameList.addListSelectionListener(new NameSelectionListener());
-		nameListModel.add(0, "Tobbe"); // TEST
 		JScrollPane p1 = new JScrollPane(nameList);
 		kick = new JButton("Kick user");
 		kick.setToolTipText("Kick selected user");
@@ -137,16 +139,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		tf.removeActionListener(this);
 		connected = false;
 	}
-		
-	/*
-	* Button or JTextField clicked
-	*/
-	public void mouseClicked(MouseEvent event)
-	{
-	  if (event.getClickCount() == 2) {
-	    System.out.println("double clicked");
-	  }
-	}
 	
 	public void pushText(int id, String message){
 		if (id == chatroom) {
@@ -161,16 +153,15 @@ public class ClientGUI extends JFrame implements ActionListener {
 		Object o = e.getSource();
 		// if it is the Logout button
 		if(o == logout) {
-			client.sendMessage(ChatProtocol.LOGOUT, "");
-			client.disconnectFromServer();
+			client.sendMessage(ChatProtocol.LOGOUT);
 			return;
 		}
 		if(o == startSession){
-			client.sendMessage(ChatProtocol.CREATE_CHATROOM, selectedUser);
+			client.sendMessage(ChatProtocol.CREATE_CHATROOM, String.valueOf(userIds.get(selectedUser)));
 			return;
 		}
 		if(o == kick){
-			client.sendMessage(ChatProtocol.USER_KICKED, selectedUser);
+			client.sendMessage(ChatProtocol.USER_KICKED, String.valueOf(userIds.get(selectedUser)));
 			return;
 		}
 		if(o == login) {
@@ -179,11 +170,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 			username = tf.getText().trim();
 			// empty username ignore it
 			if(username.length() != 0) {
+				client.connectToServer();
 				if(username.equals("admin")){
 					String password = JOptionPane.showInputDialog(this, "Admin password:");
 					client.sendMessage(ChatProtocol.ADMIN_LOGIN, username, password);
 				} else {
-					client.connectToServer();
 					client.sendMessage(ChatProtocol.LOGIN, username);
 				}
 				tf.setText("");
@@ -191,30 +182,28 @@ public class ClientGUI extends JFrame implements ActionListener {
 		}
 		// ok it is coming from the JTextField
 		if((o == send && connected) || connected) {
-			// just have to send the message
-			client.sendMessage(ChatProtocol.MESSAGE, String.valueOf(chatroom), "\""+tf.getText()+"\"");				
-			tf.setText("");
-			tf.requestFocus();
+			if (!tf.getText().equals("")) {
+				// just have to send the message
+				client.sendMessage(ChatProtocol.MESSAGE, String.valueOf(chatroom), "\""+tf.getText()+"\"");				
+				tf.setText("");
+				tf.requestFocusInWindow();
+			}
 			return;
 		}
 	}
 	
-	protected void addChat(int chatID, String chatpartner){
-		Client2ClientGUI p2p = new Client2ClientGUI(chatpartner);
-		chatrooms.put(chatID, p2p);
+	protected void addChat(int chatID){
+		if (chatID != 0) {
+			Client2ClientGUI p2p = new Client2ClientGUI("Temp");
+			chatrooms.put(chatID, p2p);
+		} else {
+			// fetch already logged in users
+		}
 	}
 	protected void removeChat(int chatID){
 		Client2ClientGUI p2p = chatrooms.remove(chatID);
 		p2p.dispose();
 	}
-	
-	protected void newUser(){
-		ta.setText("Welcome to the Chat room\n");
-		connected = false;
-		admin = false;
-		tf.setText("Anonymous");
-	}
-	
 
 	protected void login(Boolean admin){
 		this.admin = admin;
@@ -248,16 +237,21 @@ public class ClientGUI extends JFrame implements ActionListener {
 		startSession.setEnabled(false);
 		// Action listener for when the user enter a message
 		tf.removeActionListener(this);
+		userIds = new HashMap<String, Integer>();
+		nameListModel.clear();
 		connected = false;
 		tf.setText("Anonymous");
+		username = null;
+		client.disconnectFromServer();
 	}
-	
-	private void UpdateNameList() {
-		nameListModel.removeAllElements();
-        ArrayList<String> names =  null;
-        for(String name: names){
-        	nameListModel.addElement(name);
-        }
+
+	protected void addLoggedinUser(int chatID, int userid, String name) {
+		if (chatID != 0) {
+			chatrooms.get(chatID); // add to this chatroom
+		} else {
+			userIds.put(name, userid);
+			nameListModel.addElement(name);
+		}
 	}
 	
 
@@ -281,7 +275,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 				return;
 				
 			}
-			selectedUser = (String) nameList.getSelectedValue();
+			selectedUser = (String)nameList.getSelectedValue();
 			if(admin){
 				if(selectedUser.equals(username)){
 					startSession.setEnabled(false);

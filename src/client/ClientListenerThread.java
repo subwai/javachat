@@ -15,8 +15,9 @@ import shared.ChatProtocol;
 
 
 public class ClientListenerThread extends Thread {
-	public static final int SUCCESS = 1;
-	public static final int FAIL = 0;
+	public static final String DEFAULT_CHATROOM = "0";
+	public static final String SUCCESS = "1";
+	public static final String FAIL = "0";
 	
 	private ClientGUI gui;
 	private Socket socket;
@@ -36,9 +37,10 @@ public class ClientListenerThread extends Thread {
 	@Override
 	public void run() {
 		String str = new String();
+		boolean running = true;
 		Pattern p = Pattern.compile("(?=\").+|[^\\s]+",Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 		try {
-			while((str = reader.readLine()) != null) {
+			while(running && (str = reader.readLine()) != null) {
 				try {
 					System.out.println("SERVER: "+str);
 					Matcher m = p.matcher(str);
@@ -55,57 +57,66 @@ public class ClientListenerThread extends Thread {
 							gui.pushText(id, message.substring(1, message.length() - 1));
 							break;
 						case LOGIN:
-							if (Integer.valueOf(args[1]) == SUCCESS) {
+							if (args[1].equals(SUCCESS)) {
 								// Disable login buttons
 								Boolean admin = false;
 								gui.login(admin);
 							}
 							break;
 						case ADMIN_LOGIN:
-							if (Integer.valueOf(args[1]) == SUCCESS) {
+							if (args[1].equals(SUCCESS)) {
 								// Disable login buttons
 								Boolean admin = true;
 								gui.login(admin);
 							}
 							break;	
 						case LOGOUT:
-							if (Integer.valueOf(args[1]) == SUCCESS) {
+							if (args[1].equals(SUCCESS)) {
 								// Enable login buttons
 								gui.logout();
+								running = false;
 							}
 							break;
-						case JOIN_CHATROOM:
-							if (Integer.valueOf(args[1]) == SUCCESS) {
-								// Open chatroom window
+						case JOIN_CHATROOM: // Already existing chatroom with more than 2 users
+							if (args[1].equals(SUCCESS)) {
+								id = Integer.valueOf(args[2]);
+								gui.addChat(id);
 							}
 							break;
 						case LEAVE_CHATROOM:
-							if (Integer.valueOf(args[1]) == SUCCESS) {
+							if (args[1].equals(SUCCESS)) {
 								// Remove chatroom window
-								id = Integer.valueOf(args[1]);
+								id = Integer.valueOf(args[2]);
 								gui.removeChat(id);
 							}
 							break;
-						case CREATE_CHATROOM:
-							if (Integer.valueOf(args[1]) == SUCCESS) {
-								String selectedUser = args[2];
-								// Open chatroom window
-								id = Integer.valueOf(args[1]);
-								gui.addChat(id, selectedUser);
+						case CREATE_CHATROOM: // Newly created chatroom. Both of the two initial users will call this.
+							if (args[1].equals(SUCCESS)) {
+								id = Integer.valueOf(args[2]);
+								gui.addChat(id);
 							}
 							break;
 						case SET_CHATROOM_TITLE:
-							if (Integer.valueOf(args[1]) == SUCCESS) {
+							if (args[1].equals(SUCCESS)) {
 								// Set chatroom title
 							}
 							break;
+						case USER_JOINED:
+							if (args[2].equals(SUCCESS)) {
+								// update client user list;
+								gui.addLoggedinUser(Integer.valueOf(args[1]), Integer.valueOf(args[3]), args[4]);
+							}
+							break;
+						case USER_LEFT:
+							// update client user list;
+							break;
 						case USER_KICKED:
-							if (Integer.valueOf(args[1]) == SUCCESS) {
+							if (args[1].equals(SUCCESS)) {
 								// kick user
 								String selectedUser = args[2];
 							}
 						case SEND_FILE:
-							if (Integer.valueOf(args[1]) == SUCCESS) {
+							if (args[1].equals(SUCCESS)) {
 								
 								String selectedUser = args[2];
 							}
