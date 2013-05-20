@@ -22,8 +22,10 @@ public class ClientListenerThread extends Thread {
 	private ClientGUI gui;
 	private Socket socket;
 	private BufferedReader reader;
+	private ChatClient client;
 	
-	public ClientListenerThread(Socket socket, ClientGUI gui) {
+	public ClientListenerThread(Socket socket, ClientGUI gui, ChatClient client) {
+		this.client = client;
 		this.gui = gui;
 		try {
 			this.socket = socket;
@@ -59,6 +61,7 @@ public class ClientListenerThread extends Thread {
 						case LOGIN:
 							if (args[1].equals(SUCCESS)) {
 								// Disable login buttons
+								client.sendMessage(ChatProtocol.JOIN_CHATROOM, DEFAULT_CHATROOM);	
 								Boolean admin = false;
 								gui.login(admin);
 							}
@@ -66,6 +69,7 @@ public class ClientListenerThread extends Thread {
 						case ADMIN_LOGIN:
 							if (args[1].equals(SUCCESS)) {
 								// Disable login buttons
+								client.sendMessage(ChatProtocol.JOIN_CHATROOM, DEFAULT_CHATROOM);
 								Boolean admin = true;
 								gui.login(admin);
 							}
