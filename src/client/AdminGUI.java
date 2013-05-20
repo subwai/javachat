@@ -36,7 +36,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 	private String selectedUser, username;
 	
 	public static void main(String[] args) {
-		new ClientGUI("localhost", 3000);
+		new AdminGUI(null, "test");
 	}
 	
 	// Constructor connection receiving a socket number
@@ -75,6 +75,7 @@ public class AdminGUI extends JFrame implements ActionListener {
 		kick.setToolTipText("Kick selected user");
 		kick.addActionListener(this);
 		kick.setVisible(true);
+		kick.setEnabled(false);
 		JPanel eastpanel = new JPanel();
 		eastpanel.setLayout(new BorderLayout(3, 1));
 		eastpanel.add(users,BorderLayout.NORTH);
@@ -150,9 +151,11 @@ public class AdminGUI extends JFrame implements ActionListener {
 			return;
 		}
 		if(o == startSession){
-			client.sendMessage(ChatProtocol.CREATE_CHATROOM);
-			JFrame j = new Client2ClientGUI("localhost", 3000, selectedUser);
-			j.setVisible(true);
+			client.sendMessage(ChatProtocol.CREATE_CHATROOM, selectedUser);
+			return;
+		}
+		if(o == kick){
+			client.sendMessage(ChatProtocol.USER_KICKED, selectedUser);
 			return;
 		}
 		// ok it is coming from the JTextField

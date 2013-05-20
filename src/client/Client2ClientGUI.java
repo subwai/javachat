@@ -87,6 +87,11 @@ import java.util.ArrayList;
 			ta.append(str);
 			ta.setCaretPosition(ta.getText().length() - 1);
 		}
+		
+		public void windowClosing(WindowEvent e){
+			client.sendMessage(ChatProtocol.LEAVE_CHATROOM);
+			System.exit(0);
+		}
 			
 		/*
 		* Button or JTextField clicked

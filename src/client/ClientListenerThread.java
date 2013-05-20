@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import javax.swing.JFrame;
+
 import shared.ChatProtocol;
 
 
@@ -36,6 +38,7 @@ public class ClientListenerThread extends Thread {
 						int id = Integer.valueOf(args[1]);
 						String chatMessage = args[2];
 						// Update the tab with chatroom: id.
+						
 						break;
 					case LOGIN:
 						if (Integer.valueOf(args[1]) == SUCCESS) {
@@ -59,12 +62,21 @@ public class ClientListenerThread extends Thread {
 						break;
 					case CREATE_CHATROOM:
 						if (Integer.valueOf(args[1]) == SUCCESS) {
+							String selectedUser = args[2];
 							// Open chatroom window
+							JFrame j = new Client2ClientGUI("localhost", 3000, selectedUser);
+							j.setVisible(true);
 						}
 						break;
 					case SET_CHATROOM_TITLE:
 						if (Integer.valueOf(args[1]) == SUCCESS) {
 							// Set chatroom title
+						}
+						break;
+					case USER_KICKED:
+						if (Integer.valueOf(args[1]) == SUCCESS) {
+							// kick user
+							String selectedUser = args[2];
 						}
 						break;
 					default:
