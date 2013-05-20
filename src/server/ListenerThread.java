@@ -65,9 +65,9 @@ public class ListenerThread extends Thread {
 							server.joinChatroom(Integer.valueOf(DEFAULT_CHATROOM), user);
 							break;
 						case ADMIN_LOGIN:
-							user.setName(args[1]);
 							String pw = args[2];
 							if(pw.equals("admin")){
+								user.setName(args[1]);
 								sendMessage(ChatProtocol.ADMIN_LOGIN, SUCCESS);
 								break;
 							}

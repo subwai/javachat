@@ -9,6 +9,7 @@
 
 	import java.awt.*;
 	import java.awt.event.*;
+import java.io.File;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 		// to hold the Username and later on the messages
 		private JTextField tf;
 		// to Logout and get the list of the users
-		private JButton file, close;
+		private JButton sendFile, close;
 		// for the chat room
 		private JTextArea ta;
 		// if it is for connection
@@ -34,6 +35,8 @@ import java.util.ArrayList;
 		private String chatee;
 		
 		private Socket socket;
+		
+		private File file;
 		
 		// Constructor connection receiving a socket number
 		Client2ClientGUI(String user) {
@@ -59,14 +62,14 @@ import java.util.ArrayList;
 
 
 			// the 3 buttons
-			file = new JButton("Transfer File");
-			file.setToolTipText("Opens a pane to select which file you wish to send to "+ chatee);
+			sendFile = new JButton("Transfer File");
+			sendFile.setToolTipText("Opens a pane to select which file you wish to send to "+ chatee);
 			close = new JButton("End Private Session");
-			file.addActionListener(this);
+			sendFile.addActionListener(this);
 			close.addActionListener(this);
 			JPanel southPanel = new JPanel();
 			southPanel.setLayout(new BorderLayout(1, 3));
-			southPanel.add(file, BorderLayout.WEST);
+			southPanel.add(sendFile, BorderLayout.WEST);
 			southPanel.add(close, BorderLayout.EAST);
 			
 			add(centerPanel, BorderLayout.NORTH);
@@ -87,7 +90,16 @@ import java.util.ArrayList;
 			ta.setCaretPosition(ta.getText().length() - 1);
 		}
 		
+		public void setFile(File file){
+			this.file = file;
+		}
+		
 		public void windowClosing(WindowEvent e){
+			client.sendMessage(ChatProtocol.LEAVE_CHATROOM);
+			System.exit(0);
+		}
+		
+		public void sendFile(WindowEvent e){
 			client.sendMessage(ChatProtocol.LEAVE_CHATROOM);
 			System.exit(0);
 		}
@@ -98,8 +110,8 @@ import java.util.ArrayList;
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object o = e.getSource();
-			if(o == file){
-				JFrame j = new FileTransferGUI(socket, chatee);
+			if(o == sendFile){
+				JFrame j = new FileTransferGUI(client, chatee);
 				j.setVisible(true);
 			} else if(o == close){setVisible(false);} else
 			{

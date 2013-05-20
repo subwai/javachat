@@ -31,10 +31,13 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 	UneditableTextField searchPath;
 	UneditableTextField progress;
 	Socket socket;
+	Object[] args;
+	ChatClient client;
 	
-	FileTransferGUI(Socket socket, String user){
+	FileTransferGUI(ChatClient client, String user){
 		super("Send file to " +user);
 		chooser = new JFileChooser();
+		this.client = client;
 		Border border = new LineBorder(Color.black);
 		setLayout(new BorderLayout());
 		setSize(400, 130);
@@ -52,26 +55,35 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 		progress = new UneditableTextField("");
 		progress.setBorder(new TitledBorder(border, "Status"));
 		add(progress, BorderLayout.SOUTH);
+		args = new Object[2];
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	public static void main(String[] args){
-		JFrame j = new FileTransferGUI(new Socket(), "Naxon");
+		JFrame j = new FileTransferGUI(null, "Naxon");
 		j.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == send){
+			if(args[0] != null || args[1] != null){
+			client.sendFile(args);
+			args = new Object[2];
 			
 		} else if (e.getSource() == browse){
 			JFrame j = new JFrame();
 			if(chooser.showOpenDialog(j) == JFileChooser.APPROVE_OPTION){
+				
 				File file = chooser.getSelectedFile();
-				String name = chooser.getName(file);
+				args[0] = file;
+				args[1] = chooser.getName(file);
+				searchPath.setText(file.getAbsolutePath()); 
+				
+				
 			}
 		}
 		
 	}
- 
+}
 }

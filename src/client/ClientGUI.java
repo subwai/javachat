@@ -139,16 +139,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		tf.removeActionListener(this);
 		connected = false;
 	}
-		
-	/*
-	* Button or JTextField clicked
-	*/
-	public void mouseClicked(MouseEvent event)
-	{
-	  if (event.getClickCount() == 2) {
-	    System.out.println("double clicked");
-	  }
-	}
 	
 	public void pushText(int id, String message){
 		if (id == chatroom) {
@@ -183,6 +173,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 			if(username.length() != 0) {
 				if(username.equals("admin")){
 					String password = JOptionPane.showInputDialog(this, "Admin password:");
+					client.connectToServer();
 					client.sendMessage(ChatProtocol.ADMIN_LOGIN, username, password);
 				} else {
 					client.connectToServer();
@@ -212,7 +203,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	protected void removeChat(int chatID){
 		Client2ClientGUI p2p = chatrooms.remove(chatID);
 		p2p.dispose();
-	}	
+	}
 
 	protected void login(Boolean admin){
 		this.admin = admin;
@@ -250,6 +241,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		nameListModel.clear();
 		connected = false;
 		tf.setText("Anonymous");
+		username = null;
 	}
 
 	protected void addLoggedinUser(int chatID, int userid, String name) {

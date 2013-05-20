@@ -99,25 +99,34 @@ public class ClientListenerThread extends Thread {
 								// Set chatroom title
 							}
 							break;
+						case USER_JOINED:
+							if (args[2].equals(SUCCESS)) {
+								// update client user list;
+								gui.addLoggedinUser(Integer.valueOf(args[1]), Integer.valueOf(args[3]), args[4]);
+							}
+							break;
+						case USER_LEFT:
+							// update client user list;
+							break;
 						case USER_KICKED:
 							if (args[1].equals(SUCCESS)) {
 								// kick user
 								String selectedUser = args[2];
 							}
-							break;
-						case USER_JOINED:
-							if (args[2].equals(SUCCESS)) {
-								gui.addLoggedinUser(Integer.valueOf(args[1]), Integer.valueOf(args[3]), args[4]);
+						case SEND_FILE:
+							if (args[1].equals(SUCCESS)) {
+								
+								String selectedUser = args[2];
 							}
 							break;
 						default:
 							throw new UnsupportedOperationException();
 					}
+		
 				} catch (UnsupportedOperationException e) {
 					System.out.println("ERROR - Invalid command: '"+str+"', by: SERVER");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+			}
+
 			}
 		} catch (SocketException e) {
 			System.out.println("ERROR - Server disconnected.");
