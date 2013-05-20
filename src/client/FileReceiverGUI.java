@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -47,13 +48,24 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 
 	private String choosertitle, searchPath;
 	
-	private File file2;
+	private File file; 
 	
-	private File file;
+	private String filename;
+	
+	private int port;
+	
+	private InetAddress address;
+	
+	private int size;
+	
+	ChatClient client;
 
-	public FileReceiverGUI(Socket socket, String userRecieveFrom, File file) {
-		super("File from " + userRecieveFrom);
-		this.file = file;
+	public FileReceiverGUI(Object[] args) {
+		super("File from " + (String) args[4]);
+		address = (InetAddress) args[0]; 
+		port =	(int) args[1]; 
+		filename = (String) args[2];
+		size = (int) args[3];
 		Border border = new LineBorder(Color.black);
 		setLayout(new BorderLayout());
 		setSize(700, 200);
@@ -107,6 +119,20 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 
 	}
 
+/*	public static void main(String[] args) {
+		File f = new File("javachat.txt");
+		boolean flag = false;
+		try {
+		    flag = f.createNewFile();
+		} catch (IOException e) {
+		     System.out.println("Error while Creating File in Java" + e);
+		}
+
+		System.out.println(f.getAbsolutePath());
+		JFrame j = new FileReceiverGUI("Max", f);
+		j.setVisible(true);
+	}*/
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == browse) {
@@ -121,14 +147,16 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 				System.out.println("getSelectedFile() : "
 						+ chooser.getSelectedFile());
 				searchPath = chooser.getSelectedFile().toString();
-				file2 = chooser.getSelectedFile();
+				file = new File(searchPath + "//" + filename);
 				fd.setText(searchPath);
 			} else {
 				System.out.println("No Selection ");
 			}
 
-		} else if (e.getSource() == accept && file2 != null) {
-			JFileChooser fc = new JFileChooser(file2.getAbsolutePath());
+		} else if (e.getSource() == accept && file != null) {
+			client.receiveFile(address, port, file, size);
+			dispose();
+			/*JFileChooser fc = new JFileChooser(file2.getAbsolutePath());
 			fc.addChoosableFileFilter(new jpgSaveFilter());
 			fc.addChoosableFileFilter(new txtSaveFilter());
 			int retrival=fc.showSaveDialog(null);
@@ -147,7 +175,7 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 		        	ext=".txt";
 		        }
 
-			   }
+			   }*/
 			
 		} else if (e.getSource() == decline) {
 			dispose();
@@ -155,18 +183,6 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 
 	}
 
-	public static void main(String[] args) {
-		File f = new File("javachat.txt");
-		boolean flag = false;
-		try {
-		    flag = f.createNewFile();
-		} catch (IOException e) {
-		     System.out.println("Error while Creating File in Java" + e);
-		}
-
-		System.out.println(f.getAbsolutePath());
-		JFrame j = new FileReceiverGUI(new Socket(), "Max", f);
-		j.setVisible(true);
-	}
+	
 
 }
