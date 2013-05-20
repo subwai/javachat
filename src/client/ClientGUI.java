@@ -186,7 +186,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 				// just have to send the message
 				client.sendMessage(ChatProtocol.MESSAGE, String.valueOf(chatroom), "\""+tf.getText()+"\"");				
 				tf.setText("");
-				tf.requestFocus();
+				tf.requestFocusInWindow();
 			}
 			return;
 		}
