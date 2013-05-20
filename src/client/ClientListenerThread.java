@@ -110,6 +110,12 @@ public class ClientListenerThread extends Thread {
 								String selectedUser = args[2];
 							}
 							break;
+						case USER_JOINED:
+							//update client user list;
+							break;
+						case USER_LEFT:
+							//update client user list;
+							break;	
 						default:
 							throw new UnsupportedOperationException();
 					}

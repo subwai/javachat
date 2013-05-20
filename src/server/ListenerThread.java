@@ -66,9 +66,9 @@ public class ListenerThread extends Thread {
 							sendMessage(ChatProtocol.LOGIN, SUCCESS);
 							break;
 						case ADMIN_LOGIN:
-							user.setName(args[1]);
 							String pw = args[2];
 							if(pw.equals("admin")){
+								user.setName(args[1]);
 								sendMessage(ChatProtocol.ADMIN_LOGIN, SUCCESS);
 								break;
 							}
