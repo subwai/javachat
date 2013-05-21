@@ -32,7 +32,6 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 	JPanel bottomPanel;
 	JPanel topPanel;
 	UneditableTextField searchPath;
-	UneditableTextField progress;
 	Socket socket;
 	Point screen;
 
@@ -52,7 +51,7 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 		this.client = client;
 		Border border = new LineBorder(Color.black);
 		setLayout(new BorderLayout());
-		setSize(400, 130);
+		setSize(400, 90);
 		send = new JButton("Send");
 		send.addActionListener(this);
 		browse = new JButton("Browse");
@@ -64,22 +63,20 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 		add(browse, BorderLayout.WEST);
 		add(send, BorderLayout.EAST);
 		add(new UneditableTextField("Choose a file and press send"), BorderLayout.NORTH);
-		progress = new UneditableTextField("");
-		progress.setBorder(new TitledBorder(border, "Status"));
-		add(progress, BorderLayout.SOUTH);
 		setLocation(screen);
 	}
 	
-//	public static void main(String[] args){
-//		JFrame j = new FileTransferGUI(null, "Naxon", 1, 1, new Point(333, 333));
-//		j.setVisible(true);
-//	}
+	public static void main(String[] args){
+		JFrame j = new FileTransferGUI(null, "Naxon", 1, 1, new Point(333, 333));
+		j.setVisible(true);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == send){
 			if (args != null) {
 				client.setupFileSender(chatid, userid, String.valueOf(args[0]), (File)args[1]);
+				dispose();
 			}
 			return;
 
