@@ -23,7 +23,6 @@ public class ListenerThread extends Thread {
 	
 	private User user;
 	private BufferedReader reader;
-	private BufferedWriter writer;
 	private ChatServer server;
 	
 	public ListenerThread(User user, ChatServer server) {
@@ -33,7 +32,6 @@ public class ListenerThread extends Thread {
 			
 			int i;
 			reader = new BufferedReader(new InputStreamReader(user.getInputStream()));
-			writer = new BufferedWriter(new OutputStreamWriter(user.getOutputStream()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -62,37 +60,37 @@ public class ListenerThread extends Thread {
 							break;
 						case LOGIN:
 							user.setName(args[1]);
-							sendMessage(ChatProtocol.LOGIN, SUCCESS, String.valueOf(user.getId()), args[1]);
+							user.sendMessage(ChatProtocol.LOGIN, SUCCESS, String.valueOf(user.getId()), args[1]);
 							break;
 						case ADMIN_LOGIN:
 							String pw = args[2];
 							if(pw.equals("admin")){
 								user.setName(args[1]);
-								sendMessage(ChatProtocol.ADMIN_LOGIN, SUCCESS);
+								user.sendMessage(ChatProtocol.ADMIN_LOGIN, SUCCESS);
 								break;
 							}
-							sendMessage(ChatProtocol.ADMIN_LOGIN, FAIL);
+							user.sendMessage(ChatProtocol.ADMIN_LOGIN, FAIL);
 							break;
 						case LOGOUT:
 							server.leaveAllChatrooms(user);
-							sendMessage(ChatProtocol.LOGOUT, SUCCESS);
+							user.sendMessage(ChatProtocol.LOGOUT, SUCCESS);
 							running = false;
 							break;
 						case JOIN_CHATROOM:
 							id = Integer.valueOf(args[1]);
 							server.joinChatroom(id, user);
-							sendMessage(ChatProtocol.JOIN_CHATROOM, SUCCESS, args[1]);
+							user.sendMessage(ChatProtocol.JOIN_CHATROOM, SUCCESS, args[1]);
 							chat = server.getChatroom(id);
 							for (User u : chat.getUsers()) {
 								if(u.getId() != user.getId()) {
-									sendMessage(ChatProtocol.USER_JOINED, String.valueOf(id), SUCCESS, String.valueOf(u.getId()), u.getName());
+									user.sendMessage(ChatProtocol.USER_JOINED, String.valueOf(id), SUCCESS, String.valueOf(u.getId()), u.getName());
 								}
 							}
 							break;
 						case LEAVE_CHATROOM:
 							id = Integer.valueOf(args[1]);
 							server.leaveChatroom(id, user);
-							sendMessage(ChatProtocol.LEAVE_CHATROOM, SUCCESS);
+							user.sendMessage(ChatProtocol.LEAVE_CHATROOM, SUCCESS);
 							chat = server.getChatroom(id);
 							chat.pushMessage(ChatProtocol.USER_LEFT, SUCCESS, String.valueOf(user.getId()), user.getName());
 							break;
@@ -112,21 +110,18 @@ public class ListenerThread extends Thread {
 							id = Integer.valueOf(args[1]);
 							chat = server.getChatroom(id);
 							chat.setTitle(args[2]);
-							sendMessage(ChatProtocol.SET_CHATROOM_TITLE, SUCCESS);
+							user.sendMessage(ChatProtocol.SET_CHATROOM_TITLE, SUCCESS);
 							break;
 						case USER_KICKED:
 							id = Integer.valueOf(args[1]);
 							//kick user with name kickName.
-							User u =server.getUser(id);
-							BufferedWriter tmpWriter = new BufferedWriter(new OutputStreamWriter(u.getOutputStream()));
-							tmpWriter.write(ChatProtocol.LOGOUT.toString() + " " + String.valueOf(SUCCESS));
-							tmpWriter.newLine();
-							tmpWriter.flush();
-							tmpWriter.close();
+							User u = server.getUser(id);
+							u.sendMessage(ChatProtocol.LOGOUT, SUCCESS);
 							server.leaveAllChatrooms(u);
-							sendMessage(ChatProtocol.USER_KICKED, SUCCESS, u.getName());
+							user.sendMessage(ChatProtocol.USER_KICKED, SUCCESS, u.getName());
 							break;
 						case SEND_FILE:
+<<<<<<< HEAD
 							id = Integer.valueOf(args[1]);
 							int i = 0;
 							String[] damp = new String[args.length - 1];
@@ -137,15 +132,21 @@ public class ListenerThread extends Thread {
 							chat = server.getChatroom(id);
 							sendMessage(ChatProtocol.REQUEST_ACCEPT, damp);
 							sendMessage(ChatProtocol.SEND_FILE, SUCCESS);
+=======
+							id = Integer.valueOf(args[2]);
+							u = server.getUser(id);
+							u.sendMessage(ChatProtocol.SEND_REQUEST, args[1], String.valueOf(user.getId()), args[3], args[4]);
+>>>>>>> 463d27a3c596ed27bcfc4c131c3c31aced265d70
 							break;
-						case RECEIVE_FILE:
-							id = Integer.valueOf(args[1]);
-							sendMessage(ChatProtocol.RECEIVE_FILE, SUCCESS);
+						case SEND_REQUEST:
+							if (args[1].equals(SUCCESS)) {
+								id = Integer.valueOf(args[3]);
+								u = server.getUser(id);
+								u.sendMessage(ChatProtocol.SEND_FILE, SUCCESS, args[2], String.valueOf(user.getId()), args[4], args[5]);
+							}
 							break;
 						default:
-							writer.write(args[0]+" "+FAIL);
-							writer.newLine();
-							writer.flush();
+							user.getOutputStream().write((args[0]+" "+FAIL+"\n").getBytes());
 							throw new Exception();
 					}
 				} catch (UnsupportedOperationException e) {
@@ -166,25 +167,8 @@ public class ListenerThread extends Thread {
 	private void disconnect() {
 		try {
 			reader.close();
-			writer.close();
 			user.closeConnection();
 		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void sendMessage(ChatProtocol type, String... args) {
-		StringBuilder sb = new StringBuilder(type.toString());
-		for(String arg : args) {
-			sb.append(" "+arg);
-		}
-		
-		try {
-			writer.write(sb.toString());
-			writer.newLine();
-			writer.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

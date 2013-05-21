@@ -13,7 +13,9 @@ import shared.ChatProtocol;
 
 
 public class ChatClient {
-	
+	public static final String SUCCESS = "1";
+	public static final String FAIL = "0";
+
 	private ClientGUI gui;
 	private BufferedWriter writer;
 
@@ -74,43 +76,40 @@ public class ChatClient {
 		}
 	}
 	
-	public void sendFileToServer(Object[] args, int id) {
-		ServerSocket serverSocket;
-		String[] sendingInfo = new String[5];
+	public void setupFileSender(int chatid, int userid, String fileName, File file) {
+		this.file = file;
+		sendMessage(ChatProtocol.SEND_FILE, String.valueOf(chatid), String.valueOf(userid), fileName, String.valueOf(file.length()));
+	}
+
+	public void startSendingFile(int chatid, int userid, String host, int port) {
+		Thread sender = new FileSenderThread(gui, chatid, userid, host, port, file);
+		sender.start();
+	}
+
+	public void setupFileReciever(int chatid, int userid, File file, int size) {
 		try {
-			serverSocket = new ServerSocket();
-			int i = serverSocket.getLocalPort();
-			System.out.println(i);
-			Thread sender = new FileSenderThread(serverSocket, (File) args[0], this, id);
-			sender.start();
-			sendingInfo[0] = (String) args[3];
-			sendingInfo[1] = String.valueOf(i);
-			sendingInfo[2] = (String) args[1];
-			sendingInfo[3] = String.valueOf(((File) args[0]).length());
-			sendingInfo[4] = (String) args[2];
-			sendMessage(ChatProtocol.SEND_FILE, sendingInfo);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		}
-		
-		public void receiveFile(String address, int port, File file, int size, int id) {
-			Thread receiver = new FileReceiverThread(address, port, file, size, this, id);
+			ServerSocket socket = new ServerSocket(0);
+			int port = socket.getLocalPort();
+			String host = "localhost";
+			Thread receiver = new FileReceiverThread(gui, chatid, userid, socket, file, size);
 			receiver.start();
-			sendMessage(ChatProtocol.RECEIVE_FILE);
+			sendMessage(ChatProtocol.SEND_REQUEST, SUCCESS, String.valueOf(chatid), String.valueOf(userid), host, String.valueOf(port));
+		} catch (IOException e) {
+			e.printStackTrace();
+			sendMessage(ChatProtocol.SEND_REQUEST, FAIL);
+		}
 	}
 		
-		public void fileTransferComplete(int id, String fileName){
-			gui.pushText(1, fileName + " has been sent successfully");
-		}
-		
-		public void fileTransferFailed(int id, String fileName){
-			gui.pushText(1, "An error occured while sending " + fileName);
-		}
+	public void fileTransferComplete(int id, String fileName){
+		gui.pushText(1, fileName + " has been sent successfully");
+	}
+	
+	public void fileTransferFailed(int id, String fileName){
+		gui.pushText(1, "An error occured while sending " + fileName);
+	}
 
-		public void fileTransferTimedOut(int id, String fileName){
-			gui.pushText(1, "Timeout occured while sending " + fileName);
-}
+	public void fileTransferTimedOut(int id, String fileName){
+		gui.pushText(1, "Timeout occured while sending " + fileName);
+	}
 	
 }

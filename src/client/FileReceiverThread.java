@@ -4,29 +4,36 @@ import java.net.*;
 import java.io.*;
 public class FileReceiverThread extends Thread  {
 	
-	int size;
-	File file;
-	String address;
-	int port;
-	ChatClient client;
-	int id;
-	
-	public FileReceiverThread(String address, int port, File file, int size, ChatClient client, int id){
-		this.client = client;
-		this.size = size;
-		this.file = file;
-		 this.address = address;
-		 this.port = port;
-		 this.id = id;
+	private ClientGUI gui;
+    private int chatid;
+    private int userid;
+    private ServerSocket socket;
+    private File file;
+    private int size;
+
+	public FileReceiverThread(ClientGUI gui, int chatid, int userid, ServerSocket socket, File file, int size){
+        this.gui = gui;
+        this.chatid = chatid;
+        this.userid = userid;
+        this.socket = socket;
+        this.file = file;
+        this.size = size;
+
+        try {
+            socket.setSoTimeout(10000);
+        } catch (SocketException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 	}
  
     public void run() {
         try{
         int bytesRead;
         int currentTot = 0;
-        Socket socket = new Socket(address,port);
+        Socket sender = socket.accept();
         byte [] bytearray  = new byte [size];
-        InputStream is = socket.getInputStream();
+        InputStream is = sender.getInputStream();
         FileOutputStream fos = new FileOutputStream(file);
         BufferedOutputStream bos = new BufferedOutputStream(fos);
         bytesRead = is.read(bytearray,0,bytearray.length);
@@ -41,11 +48,12 @@ public class FileReceiverThread extends Thread  {
         bos.write(bytearray, 0 , currentTot);
         bos.flush();
         bos.close();
+        sender.close();
         socket.close();
-        client.fileTransferComplete(id, file.getName());
+        // client.fileTransferComplete(id, file.getName());
         }
         catch(Exception e){
-        	client.fileTransferFailed(id, file.getName());
+        	// client.fileTransferFailed(id, file.getName());
         	e.printStackTrace();
         }
       }

@@ -27,7 +27,7 @@ public class ChatServer {
 		users = new HashMap<Integer, User>();
 		
 		try {
-			SocketAddress address = new InetSocketAddress(port); 
+			SocketAddress address = new InetSocketAddress(port);
 			ServerSocket socket = new ServerSocket();
 			socket.bind(address);
 			System.out.println("Chat server - started!");

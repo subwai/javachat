@@ -18,6 +18,8 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import shared.ChatProtocol;
+
 
 import shared.UneditableTextField;
 
@@ -31,15 +33,18 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 	UneditableTextField searchPath;
 	UneditableTextField progress;
 	Socket socket;
+
+	ChatClient client;
+	int chatid;
+	int userid;
 	String user;
 	Object[] args;
-	ChatClient client;
-	int id;
 	
-	FileTransferGUI(ChatClient client, String user, int id){
+	FileTransferGUI(ChatClient client, String user, int userid, int chatid){
 		super("Send file to " +user);
 		this.user = user;
-		this.id = id;
+		this.userid = userid;
+		this.chatid = chatid;
 		chooser = new JFileChooser();
 		this.client = client;
 		Border border = new LineBorder(Color.black);
@@ -59,36 +64,40 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 		progress = new UneditableTextField("");
 		progress.setBorder(new TitledBorder(border, "Status"));
 		add(progress, BorderLayout.SOUTH);
-		args = new Object[4];
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	public static void main(String[] args){
-		JFrame j = new FileTransferGUI(null, "Naxon", 1);
+		JFrame j = new FileTransferGUI(null, "Naxon", 1, 1);
 		j.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == send){
-			if(args[0] != null || args[1] != null){
-			client.sendFileToServer(args, id);
-			args = new Object[4];
-			
+		if (e.getSource() == send){
+			if (args != null) {
+				client.setupFileSender(chatid, userid, String.valueOf(args[0]), (File)args[1]);
+			}
+			return;
 		}
+<<<<<<< HEAD
 		} else if (e.getSource() == browse){
 			if(chooser.showOpenDialog(new JFrame()) == JFileChooser.APPROVE_OPTION){
+=======
+
+		if (e.getSource() == browse) {
+			JFrame j = new JFrame();
+			j.setVisible(true);
+			if(chooser.showOpenDialog(j) == JFileChooser.APPROVE_OPTION){
+>>>>>>> 463d27a3c596ed27bcfc4c131c3c31aced265d70
 				
 				File file = chooser.getSelectedFile();
-				args[0] = file;
-				args[1] = chooser.getName(file);
-				args[2] = user;
-				args[3] = String.valueOf(id);
-				searchPath.setText(file.getAbsolutePath()); 
-				
-				
+				args = new Object[2];
+				args[0] = chooser.getName(file);
+				args[1] = file;
+				searchPath.setText(file.getAbsolutePath());
 			}
+			return;
 		}
-		
 	}
 }
