@@ -129,7 +129,7 @@ public class ListenerThread extends Thread {
 							id = Integer.valueOf(args[1]);
 							int i = 0;
 							String[] damp = new String[args.length - 1];
-							while(args[i + 1] != null){
+							while(args[i + 1] != null && i < 6){
 								damp[i] = args[i + 1];
 								i++;
 							}

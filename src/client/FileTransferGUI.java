@@ -59,7 +59,7 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 		progress = new UneditableTextField("");
 		progress.setBorder(new TitledBorder(border, "Status"));
 		add(progress, BorderLayout.SOUTH);
-		args = new Object[2];
+		args = new Object[4];
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
@@ -75,8 +75,10 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 			client.sendFileToServer(args, id);
 			args = new Object[4];
 			
+		}
 		} else if (e.getSource() == browse){
 			JFrame j = new JFrame();
+			j.setVisible(true);
 			if(chooser.showOpenDialog(j) == JFileChooser.APPROVE_OPTION){
 				
 				File file = chooser.getSelectedFile();
@@ -91,5 +93,4 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 		}
 		
 	}
-}
 }

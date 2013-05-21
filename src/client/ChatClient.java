@@ -80,6 +80,7 @@ public class ChatClient {
 		try {
 			serverSocket = new ServerSocket();
 			int i = serverSocket.getLocalPort();
+			System.out.println(i);
 			Thread sender = new FileSenderThread(serverSocket, (File) args[0], this, id);
 			sender.start();
 			sendingInfo[0] = (String) args[3];
