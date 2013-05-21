@@ -206,7 +206,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	
 	protected void addChat(int chatID){
 		if (chatID != thisChatroom) {
-			Client2ClientGUI p2p = new Client2ClientGUI(client, chatID);
+			Client2ClientGUI p2p = new Client2ClientGUI(client, chatID, username);
 			chatrooms.put(chatID, p2p);
 		}
 	}
@@ -268,7 +268,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		}
 	}
 	
-	protected void userLoggedout(int chatID, int userid, String name){
+	protected void removeLoggedinUser(int chatID, int userid, String name){
 		if (chatID != 0) {
 			chatrooms.get(chatID); // remove from this chatroom
 		} else {

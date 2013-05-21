@@ -81,12 +81,10 @@ public class ListenerThread extends Thread {
 							id = Integer.valueOf(args[1]);
 							server.joinChatroom(id, user);
 							sendMessage(ChatProtocol.JOIN_CHATROOM, SUCCESS, args[1]);
-							if(args[1].equals(DEFAULT_CHATROOM)){
-								chat = server.getChatroom(id);
-								for(User u : chat.getUsers()) {
-									if(u.getId() != user.getId()) {
-										sendMessage(ChatProtocol.USER_JOINED, String.valueOf(id), SUCCESS, String.valueOf(u.getId()), u.getName());
-									}
+							chat = server.getChatroom(id);
+							for (User u : chat.getUsers()) {
+								if(u.getId() != user.getId()) {
+									sendMessage(ChatProtocol.USER_JOINED, String.valueOf(id), SUCCESS, String.valueOf(u.getId()), u.getName());
 								}
 							}
 							break;
@@ -94,14 +92,8 @@ public class ListenerThread extends Thread {
 							id = Integer.valueOf(args[1]);
 							server.leaveChatroom(id, user);
 							sendMessage(ChatProtocol.LEAVE_CHATROOM, SUCCESS);
-							if(args[1].equals(DEFAULT_CHATROOM)){
-								chat = server.getChatroom(id);
-								for(User u : chat.getUsers()) {
-									if(u.getId() != user.getId()) {
-										sendMessage(ChatProtocol.USER_LEFT, String.valueOf(id), SUCCESS, String.valueOf(u.getId()), u.getName());
-									}
-								}
-							}
+							chat = server.getChatroom(id);
+							chat.pushMessage(ChatProtocol.USER_LEFT, String.valueOf(id), SUCCESS, String.valueOf(user.getId()), user.getName());
 							break;
 						case CREATE_CHATROOM:
 							id = server.createChatroom(user);
@@ -111,6 +103,9 @@ public class ListenerThread extends Thread {
 							chat = server.getChatroom(id);
 							chat.addUser(other);
 							chat.pushMessage(ChatProtocol.CREATE_CHATROOM, SUCCESS);
+							for (User u : chat.getUsers()) {
+								chat.pushMessage(ChatProtocol.USER_JOINED, SUCCESS, String.valueOf(u.getId()), u.getName());
+							}
 							break;
 						case SET_CHATROOM_TITLE:
 							id = Integer.valueOf(args[1]);

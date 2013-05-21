@@ -112,8 +112,10 @@ public class ClientListenerThread extends Thread {
 							}
 							break;
 						case USER_LEFT:
-							// update client user list;
-							gui.userLoggedout(Integer.valueOf(args[1]), Integer.valueOf(args[3]), args[4]);
+							if (args[2].equals(SUCCESS)) {
+								// update client user list;
+								gui.removeLoggedinUser(Integer.valueOf(args[1]), Integer.valueOf(args[3]), args[4]);
+							}
 							break;
 						case USER_KICKED:
 							if (args[1].equals(SUCCESS)) {

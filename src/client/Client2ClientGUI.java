@@ -35,16 +35,20 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 	// the name of the other chatter
 	private String chatee;
 	private HashMap<String, Integer> userIds;
+
+	private String username;
 	
 	private Socket socket;
 	
 	private File file;
 	
 	// Constructor connection receiving a socket number
-	Client2ClientGUI(ChatClient client, int thisChatroom) {
+	Client2ClientGUI(ChatClient client, int thisChatroom, String username) {
 		super("Chat Client");
 		this.client = client;
 		this.thisChatroom = thisChatroom;
+		this.username = username;
+		userIds = new HashMap<String, Integer>();
 		
 		// The northPanel which is the chat room
 		ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
@@ -90,7 +94,6 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 	}
 
 	public void append(String str) {
-		System.out.println(str);
 		ta.append(str+System.getProperty("line.separator"));
 		ta.setCaretPosition(ta.getText().length() - 1);
 	}
@@ -111,7 +114,13 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 
 	public void addChatee(int userid, String name) {
 		userIds.put(name, userid);
-		chatee = name; // This is fine since we only expect 2 person conversations. However if more people would join, this will not work.
+		// This is fine since we only expect 2 person conversations. However if more people would join, this will not work.
+		if (!name.equals(username)) {
+			chatee = name;
+			System.out.println("name "+name+username);
+			label.setText("Private Session with "+name);
+			sendFile.setToolTipText("Opens a pane to select which file you wish to send to "+name);
+		}
 	}
 		
 	/*
