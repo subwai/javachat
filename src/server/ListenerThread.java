@@ -81,11 +81,12 @@ public class ListenerThread extends Thread {
 							id = Integer.valueOf(args[1]);
 							server.joinChatroom(id, user);
 							sendMessage(ChatProtocol.JOIN_CHATROOM, SUCCESS, args[1]);
-							if(Integer.valueOf(DEFAULT_CHATROOM)==id){
-								chat = server.getChatroom(0);
-								for(User u: chat.getUsers()){
-									if(u.getId() != user.getId())
-										sendMessage(ChatProtocol.USER_JOINED, SUCCESS, String.valueOf(u.getId()), u.getName());
+							if(args[1].equals(DEFAULT_CHATROOM)){
+								chat = server.getChatroom(id);
+								for(User u : chat.getUsers()) {
+									if(u.getId() != user.getId()) {
+										sendMessage(ChatProtocol.USER_JOINED, String.valueOf(id), SUCCESS, String.valueOf(u.getId()), u.getName());
+									}
 								}
 							}
 							break;
