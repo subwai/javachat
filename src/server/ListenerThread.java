@@ -105,6 +105,22 @@ public class ListenerThread extends Thread {
 							String kickName = args[1];
 							//kick user with name kickName.
 							break;
+						case SEND_FILE:
+							id = Integer.valueOf(args[1]);
+							int i = 0;
+							String[] damp = new String[args.length - 2];
+							while(args[i + 2] != null){
+								damp[i] = args[i + 2];
+								i++;
+							}
+							sendMessage(ChatProtocol.REQUEST_ACCEPT, damp);
+							sendMessage(ChatProtocol.SEND_FILE, SUCCESS);
+							//kick user with name kickName.
+							break;
+						case RECEIVE_FILE:
+							id = Integer.valueOf(args[1]);
+							sendMessage(ChatProtocol.SEND_FILE, SUCCESS);
+							break;
 						default:
 							writer.write(args[0]+" "+FAIL);
 							writer.newLine();
