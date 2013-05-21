@@ -77,9 +77,7 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 			
 		}
 		} else if (e.getSource() == browse){
-			JFrame j = new JFrame();
-			j.setVisible(true);
-			if(chooser.showOpenDialog(j) == JFileChooser.APPROVE_OPTION){
+			if(chooser.showOpenDialog(new JFrame()) == JFileChooser.APPROVE_OPTION){
 				
 				File file = chooser.getSelectedFile();
 				args[0] = file;

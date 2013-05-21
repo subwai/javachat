@@ -134,6 +134,7 @@ public class ListenerThread extends Thread {
 								damp[i] = args[i + 1];
 								i++;
 							}
+							chat = server.getChatroom(id);
 							sendMessage(ChatProtocol.REQUEST_ACCEPT, damp);
 							sendMessage(ChatProtocol.SEND_FILE, SUCCESS);
 							break;
