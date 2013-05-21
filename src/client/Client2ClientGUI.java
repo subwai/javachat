@@ -117,7 +117,6 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 		// This is fine since we only expect 2 person conversations. However if more people would join, this will not work.
 		if (!name.equals(username)) {
 			chatee = name;
-			System.out.println("name "+name+username);
 			label.setText("Private Session with "+name);
 			sendFile.setToolTipText("Opens a pane to select which file you wish to send to "+name);
 		}

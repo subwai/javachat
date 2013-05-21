@@ -118,10 +118,11 @@ public class ListenerThread extends Thread {
 							id = Integer.valueOf(args[1]);
 							//kick user with name kickName.
 							User u =server.getUser(id);
-							BufferedWriter TEMPwriter = new BufferedWriter(new OutputStreamWriter(u.getOutputStream()));
-							TEMPwriter.write(ChatProtocol.LOGOUT.toString() + " " + String.valueOf(SUCCESS));
-							TEMPwriter.newLine();
-							TEMPwriter.flush();
+							BufferedWriter tmpWriter = new BufferedWriter(new OutputStreamWriter(u.getOutputStream()));
+							tmpWriter.write(ChatProtocol.LOGOUT.toString() + " " + String.valueOf(SUCCESS));
+							tmpWriter.newLine();
+							tmpWriter.flush();
+							tmpWriter.close();
 							server.leaveAllChatrooms(u);
 							sendMessage(ChatProtocol.USER_KICKED, SUCCESS, u.getName());
 							break;
