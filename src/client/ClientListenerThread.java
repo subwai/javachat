@@ -123,7 +123,18 @@ public class ClientListenerThread extends Thread {
 						case SEND_FILE:
 							if (args[1].equals(SUCCESS)) {
 								
-								String selectedUser = args[2];
+							}
+						case REQUEST_ACCEPT:
+							if (!args[5].equals(gui.getUsername())) {
+								id = Integer.valueOf(args[1]);
+								int i = 0;
+								String[] damp = new String[args.length - 2];
+								while(args[i + 2] != null){
+									damp[i] = args[i + 2];
+									i++;
+								}
+								JFrame j = new FileReceiverGUI(client, damp);
+								j.setVisible(true);
 							}
 							break;
 						default:

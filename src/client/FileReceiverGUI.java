@@ -54,18 +54,18 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 	
 	private int port;
 	
-	private InetAddress address;
+	private String address;
 	
 	private int size;
 	
 	ChatClient client;
 
-	public FileReceiverGUI(Object[] args) {
+	public FileReceiverGUI(ChatClient client, String[] args) {
 		super("File from " + (String) args[4]);
-		address = (InetAddress) args[0]; 
-		port =	(int) args[1]; 
+		address = args[0]; 
+		port =	Integer.valueOf(args[1]); 
 		filename = (String) args[2];
-		size = (int) args[3];
+		size = Integer.valueOf(args[3]);
 		Border border = new LineBorder(Color.black);
 		setLayout(new BorderLayout());
 		setSize(700, 200);

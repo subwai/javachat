@@ -6,10 +6,10 @@ public class FileReceiverThread extends Thread  {
 	
 	int size;
 	File file;
-	InetAddress address;
+	String address;
 	int port;
 	
-	public FileReceiverThread(InetAddress address, int port, File file, int size){
+	public FileReceiverThread(String address, int port, File file, int size){
 		this.size = size;
 		this.file = file;
 		 this.address = address;
