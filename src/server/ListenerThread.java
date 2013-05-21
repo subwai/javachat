@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.ArrayList;
@@ -114,8 +115,15 @@ public class ListenerThread extends Thread {
 							sendMessage(ChatProtocol.SET_CHATROOM_TITLE, SUCCESS);
 							break;
 						case USER_KICKED:
-							String kickName = args[1];
+							id = Integer.valueOf(args[1]);
 							//kick user with name kickName.
+							User u =server.getUser(id);
+							BufferedWriter TEMPwriter = new BufferedWriter(new OutputStreamWriter(u.getOutputStream()));
+							TEMPwriter.write(ChatProtocol.LOGOUT.toString() + " " + String.valueOf(SUCCESS));
+							TEMPwriter.newLine();
+							TEMPwriter.flush();
+							server.leaveAllChatrooms(u);
+							sendMessage(ChatProtocol.USER_KICKED, SUCCESS, u.getName());
 							break;
 						case SEND_FILE:
 							id = Integer.valueOf(args[1]);

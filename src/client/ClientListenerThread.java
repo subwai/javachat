@@ -120,12 +120,14 @@ public class ClientListenerThread extends Thread {
 						case USER_KICKED:
 							if (args[1].equals(SUCCESS)) {
 								// kick user
-								String selectedUser = args[2];
+								gui.pushText(Integer.valueOf(DEFAULT_CHATROOM), "User: "+ args[2] + " kicked!");
 							}
+							break;
 						case SEND_FILE:
 							if (args[1].equals(SUCCESS)) {
 								
 							}
+							break;
 						case REQUEST_ACCEPT:
 							if (!args[5].equals(gui.getUsername())) {
 								id = Integer.valueOf(args[1]);
