@@ -130,8 +130,8 @@ public class ListenerThread extends Thread {
 								i++;
 							}
 							chat = server.getChatroom(id);
-							sendMessage(ChatProtocol.REQUEST_ACCEPT, damp);
-							sendMessage(ChatProtocol.SEND_FILE, SUCCESS);
+							user.sendMessage(ChatProtocol.REQUEST_ACCEPT, damp);
+							user.sendMessage(ChatProtocol.SEND_FILE, SUCCESS);
 							break;
 						case SEND_REQUEST:
 							if (args[1].equals(SUCCESS)) {
