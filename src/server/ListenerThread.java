@@ -136,11 +136,10 @@ public class ListenerThread extends Thread {
 							}
 							sendMessage(ChatProtocol.REQUEST_ACCEPT, damp);
 							sendMessage(ChatProtocol.SEND_FILE, SUCCESS);
-							//kick user with name kickName.
 							break;
 						case RECEIVE_FILE:
 							id = Integer.valueOf(args[1]);
-							sendMessage(ChatProtocol.SEND_FILE, SUCCESS);
+							sendMessage(ChatProtocol.RECEIVE_FILE, SUCCESS);
 							break;
 						default:
 							writer.write(args[0]+" "+FAIL);

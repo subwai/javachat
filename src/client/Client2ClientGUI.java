@@ -129,7 +129,7 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o == sendFile && chatee != null){
-			JFrame j = new FileTransferGUI(client, chatee);
+			JFrame j = new FileTransferGUI(client, chatee, thisChatroom);
 			j.setVisible(true);
 			return;
 		}

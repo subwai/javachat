@@ -34,10 +34,12 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 	String user;
 	Object[] args;
 	ChatClient client;
+	int id;
 	
-	FileTransferGUI(ChatClient client, String user){
+	FileTransferGUI(ChatClient client, String user, int id){
 		super("Send file to " +user);
 		this.user = user;
+		this.id = id;
 		chooser = new JFileChooser();
 		this.client = client;
 		Border border = new LineBorder(Color.black);
@@ -62,7 +64,7 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 	}
 	
 	public static void main(String[] args){
-		JFrame j = new FileTransferGUI(null, "Naxon");
+		JFrame j = new FileTransferGUI(null, "Naxon", 1);
 		j.setVisible(true);
 	}
 
@@ -70,8 +72,8 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == send){
 			if(args[0] != null || args[1] != null){
-			client.sendFileToServer(args);
-			args = new Object[3];
+			client.sendFileToServer(args, id);
+			args = new Object[4];
 			
 		} else if (e.getSource() == browse){
 			JFrame j = new JFrame();
@@ -81,6 +83,7 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 				args[0] = file;
 				args[1] = chooser.getName(file);
 				args[2] = user;
+				args[3] = String.valueOf(id);
 				searchPath.setText(file.getAbsolutePath()); 
 				
 				
