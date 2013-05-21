@@ -115,7 +115,6 @@ public class ClientListenerThread extends Thread {
 						case USER_LEFT:
 							if (args[2].equals(SUCCESS)) {
 								// update client user list;
-								System.out.print(args[4]);
 								gui.removeLoggedinUser(Integer.valueOf(args[1]), Integer.valueOf(args[3]), args[4]);
 							}
 							break;
