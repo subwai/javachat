@@ -205,6 +205,10 @@ public class ClientGUI extends JFrame implements ActionListener {
 		Client2ClientGUI p2p = chatrooms.remove(chatID);
 		p2p.dispose();
 	}
+	
+	public String getUsername(){
+		return username;
+	}
 
 	protected void login(Boolean admin){
 		this.admin = admin;

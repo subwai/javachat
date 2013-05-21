@@ -117,9 +117,9 @@ public class ListenerThread extends Thread {
 						case SEND_FILE:
 							id = Integer.valueOf(args[1]);
 							int i = 0;
-							String[] damp = new String[args.length - 2];
-							while(args[i + 2] != null){
-								damp[i] = args[i + 2];
+							String[] damp = new String[args.length - 1];
+							while(args[i + 1] != null){
+								damp[i] = args[i + 1];
 								i++;
 							}
 							sendMessage(ChatProtocol.REQUEST_ACCEPT, damp);

@@ -76,7 +76,7 @@ public class ChatClient {
 	
 	public void sendFileToServer(Object[] args) {
 		ServerSocket serverSocket;
-		String[] sendingInfo = new String[2];
+		String[] sendingInfo = new String[3];
 		try {
 			serverSocket = new ServerSocket();
 			int i = serverSocket.getLocalPort();
@@ -85,6 +85,7 @@ public class ChatClient {
 			sendingInfo[0] = String.valueOf(i);
 			sendingInfo[1] = (String) args[1];
 			sendingInfo[2] = String.valueOf(((File) args[0]).length());
+			sendingInfo[3] = gui.getUsername();
 			sendMessage(ChatProtocol.SEND_FILE, sendingInfo);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -92,7 +93,7 @@ public class ChatClient {
 		}
 		}
 		
-		public void receiveFile(InetAddress address, int port, File file, int size) {
+		public void receiveFile(String address, int port, File file, int size) {
 			Thread receiver = new FileReceiverThread(address, port, file, size);
 			receiver.start();
 			sendMessage(ChatProtocol.RECEIVE_FILE);
