@@ -79,20 +79,11 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 				client.setupFileSender(chatid, userid, String.valueOf(args[0]), (File)args[1]);
 			}
 			return;
-<<<<<<< HEAD
 
 		} else if (e.getSource() == browse){
 			if(chooser.showOpenDialog(new JFrame()) == JFileChooser.APPROVE_OPTION){
 
-=======
-		}
 
-		if (e.getSource() == browse) {
-			JFrame j = new JFrame();
-			j.setVisible(true);
-			if(chooser.showOpenDialog(j) == JFileChooser.APPROVE_OPTION){
-				
->>>>>>> 463d27a3c596ed27bcfc4c131c3c31aced265d70
 				File file = chooser.getSelectedFile();
 				args = new Object[2];
 				args[0] = chooser.getName(file);
