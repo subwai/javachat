@@ -112,13 +112,17 @@ public class ClientListenerThread extends Thread {
 							}
 							break;
 						case USER_LEFT:
-							// update client user list;
+							if (args[2].equals(SUCCESS)) {
+								// update client user list;
+								gui.removeLoggedinUser(Integer.valueOf(args[1]), Integer.valueOf(args[3]), args[4]);
+							}
 							break;
 						case USER_KICKED:
 							if (args[1].equals(SUCCESS)) {
 								// kick user
-								String selectedUser = args[2];
+								gui.pushText(Integer.valueOf(DEFAULT_CHATROOM), "User: "+ args[2] + " kicked!");
 							}
+							break;
 						case SEND_FILE:
 							if (args[1].equals(SUCCESS)) {
 								id = Integer.valueOf(args[2]);
@@ -131,6 +135,7 @@ public class ClientListenerThread extends Thread {
 								gui.pushText(id, "File transfer accepted");
 								break;
 							}
+							break;
 						case REQUEST_ACCEPT:
 							if (args[5].equals(gui.getUsername())) {
 								id = Integer.valueOf(args[1]);

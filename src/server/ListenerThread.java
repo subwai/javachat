@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.ArrayList;
@@ -81,12 +82,10 @@ public class ListenerThread extends Thread {
 							id = Integer.valueOf(args[1]);
 							server.joinChatroom(id, user);
 							sendMessage(ChatProtocol.JOIN_CHATROOM, SUCCESS, args[1]);
-							if(args[1].equals(DEFAULT_CHATROOM)){
-								chat = server.getChatroom(id);
-								for(User u : chat.getUsers()) {
-									if(u.getId() != user.getId()) {
-										sendMessage(ChatProtocol.USER_JOINED, String.valueOf(id), SUCCESS, String.valueOf(u.getId()), u.getName());
-									}
+							chat = server.getChatroom(id);
+							for (User u : chat.getUsers()) {
+								if(u.getId() != user.getId()) {
+									sendMessage(ChatProtocol.USER_JOINED, String.valueOf(id), SUCCESS, String.valueOf(u.getId()), u.getName());
 								}
 							}
 							break;
@@ -94,6 +93,8 @@ public class ListenerThread extends Thread {
 							id = Integer.valueOf(args[1]);
 							server.leaveChatroom(id, user);
 							sendMessage(ChatProtocol.LEAVE_CHATROOM, SUCCESS);
+							chat = server.getChatroom(id);
+							chat.pushMessage(ChatProtocol.USER_LEFT, String.valueOf(id), SUCCESS, String.valueOf(user.getId()), user.getName());
 							break;
 						case CREATE_CHATROOM:
 							id = server.createChatroom(user);
@@ -103,6 +104,9 @@ public class ListenerThread extends Thread {
 							chat = server.getChatroom(id);
 							chat.addUser(other);
 							chat.pushMessage(ChatProtocol.CREATE_CHATROOM, SUCCESS);
+							for (User u : chat.getUsers()) {
+								chat.pushMessage(ChatProtocol.USER_JOINED, SUCCESS, String.valueOf(u.getId()), u.getName());
+							}
 							break;
 						case SET_CHATROOM_TITLE:
 							id = Integer.valueOf(args[1]);
@@ -111,8 +115,15 @@ public class ListenerThread extends Thread {
 							sendMessage(ChatProtocol.SET_CHATROOM_TITLE, SUCCESS);
 							break;
 						case USER_KICKED:
-							String kickName = args[1];
+							id = Integer.valueOf(args[1]);
 							//kick user with name kickName.
+							User u =server.getUser(id);
+							BufferedWriter TEMPwriter = new BufferedWriter(new OutputStreamWriter(u.getOutputStream()));
+							TEMPwriter.write(ChatProtocol.LOGOUT.toString() + " " + String.valueOf(SUCCESS));
+							TEMPwriter.newLine();
+							TEMPwriter.flush();
+							server.leaveAllChatrooms(u);
+							sendMessage(ChatProtocol.USER_KICKED, SUCCESS, u.getName());
 							break;
 						case SEND_FILE:
 							id = Integer.valueOf(args[1]);

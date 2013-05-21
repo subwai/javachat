@@ -115,10 +115,19 @@ public class ClientGUI extends JFrame implements ActionListener {
 		add(eastpanel,BorderLayout.EAST);
 		add(southPanel, BorderLayout.SOUTH);
 
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(600, 600);
 		setVisible(true);
 		tf.requestFocus();
+		
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	if(ClientGUI.this.connected){
+		    		client.sendMessage(ChatProtocol.LOGOUT);
+		    	}
+		        ClientGUI.this.dispose();
+		    }
+		});
 
 	}
 
@@ -148,6 +157,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 			chatrooms.get(id).append(message);
 		}
 	}
+	
+	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -195,7 +206,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	
 	protected void addChat(int chatID){
 		if (chatID != thisChatroom) {
-			Client2ClientGUI p2p = new Client2ClientGUI(client, chatID);
+			Client2ClientGUI p2p = new Client2ClientGUI(client, chatID, username);
 			chatrooms.put(chatID, p2p);
 		}
 	}
@@ -254,6 +265,15 @@ public class ClientGUI extends JFrame implements ActionListener {
 		} else {
 			userIds.put(name, userid);
 			nameListModel.addElement(name);
+		}
+	}
+	
+	protected void removeLoggedinUser(int chatID, int userid, String name){
+		if (chatID != 0) {
+			chatrooms.get(chatID); // remove from this chatroom
+		} else {
+			userIds.remove(name);
+			nameListModel.removeElement(name);
 		}
 	}
 	
