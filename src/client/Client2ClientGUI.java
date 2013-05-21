@@ -90,7 +90,6 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 		setSize(600, 600);
 		setVisible(true);
 		tf.requestFocus();
-
 	}
 
 	public void append(String str) {
@@ -129,7 +128,7 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o == sendFile && chatee != null){
-			JFrame j = new FileTransferGUI(client, chatee, thisChatroom);
+			JFrame j = new FileTransferGUI(client, chatee, userIds.get(chatee), thisChatroom);
 			j.setVisible(true);
 			return;
 		}

@@ -2,6 +2,7 @@ package client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.File;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.List;
@@ -126,28 +127,14 @@ public class ClientListenerThread extends Thread {
 						case SEND_FILE:
 							if (args[1].equals(SUCCESS)) {
 								id = Integer.valueOf(args[2]);
+								client.startSendingFile(id, Integer.valueOf(args[3]), args[4], Integer.valueOf(args[5]));
+								
 								gui.pushText(id, "File transfer request sent");
-								break;
-							}
-						case RECEIVE_FILE:
-							if (args[1].equals(SUCCESS)) {
-								id = Integer.valueOf(args[2]);
-								gui.pushText(id, "File transfer accepted");
-								break;
 							}
 							break;
-						case REQUEST_ACCEPT:
-							if (args[5].equals(gui.getUsername())) {
-								id = Integer.valueOf(args[1]);
-								int i = 0;
-								String[] damp = new String[args.length - 2];
-								while(args[i + 2] != null){
-									damp[i] = args[i + 2];
-									i++;
-								}
-								JFrame j = new FileReceiverGUI(client, damp, id);
-								j.setVisible(true);
-							}
+						case SEND_REQUEST:
+							JFrame j = new FileReceiverGUI(client, Integer.valueOf(args[1]), Integer.valueOf(args[2]), args[3], Integer.valueOf(args[4]));
+							j.setVisible(true);
 							break;
 						default:
 							throw new UnsupportedOperationException();
