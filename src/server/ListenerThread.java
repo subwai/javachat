@@ -121,17 +121,9 @@ public class ListenerThread extends Thread {
 							user.sendMessage(ChatProtocol.USER_KICKED, SUCCESS, u.getName());
 							break;
 						case SEND_FILE:
-
-							id = Integer.valueOf(args[1]);
-							int i = 0;
-							String[] damp = new String[args.length - 1];
-							while(args[i + 1] != null && i < 6){
-								damp[i] = args[i + 1];
-								i++;
-							}
-							chat = server.getChatroom(id);
-							user.sendMessage(ChatProtocol.REQUEST_ACCEPT, damp);
-							user.sendMessage(ChatProtocol.SEND_FILE, SUCCESS);
+							id = Integer.valueOf(args[2]);
+							u = server.getUser(id);
+							u.sendMessage(ChatProtocol.SEND_REQUEST, args[1], String.valueOf(user.getId()), args[3], args[4]);
 							break;
 						case SEND_REQUEST:
 							if (args[1].equals(SUCCESS)) {
