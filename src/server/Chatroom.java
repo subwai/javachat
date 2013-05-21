@@ -26,15 +26,11 @@ public class Chatroom {
 	}
 	
 	synchronized public void addUser(User user) {
-		pushMessage(ChatProtocol.MESSAGE,"\"User has joined the chat: "+user.getName()+"\"");
-		pushMessage(ChatProtocol.USER_JOINED, SUCCESS, String.valueOf(user.getId()), user.getName());
 		users.add(user);
 	}
 	
 	synchronized public void removeUser(User user) {
 		users.remove(user);
-		pushMessage(ChatProtocol.MESSAGE,"\"User has left the chat: "+user.getName()+"\"");
-		pushMessage(ChatProtocol.USER_LEFT, SUCCESS, String.valueOf(user.getId()), user.getName());
 	}
 	
 	synchronized public String getTitle() {

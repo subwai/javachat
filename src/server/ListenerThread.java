@@ -62,7 +62,6 @@ public class ListenerThread extends Thread {
 						case LOGIN:
 							user.setName(args[1]);
 							sendMessage(ChatProtocol.LOGIN, SUCCESS, String.valueOf(user.getId()), args[1]);
-							server.joinChatroom(Integer.valueOf(DEFAULT_CHATROOM), user);
 							break;
 						case ADMIN_LOGIN:
 							String pw = args[2];
@@ -82,6 +81,14 @@ public class ListenerThread extends Thread {
 							id = Integer.valueOf(args[1]);
 							server.joinChatroom(id, user);
 							sendMessage(ChatProtocol.JOIN_CHATROOM, SUCCESS, args[1]);
+							if(args[1].equals(DEFAULT_CHATROOM)){
+								chat = server.getChatroom(id);
+								for(User u : chat.getUsers()) {
+									if(u.getId() != user.getId()) {
+										sendMessage(ChatProtocol.USER_JOINED, String.valueOf(id), SUCCESS, String.valueOf(u.getId()), u.getName());
+									}
+								}
+							}
 							break;
 						case LEAVE_CHATROOM:
 							id = Integer.valueOf(args[1]);
@@ -89,10 +96,12 @@ public class ListenerThread extends Thread {
 							sendMessage(ChatProtocol.LEAVE_CHATROOM, SUCCESS);
 							break;
 						case CREATE_CHATROOM:
-							int userId = Integer.valueOf(args[1]);
 							id = server.createChatroom(user);
-							server.joinChatroom(id, server.getUser(userId));
+							int otherUserId = Integer.valueOf(args[1]);
+							User other = server.getUser(otherUserId);
+							other.joinChatroom(id);
 							chat = server.getChatroom(id);
+							chat.addUser(other);
 							chat.pushMessage(ChatProtocol.CREATE_CHATROOM, SUCCESS);
 							break;
 						case SET_CHATROOM_TITLE:

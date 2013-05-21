@@ -45,6 +45,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	ClientGUI(String host, int port) {
 		super("Chat Client");
 		client = new ChatClient(host, port, this);
+		chatrooms = new HashMap<Integer, Client2ClientGUI>();
 		
 		// The northPanel which is the chat room
 		ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
@@ -194,7 +195,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 	
 	protected void addChat(int chatID){
 		if (chatID != 0) {
-			Client2ClientGUI p2p = new Client2ClientGUI("Temp");
+			Client2ClientGUI p2p = new Client2ClientGUI("Privat chat");
 			chatrooms.put(chatID, p2p);
 		} else {
 			// fetch already logged in users
