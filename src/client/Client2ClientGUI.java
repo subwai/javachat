@@ -86,7 +86,6 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 		add(northPanel, BorderLayout.CENTER);
 		add(southPanel, BorderLayout.SOUTH);
 
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(600, 600);
 		setVisible(true);
 		tf.requestFocus();
