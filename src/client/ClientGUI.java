@@ -19,7 +19,7 @@ import java.util.AbstractMap.SimpleEntry;
 public class ClientGUI extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-	private final int chatroom = 0;
+	private final int thisChatroom = 0;
 	// will first hold "Username:", later on "Enter message"
 	private JLabel label;
 	// to hold the Username and later on the messages
@@ -150,11 +150,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 		connected = false;
 	}
 	
-	public void pushText(int id, String message){
-		if (id == chatroom) {
+	public void pushText(int id, String message) {
+		if (id == thisChatroom) {
 			append(message);
 		} else {
-			// push text to other chatwindow
+			chatrooms.get(id).append(message);
 		}
 	}
 	
@@ -196,7 +196,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		if((o == send && connected) || connected) {
 			if (!tf.getText().equals("")) {
 				// just have to send the message
-				client.sendMessage(ChatProtocol.MESSAGE, String.valueOf(chatroom), "\""+tf.getText()+"\"");				
+				client.sendMessage(ChatProtocol.MESSAGE, String.valueOf(thisChatroom), "\""+tf.getText()+"\"");				
 				tf.setText("");
 				tf.requestFocusInWindow();
 			}
@@ -205,11 +205,9 @@ public class ClientGUI extends JFrame implements ActionListener {
 	}
 	
 	protected void addChat(int chatID){
-		if (chatID != 0) {
-			Client2ClientGUI p2p = new Client2ClientGUI("Privat chat");
+		if (chatID != thisChatroom) {
+			Client2ClientGUI p2p = new Client2ClientGUI(client, chatID);
 			chatrooms.put(chatID, p2p);
-		} else {
-			// fetch already logged in users
 		}
 	}
 	protected void removeChat(int chatID){
@@ -259,7 +257,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 
 	protected void addLoggedinUser(int chatID, int userid, String name) {
 		if (chatID != 0) {
-			chatrooms.get(chatID); // add to this chatroom
+			chatrooms.get(chatID).addChatee(userid, name);
 		} else {
 			userIds.put(name, userid);
 			nameListModel.addElement(name);
