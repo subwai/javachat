@@ -94,6 +94,14 @@ public class ListenerThread extends Thread {
 							id = Integer.valueOf(args[1]);
 							server.leaveChatroom(id, user);
 							sendMessage(ChatProtocol.LEAVE_CHATROOM, SUCCESS);
+							if(args[1].equals(DEFAULT_CHATROOM)){
+								chat = server.getChatroom(id);
+								for(User u : chat.getUsers()) {
+									if(u.getId() != user.getId()) {
+										sendMessage(ChatProtocol.USER_LEFT, String.valueOf(id), SUCCESS, String.valueOf(u.getId()), u.getName());
+									}
+								}
+							}
 							break;
 						case CREATE_CHATROOM:
 							id = server.createChatroom(user);
