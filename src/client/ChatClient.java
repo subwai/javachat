@@ -88,12 +88,12 @@ public class ChatClient {
 
 	public void setupFileReciever(int chatid, int userid, File file, int size) {
 		try {
-			ServerSocket socket = new ServerSocket();
+			ServerSocket socket = new ServerSocket(0);
 			int port = socket.getLocalPort();
-			InetAddress host = socket.getInetAddress();
+			String host = "localhost";
 			Thread receiver = new FileReceiverThread(gui, chatid, userid, socket, file, size);
 			receiver.start();
-			sendMessage(ChatProtocol.SEND_REQUEST, SUCCESS, String.valueOf(chatid), String.valueOf(userid), host.toString(), String.valueOf(port));
+			sendMessage(ChatProtocol.SEND_REQUEST, SUCCESS, String.valueOf(chatid), String.valueOf(userid), host, String.valueOf(port));
 		} catch (IOException e) {
 			e.printStackTrace();
 			sendMessage(ChatProtocol.SEND_REQUEST, FAIL);

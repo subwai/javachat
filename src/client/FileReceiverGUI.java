@@ -56,6 +56,7 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 
 	public FileReceiverGUI(ChatClient client, int chatid, int userid, String filename, int size) {
 		super("File from " + userid);
+		this.client = client;
 		this.chatid = chatid;
 		this.sender = userid;
 		this.filename = filename;
@@ -75,7 +76,7 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 		fd.setColumns(40);
 		fd.setBorder(border);
 
-		fn = new UneditableTextField(file.getName());
+		fn = new UneditableTextField(filename);
 		fn.setColumns(21);
 		fn.setBorder(border);
 
@@ -123,10 +124,6 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 			chooser.setAcceptAllFileFilterUsed(false);
 
 			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-				System.out.println("getCurrentDirectory(): "
-						+ chooser.getCurrentDirectory());
-				System.out.println("getSelectedFile() : "
-						+ chooser.getSelectedFile());
 				searchPath = chooser.getSelectedFile().toString();
 				file = new File(searchPath + "//" + filename);
 				fd.setText(searchPath);

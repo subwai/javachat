@@ -23,7 +23,7 @@ public class FileSenderThread extends Thread {
      public void run() {
           
 		try {
-			Socket socket = new Socket(host, port);
+			Socket socket = new Socket(InetAddress.getByName(host), port);
 			// System.out.println("Accepted connection : " + socket);
 			byte [] bytearray  = new byte [(int)file.length()];
 			FileInputStream fin = new FileInputStream(file);

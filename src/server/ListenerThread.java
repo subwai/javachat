@@ -92,7 +92,7 @@ public class ListenerThread extends Thread {
 							server.leaveChatroom(id, user);
 							user.sendMessage(ChatProtocol.LEAVE_CHATROOM, SUCCESS);
 							chat = server.getChatroom(id);
-							chat.pushMessage(ChatProtocol.USER_LEFT, String.valueOf(id), SUCCESS, String.valueOf(user.getId()), user.getName());
+							chat.pushMessage(ChatProtocol.USER_LEFT, SUCCESS, String.valueOf(user.getId()), user.getName());
 							break;
 						case CREATE_CHATROOM:
 							id = server.createChatroom(user);
@@ -123,13 +123,13 @@ public class ListenerThread extends Thread {
 						case SEND_FILE:
 							id = Integer.valueOf(args[2]);
 							u = server.getUser(id);
-							u.sendMessage(ChatProtocol.SEND_REQUEST, args[1], args[2], args[3], args[4]);
+							u.sendMessage(ChatProtocol.SEND_REQUEST, args[1], String.valueOf(user.getId()), args[3], args[4]);
 							break;
 						case SEND_REQUEST:
 							if (args[1].equals(SUCCESS)) {
 								id = Integer.valueOf(args[3]);
 								u = server.getUser(id);
-								u.sendMessage(ChatProtocol.SEND_FILE, SUCCESS, args[2], args[3], args[4], args[5]);
+								u.sendMessage(ChatProtocol.SEND_FILE, SUCCESS, args[2], String.valueOf(user.getId()), args[4], args[5]);
 							}
 							break;
 						default:
