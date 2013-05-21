@@ -94,7 +94,7 @@ public class ListenerThread extends Thread {
 							server.leaveChatroom(id, user);
 							sendMessage(ChatProtocol.LEAVE_CHATROOM, SUCCESS);
 							chat = server.getChatroom(id);
-							chat.pushMessage(ChatProtocol.USER_LEFT, String.valueOf(id), SUCCESS, String.valueOf(user.getId()), user.getName());
+							chat.pushMessage(ChatProtocol.USER_LEFT, SUCCESS, String.valueOf(user.getId()), user.getName());
 							break;
 						case CREATE_CHATROOM:
 							id = server.createChatroom(user);

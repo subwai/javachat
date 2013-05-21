@@ -71,6 +71,7 @@ public class ChatServer {
 		Chatroom c = chatrooms.get(id);
 		if (c != null) {
 			user.leaveChatroom(id);
+			c.pushMessage(ChatProtocol.USER_LEFT, SUCCESS, String.valueOf(user.getId()), user.getName());
 			c.removeUser(user);
 			if (c.getUsers().isEmpty()) {
 				chatrooms.remove(id);
