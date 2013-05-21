@@ -74,18 +74,19 @@ public class ChatClient {
 		}
 	}
 	
-	public void sendFileToServer(Object[] args) {
+	public void sendFileToServer(Object[] args, int id) {
 		ServerSocket serverSocket;
-		String[] sendingInfo = new String[3];
+		String[] sendingInfo = new String[5];
 		try {
 			serverSocket = new ServerSocket();
 			int i = serverSocket.getLocalPort();
-			Thread sender = new FileSenderThread(serverSocket, (File) args[0]);
+			Thread sender = new FileSenderThread(serverSocket, (File) args[0], this, id);
 			sender.start();
-			sendingInfo[0] = String.valueOf(i);
-			sendingInfo[1] = (String) args[1];
-			sendingInfo[2] = String.valueOf(((File) args[0]).length());
-			sendingInfo[3] = gui.getUsername();
+			sendingInfo[0] = (String) args[3];
+			sendingInfo[1] = String.valueOf(i);
+			sendingInfo[2] = (String) args[1];
+			sendingInfo[3] = String.valueOf(((File) args[0]).length());
+			sendingInfo[4] = (String) args[2];
 			sendMessage(ChatProtocol.SEND_FILE, sendingInfo);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -93,10 +94,22 @@ public class ChatClient {
 		}
 		}
 		
-		public void receiveFile(String address, int port, File file, int size) {
-			Thread receiver = new FileReceiverThread(address, port, file, size);
+		public void receiveFile(String address, int port, File file, int size, int id) {
+			Thread receiver = new FileReceiverThread(address, port, file, size, this, id);
 			receiver.start();
 			sendMessage(ChatProtocol.RECEIVE_FILE);
 	}
+		
+		public void fileTransferComplete(int id, String fileName){
+			gui.pushText(1, fileName + " has been sent successfully");
+		}
+		
+		public void fileTransferFailed(int id, String fileName){
+			gui.pushText(1, "An error occured while sending " + fileName);
+		}
+
+		public void fileTransferTimedOut(int id, String fileName){
+			gui.pushText(1, "Timeout occured while sending " + fileName);
+}
 	
 }

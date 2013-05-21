@@ -8,12 +8,16 @@ public class FileReceiverThread extends Thread  {
 	File file;
 	String address;
 	int port;
+	ChatClient client;
+	int id;
 	
-	public FileReceiverThread(String address, int port, File file, int size){
+	public FileReceiverThread(String address, int port, File file, int size, ChatClient client, int id){
+		this.client = client;
 		this.size = size;
 		this.file = file;
 		 this.address = address;
 		 this.port = port;
+		 this.id = id;
 	}
  
     public void run() {
@@ -38,8 +42,10 @@ public class FileReceiverThread extends Thread  {
         bos.flush();
         bos.close();
         socket.close();
+        client.fileTransferComplete(id, file.getName());
         }
         catch(Exception e){
+        	client.fileTransferFailed(id, file.getName());
         	e.printStackTrace();
         }
       }

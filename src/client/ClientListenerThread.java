@@ -121,10 +121,18 @@ public class ClientListenerThread extends Thread {
 							}
 						case SEND_FILE:
 							if (args[1].equals(SUCCESS)) {
-								
+								id = Integer.valueOf(args[2]);
+								gui.pushText(id, "File transfer request sent");
+								break;
+							}
+						case RECEIVE_FILE:
+							if (args[1].equals(SUCCESS)) {
+								id = Integer.valueOf(args[2]);
+								gui.pushText(id, "File transfer accepted");
+								break;
 							}
 						case REQUEST_ACCEPT:
-							if (!args[5].equals(gui.getUsername())) {
+							if (args[5].equals(gui.getUsername())) {
 								id = Integer.valueOf(args[1]);
 								int i = 0;
 								String[] damp = new String[args.length - 2];
@@ -132,7 +140,7 @@ public class ClientListenerThread extends Thread {
 									damp[i] = args[i + 2];
 									i++;
 								}
-								JFrame j = new FileReceiverGUI(client, damp);
+								JFrame j = new FileReceiverGUI(client, damp, id);
 								j.setVisible(true);
 							}
 							break;

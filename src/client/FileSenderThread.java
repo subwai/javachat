@@ -4,10 +4,14 @@ import java.io.*;
 	public class FileSenderThread extends Thread {
 		 ServerSocket serverSocket;
 		 File file;
+		 ChatClient client;
+		 int id;
 		
-		public FileSenderThread(ServerSocket socket, File file){
+		public FileSenderThread(ServerSocket socket, File file, ChatClient client, int id){
+			this.client = client;
 			serverSocket = socket;
 			this.file = file;
+			this.id = id;
 			try {
 				serverSocket.setSoTimeout(10000);
 			} catch (SocketException e) {
@@ -20,21 +24,22 @@ import java.io.*;
 	          
 	    	 try{
 	              Socket socket = serverSocket.accept();
-	              System.out.println("Accepted connection : " + socket);
+	              //System.out.println("Accepted connection : " + socket);
 	              byte [] bytearray  = new byte [(int)file.length()];
 	              FileInputStream fin = new FileInputStream(file);
 	              BufferedInputStream bin = new BufferedInputStream(fin);
 	              bin.read(bytearray,0,bytearray.length);
 	              OutputStream os = socket.getOutputStream();
-	              System.out.println("Sending Files...");
+	              //System.out.println("Sending Files...");
 	              os.write(bytearray,0,bytearray.length);
 	              os.flush();
 	              socket.close();
-	              System.out.println("File transfer complete");
+	              //System.out.println("File transfer complete");
 	              
 	    	 } catch(SocketTimeoutException e){
 	    		 try {
 					serverSocket.close();
+					client.fileTransferTimedOut(id, file.getName());
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

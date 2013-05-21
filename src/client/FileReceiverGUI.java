@@ -59,9 +59,12 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 	private int size;
 	
 	ChatClient client;
+	
+	int id;
 
-	public FileReceiverGUI(ChatClient client, String[] args) {
+	public FileReceiverGUI(ChatClient client, String[] args, int id) {
 		super("File from " + (String) args[4]);
+		this.id = id;
 		address = args[0]; 
 		port =	Integer.valueOf(args[1]); 
 		filename = (String) args[2];
@@ -154,7 +157,7 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 			}
 
 		} else if (e.getSource() == accept && file != null) {
-			client.receiveFile(address, port, file, size);
+			client.receiveFile(address, port, file, size, id);
 			dispose();
 			/*JFileChooser fc = new JFileChooser(file2.getAbsolutePath());
 			fc.addChoosableFileFilter(new jpgSaveFilter());
