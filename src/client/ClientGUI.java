@@ -180,7 +180,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		}
 		if(o == login) {
 			// ok it is a connection request
-
+			
 			username = tf.getText().trim();
 			// empty username ignore it
 			if(username.length() != 0) {
@@ -190,6 +190,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 					client.sendMessage(ChatProtocol.ADMIN_LOGIN, username, password);
 				} else {
 					client.sendMessage(ChatProtocol.LOGIN, username);
+					setTitle("Chat Client, " + username);
 				}
 				tf.setText("");
 			}
