@@ -3,6 +3,7 @@ package client;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -33,6 +34,7 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 	UneditableTextField searchPath;
 	UneditableTextField progress;
 	Socket socket;
+	Point screen;
 
 	ChatClient client;
 	int chatid;
@@ -40,8 +42,9 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 	String user;
 	Object[] args;
 	
-	FileTransferGUI(ChatClient client, String user, int userid, int chatid){
+	FileTransferGUI(ChatClient client, String user, int userid, int chatid, Point screen){
 		super("Send file to " +user);
+		this.screen = screen;
 		this.user = user;
 		this.userid = userid;
 		this.chatid = chatid;
@@ -64,13 +67,13 @@ public class FileTransferGUI extends JFrame implements ActionListener {
 		progress = new UneditableTextField("");
 		progress.setBorder(new TitledBorder(border, "Status"));
 		add(progress, BorderLayout.SOUTH);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLocation(screen);
 	}
 	
-	public static void main(String[] args){
-		JFrame j = new FileTransferGUI(null, "Naxon", 1, 1);
-		j.setVisible(true);
-	}
+//	public static void main(String[] args){
+//		JFrame j = new FileTransferGUI(null, "Naxon", 1, 1, new Point(333, 333));
+//		j.setVisible(true);
+//	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

@@ -110,7 +110,6 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 				BorderLayout.EAST);
 		add(topPanel, BorderLayout.NORTH);
 		
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		chooser = new JFileChooser();
 
 	}

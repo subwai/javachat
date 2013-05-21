@@ -42,9 +42,12 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 	
 	private File file;
 	
+	private Point screen;
+	
 	// Constructor connection receiving a socket number
-	Client2ClientGUI(ChatClient client, int thisChatroom, String username) {
+	Client2ClientGUI(ChatClient client, int thisChatroom, String username, Point screen) {
 		super("Chat Client");
+		this.screen = screen;
 		this.client = client;
 		this.thisChatroom = thisChatroom;
 		this.username = username;
@@ -89,6 +92,7 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 		setSize(600, 600);
 		setVisible(true);
 		tf.requestFocus();
+		setLocation(screen);
 	}
 
 	public void append(String str) {
@@ -127,7 +131,8 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o == sendFile && chatee != null){
-			JFrame j = new FileTransferGUI(client, chatee, userIds.get(chatee), thisChatroom);
+			screen = getLocation();
+			JFrame j = new FileTransferGUI(client, chatee, userIds.get(chatee), thisChatroom, screen);
 			j.setVisible(true);
 			return;
 		}
