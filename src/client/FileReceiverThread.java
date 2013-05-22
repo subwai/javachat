@@ -29,26 +29,13 @@ public class FileReceiverThread extends Thread  {
  
     public void run() {
         try{
-        int bytesRead;
-        int currentTot = 0;
         Socket sender = socket.accept();
-        byte [] bytearray  = new byte [size];
+        byte [] byteArray  = new byte [size];
         InputStream is = sender.getInputStream();
+        while(is.read(byteArray) != -1){}
         FileOutputStream fos = new FileOutputStream(file);
-        BufferedOutputStream bos = new BufferedOutputStream(fos);
-        bytesRead = is.read(bytearray,0,bytearray.length);
-        currentTot = bytesRead;
- 
-        do {
-           bytesRead =
-              is.read(bytearray, currentTot, (bytearray.length-currentTot));
-           if(bytesRead >= 0) currentTot += bytesRead;
-        } while(bytesRead > -1);
- 
-        bos.write(bytearray, 0 , currentTot);
-        System.out.println(bytearray.toString());
-        bos.flush();
-        bos.close();
+        fos.write(byteArray);
+        fos.close();
         sender.close();
         socket.close();
         // client.fileTransferComplete(id, file.getName());
