@@ -101,7 +101,7 @@ if (isset($_POST["download"])) {
         <h1>Koden</h1>
       </div>
       <form method="post">
-        <button name="download">Download here</button>
+        <button name="download">Ladda ner här!</button>
       </form>
       
     </div><!-- /.container -->
