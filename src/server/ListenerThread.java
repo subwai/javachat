@@ -127,7 +127,7 @@ public class ListenerThread extends Thread {
 						case SEND_FILE:
 							id = Integer.valueOf(args[2]);
 							u = server.getUser(id);
-							u.sendMessage(ChatProtocol.SEND_REQUEST, args[1], String.valueOf(user.getId()), args[3], args[4], args[2]);
+							u.sendMessage(ChatProtocol.SEND_REQUEST, args[1], String.valueOf(user.getId()), args[3], args[4]);
 							break;
 						case SEND_REQUEST:
 							id = Integer.valueOf(args[3]);

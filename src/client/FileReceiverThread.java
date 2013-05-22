@@ -26,21 +26,31 @@ public class FileReceiverThread extends Thread  {
 	}
  
     public void run() {
+    	int bytesRead;
+        int current = 0;
         try{
         Socket sender = socket.accept();
         byte [] byteArray  = new byte [size+1];
         InputStream is = sender.getInputStream();
-        while(is.read(byteArray) != -1){}
+        
         FileOutputStream fos = new FileOutputStream(file);
-        fos.write(byteArray);
-        fos.close();
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
+        bytesRead = is.read(byteArray,0,byteArray.length);
+        current = bytesRead;
+        do {
+            bytesRead =
+               is.read(byteArray, current, (byteArray.length-current));
+            if(bytesRead >= 0){ current += bytesRead;}
+         } while(bytesRead > -1);
+        bos.write(byteArray, 0, current);
+        bos.flush();
         sender.close();
         socket.close();
         gui.fileTransferComplete(chatid, file.getName());
         }
         catch(Exception e){
-        	gui.fileTransferFailed(chatid, file.getName());
         	e.printStackTrace();
+        	gui.fileTransferFailed(chatid, file.getName());
         }
       }
 }

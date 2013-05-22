@@ -70,11 +70,9 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 		setSize(700, 200);
 		accept = new JButton("Accept");
 		accept.addActionListener(this);
-		// knapparna fungerar inte än
 		decline = new JButton("Decline");
 		decline.addActionListener(this);
 
-		// filechooser istället?
 		fd = new JTextField("Please choose a destination");
 		fd.setColumns(40);
 		fd.setBorder(border);
