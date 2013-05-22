@@ -50,6 +50,10 @@ public class ChatServer {
 		return users.get(id);
 	}
 	
+	public void removeUser(int id){
+		users.remove(id);
+	}
+	
 	public boolean userExists(String name){
 		boolean exists = false;
 		for(User u: users.values()){

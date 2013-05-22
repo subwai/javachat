@@ -64,6 +64,7 @@ public class ListenerThread extends Thread {
 								break;
 							}
 							user.sendMessage(ChatProtocol.LOGIN, FAIL);
+							server.removeUser(user.getId());
 							break;
 						case ADMIN_LOGIN:
 							String pw = args[2];
@@ -73,11 +74,13 @@ public class ListenerThread extends Thread {
 								break;
 							}
 							user.sendMessage(ChatProtocol.ADMIN_LOGIN, FAIL);
+							server.removeUser(user.getId());
 							break;
 						case LOGOUT:
 							server.leaveAllChatrooms(user);
 							user.sendMessage(ChatProtocol.LOGOUT, SUCCESS);
 							running = false;
+							server.removeUser(user.getId());
 							break;
 						case JOIN_CHATROOM:
 							id = Integer.valueOf(args[1]);
