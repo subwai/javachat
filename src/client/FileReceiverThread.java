@@ -10,7 +10,7 @@ public class FileReceiverThread extends Thread  {
     private File file;
     private int size;
 
-	public FileReceiverThread(ClientGUI gui, int chatid, int userid, ServerSocket socket, File file, int size){
+	public FileReceiverThread(ClientGUI gui, int chatid, ServerSocket socket, File file, int size){
         this.gui = gui;
         this.chatid = chatid;
         this.socket = socket;

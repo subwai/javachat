@@ -6,16 +6,13 @@ import java.io.*;
 public class FileSenderThread extends Thread {
 	ClientGUI gui;
 	int chatid;
-	int userid;
 	String host;
 	int port;
 	File file;
-	String txt;
 
-	public FileSenderThread(ClientGUI gui, int chatid, int userid, String host, int port, File file){
+	public FileSenderThread(ClientGUI gui, int chatid, String host, int port, File file){
 		this.gui = gui;
 		this.chatid = chatid;
-		this.userid = userid;
 		this.host = host;
 		this.port = port;
 		this.file = file;
@@ -25,26 +22,15 @@ public class FileSenderThread extends Thread {
 
 		try {
 			Socket socket = new Socket(InetAddress.getByName(host), port);
-			// System.out.println("Accepted connection : " + socket);
-			byte [] byteArray  = new byte [(int)file.length()];
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			
-				StringBuilder sb = new StringBuilder();
-				String line = br.readLine();
-
-				while(line != null){
-					sb.append(line);
-					sb.append("\n");
-					line= br.readLine();
-				}
-				txt = sb.toString();
-				
-				byteArray = txt.getBytes();
-				OutputStream os = socket.getOutputStream();
-				os.write(byteArray);
-				os.flush();
-				socket.close();
-				gui.fileTransferComplete(chatid, file.getName());
+			byte [] bytearray  = new byte [(int)file.length()];
+			FileInputStream fin = new FileInputStream(file);
+			BufferedInputStream bin = new BufferedInputStream(fin);
+			bin.read(bytearray,0,bytearray.length);
+			OutputStream os = socket.getOutputStream();
+			os.write(bytearray,0,bytearray.length);
+			os.flush();
+			socket.close();
+			gui.fileTransferComplete(chatid, file.getName());
 
 	} catch(SocketTimeoutException e){
 		gui.fileTransferTimedOut(chatid, file.getName());

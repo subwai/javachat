@@ -288,7 +288,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 
 	protected void removeLoggedinUser(int chatID, int userid, String name) {
 		if (chatID != 0) {
-			chatrooms.get(chatID); // remove from this chatroom
+			Client2ClientGUI room = chatrooms.get(chatID); // remove from this chatroom
+			room.removeChatee(userid,name);
 		} else {
 			userIds.remove(name);
 			nameListModel.removeElement(name);

@@ -99,7 +99,7 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				//TODO Insert leave chat command.
-				Client2ClientGUI.this.dispose();
+				Client2ClientGUI.this.client.sendMessage(ChatProtocol.LEAVE_CHATROOM, String.valueOf(Client2ClientGUI.this.thisChatroom));
 			}
 		});
 	}
@@ -111,11 +111,6 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 	
 	public void setFile(File file){
 		this.file = file;
-	}
-	
-	public void windowClosing(WindowEvent e){
-		client.sendMessage(ChatProtocol.LEAVE_CHATROOM);
-		System.exit(0);
 	}
 	
 	public void sendFile(WindowEvent e){
@@ -131,6 +126,17 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 			label.setText("Private Session with "+name);
 			sendFile.setToolTipText("Opens a pane to select which file you wish to send to "+name);
 		}
+	}
+	
+	public void removeChatee(int userid, String name){
+		userIds.remove(name);
+		append(name + " has left the chatsession.");
+		if(userIds.isEmpty()){
+			send.setEnabled(false);
+			sendFile.setEnabled(false);
+			tf.removeActionListener(this);
+		}
+		
 	}
 		
 	/*
