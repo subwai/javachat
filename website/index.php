@@ -64,19 +64,19 @@
           <img style="width: 140px; height: 140px;" src="/pics/threads.png">
           <h2>Trådning</h2>
           <p>Varje klienten får sin egen tråd på servern som svarar på allt klienten frågar efter.</p>
-          <p><a class="btn" href="javascript:showDetails('threads');">View details »</a></p>
+          <p><a class="btn" href="javascript:showDetails('threads');">Läs mer »</a></p>
         </div><!-- /.span4 -->
         <div class="span4">
           <img style="width: 140px; height: 140px;" src="/pics/protocol.png">
           <h2>Protokoll</h2>
           <p>Vårt chattprogram konverserar genom vårt egna protokoll som finns i <code>shared/ChatProtocol.java</code>.</p>
-          <p><a class="btn" href="javascript:showDetails('protocol');">View details »</a></p>
+          <p><a class="btn" href="javascript:showDetails('protocol');">Läs mer »</a></p>
         </div><!-- /.span4 -->
         <div class="span4">
           <img style="width: 140px; height: 140px;" src="/pics/connection.png">
           <h2>Anslutning</h2>
           <p>Anslutningen sker genom en enkel TCP socket, utan någon form av kryptering.</p>
-          <p><a class="btn" href="javascript:showDetails('connection');">View details »</a></p>
+          <p><a class="btn" href="javascript:showDetails('connection');">Läs mer »</a></p>
         </div><!-- /.span4 -->
       </div><!-- /.row -->
       <div id="details-wrap">
