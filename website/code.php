@@ -30,8 +30,8 @@
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
             <div class="nav-collapse collapse">
               <ul class="nav">
-                <li class="active"><a href="/about.php">About us</a></li>
-                <li><a href="/code.php">Koden</a></li>
+                <li><a href="/about.php">About us</a></li>
+                <li class="active"><a href="/code.php">Koden</a></li>
                 <!-- Read about Bootstrap dropdowns at http://twitter.github.com/bootstrap/javascript.html#dropdowns -->
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">How to <b class="caret"></b></a>
@@ -59,29 +59,9 @@
     <div class="container marketing">
 
       <div class="page-header">
-        <h1>About us</h1>
+        <h1>Ladda ner vår kod</h1>
       </div>
-      <h3>Contacts</h3>
-      <address>
-        <strong>Adam Hansson Lyrén</strong><br>
-        dic11aha@student.lu.se<br>
-        Lunds Tekniska Högskola
-      </address>
-      <address>
-        <strong>Sven Elfgren</strong><br>
-        dic11sel@student.lu.se<br>
-        Lunds Tekniska Högskola
-      </address>
-      <address>
-        <strong>Niklas Lindskog</strong><br>
-        adi09noh@student.lu.se<br>
-        Lunds Tekniska Högskola
-      </address>
-      <address>
-        <strong>Tobias Andersson</strong><br>
-        dic11tan@student.lu.se<br>
-        Lunds Tekniska Högskola
-      </address>
+      
       
     </div><!-- /.container -->
 

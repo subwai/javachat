@@ -77,7 +77,7 @@ footer {
 .marketing .span4 {
   text-align: center;
 }
-.marketing h2 {
+.marketing h2, .marketing h3 {
   font-weight: normal;
 }
 .marketing .span4 p {

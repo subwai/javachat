@@ -10,8 +10,6 @@
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="main.css" rel="stylesheet">
-
-  	<script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js" type="text/javascript" async=""></script>
 </head>
 
 <body screen_capture_injected="true">
@@ -32,19 +30,20 @@
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
             <div class="nav-collapse collapse">
               <ul class="nav">
-                <li><a href="/about.php">About us</a></li>
+                <li><a href="/about.php">Om oss</a></li>
+                <li><a href="/code.php">Koden</a></li>
                 <!-- Read about Bootstrap dropdowns at http://twitter.github.com/bootstrap/javascript.html#dropdowns -->
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">How to <b class="caret"></b></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Funktioner <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     <li class="nav-header">Server</li>
-                    <li><a href="/#feature1">Explenation#1</a></li>
+                    <li><a href="/#feature1">Protokollet</a></li>
                     <li class="divider"></li>
                     <li class="nav-header">Client</li>
-                    <li><a href="/#feature2">Explenation#2</a></li>
-                    <li><a href="/#feature3">Explenation#3</a></li>
-                    <li><a href="/#feature4">Explenation#4</a></li>
-                    <li><a href="/#feature5">Explenation#5</a></li>
+                    <li><a href="/#feature2">Huvud-klienten</a></li>
+                    <li><a href="/#feature3">Privat chattrum</a></li>
+                    <li><a href="/#feature4">Fil-överföring</a></li>
+                    <li><a href="/#feature5">Fil-mottagning</a></li>
                   </ul>
                 </li>
               </ul>
@@ -70,7 +69,7 @@
         <div class="span4">
           <img style="width: 140px; height: 140px;" src="/pics/protocol.png">
           <h2>Protokoll</h2>
-          <p>Vårt chatprogram konverserar genom vårt egna protokoll som finns i <code>shared/ChatProtocol.java</code>.</p>
+          <p>Vårt chattprogram konverserar genom vårt egna protokoll som finns i <code>shared/ChatProtocol.java</code>.</p>
           <p><a class="btn" href="javascript:showDetails('protocol');">View details »</a></p>
         </div><!-- /.span4 -->
         <div class="span4">
@@ -89,7 +88,7 @@
       	<div id="protocol-d" hidden>
       		<hr>
       		<h2>Protokoll</h2>
-      		<p>Vårt chatprogram konverserar genom vårt egna protokoll som finns i <code>shared/ChatProtocol.java</code>. Denna fil är en enum med alla olika interaktioner man skulle kunna göra mellan klient/server. Varje gång man klient pratar med servern eller vice versa, så börjar meddelandet med ett av protokollets typer, förljt av alla argument som kan tänka behövas. Argumenten är skillt med mellanrum, dock med specialfall för citationstecken då man måste kunna skriva mellanslag i chatmeddelanden.</p>
+      		<p>Vårt chattprogram konverserar genom vårt egna protokoll som finns i <code>shared/ChatProtocol.java</code>. Denna fil är en enum med alla olika interaktioner man skulle kunna göra mellan klient/server. Varje gång man klient pratar med servern eller vice versa, så börjar meddelandet med ett av protokollets typer, förljt av alla argument som kan tänka behövas. Argumenten är skillt med mellanrum, dock med specialfall för citationstecken då man måste kunna skriva mellanslag i chattmeddelanden.</p>
       	</div>
       	<div id="connection-d" hidden>
       		<hr>
@@ -101,43 +100,44 @@
 
       <!-- START THE FEATURETTES -->
       <div class="hero-unit">
-        <h1>Server</h1>
+        <h1>Servern</h1>
         <div class="featurette" id="feature1">
           <img class="featurette-image pull-right" src="/pics/server.png">
-          <h2 class="featurette-heading">And lastly, this one. <span class="muted">Checkmate.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+          <h2 class="featurette-heading">Protokollet.</h2>
+          <p>Till höger visas en bild på server fönstret, här visas vårt programs protokoll i klartext.<br>
+            Vi har tidigare sett hur SMTP protokollet ser ut, så vi hade det som modell för hur protokoll mellan server/klient kan se ut, detta blev resultatet.</p>
         </div>
       </div>
 
 			<div class="hero-unit">
-        <h1>Client</h1>
+        <h1>Klienten</h1>
 
 		  	<div class="featurette" id="feature2">
 	        <img class="featurette-image pull-right" src="/pics/chat_client_1.png">
-	        <h2 class="featurette-heading">First featurette headling.<br><span class="muted">It'll blow your mind.</span></h2>
-	        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+	        <h2 class="featurette-heading">Möt vår klient.</h2><h3 class="muted">- En väldigt simpel klient.</h3>
+	        <p class="lead">Det är en ganska så enkel klient. Dock har vi lyckats klämma in ett par funktioner; bland annat en lista över användare som är online, login / logout och privata chatrum.</p>
 	        <img class="featurette-image pull-left" src="/pics/chat_client_2.png">
-	        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+	        <p class="lead">Efter inloggning så aktiveras <b>Send, Logout, Start private session</b> - knapparna. Start private session fungerar endast efter att du valt en användare i <b>Online Users</b> - listan.</p>
 	        <img class="featurette-image pull-right" src="/pics/chat_client_admin.png">
-	        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+	        <p class="lead">Vid admin login så aktiveras även <b>Kick user</b> - knappen, precis som <b>Start private session</b> - knappen, så fungerar den endast efter att du valt en användare i <b>Online Users</b> - listan.</p>
 	      </div>
 
 	      <hr class="featurette-divider">
 
 	      <div class="featurette" id="feature3">
 	        <img class="featurette-image pull-left" src="/pics/priv_chat.png">
-	        <h2 class="featurette-heading">Oh yeah, it's that good. <span class="muted">See for yourself.</span></h2>
-	        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+	        <h2 class="featurette-heading">Privat chattrum.</h2>
+	        <p class="lead">Efter att en användare har tryckt på <b>Start private session</b> med en annan användare så kommer ett fönster poppa up för båda användarna. Här kan vi chatta ensamma. Här finns dessutom en fil-överförings knapp som går att använda för att skicka filer mellan de två användarna!</p>
 	      </div>
 
 	      <hr class="featurette-divider">
 
 	      <div class="featurette" id="feature4">
 	        <img class="featurette-image pull-right" src="/pics/file_transfer_select.png">	        
-	        <h2 class="featurette-heading">Oh yeah, it's that good. <span class="muted">See for yourself.</span></h2>
-	        <p class="lead clearfix">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+	        <h2 class="featurette-heading">Fil-överföring? <span class="muted">Ja, tack!</span></h2>
+	        <p class="lead clearfix">Om en användare skulle vilja skicka en fil så kommer en ny ruta komma fram där man kan välja en fil för att sedan skicka den. Välj din fil här.</p>
 	        <img class="featurette-image pull-right" src="/pics/file_transfer_send.png">
-	        <p class="lead clearfix">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+	        <p class="lead clearfix">Tryck <b>Send</b>.</p>
 	        
 	      </div>
 
@@ -145,8 +145,8 @@
 
 	      <div class="featurette" id="feature5">
 	        <img class="featurette-image pull-left" src="/pics/file_recieve.png">
-	        <h2 class="featurette-heading">Oh yeah, it's that good. <span class="muted">See for yourself.</span></h2>
-	        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+	        <h2 class="featurette-heading">Fil-mottagning.</h2>
+	        <p class="lead">För användare som får en fil skickat till sig, så kommer en <code>FILE_REQUEST</code> att skickas först via servern och sen vidare till slutmottagaren. Då dyker detta fönstret upp och man kan välja om och vart man vill spara filen.</p>
 	      </div>
 			</div>
 
@@ -157,7 +157,7 @@
     <!-- FOOTER -->
     <footer>
       <div class="container">
-        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p class="pull-right"><a href="#">Tillbaka till toppen</a></p>
         <p>© 2013 Nätverksprogrammering, LTH · <a href="about.php">Contact</a></p>
       </div>
     </footer>
@@ -167,7 +167,7 @@
   <!-- Le javascript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="http://code.jquery.com/jquery.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script>
 		var current;
