@@ -28,8 +28,7 @@ public class ClientListenerThread extends Thread {
 	
 	private Point screen;
 	
-	public ClientListenerThread(Socket socket, ClientGUI gui, ChatClient client, Point screen) {
-		this.screen = screen;
+	public ClientListenerThread(Socket socket, ClientGUI gui, ChatClient client) {
 		this.client = client;
 		this.gui = gui;
 		try {
@@ -137,8 +136,9 @@ public class ClientListenerThread extends Thread {
 							}
 							break;
 						case SEND_REQUEST:
-							JFrame j = new FileReceiverGUI(client, Integer.valueOf(args[1]), Integer.valueOf(args[2]), args[3], Integer.valueOf(args[4]), screen);
+							JFrame j = new FileReceiverGUI(client, Integer.valueOf(args[1]), Integer.valueOf(args[2]), args[3], Integer.valueOf(args[4]));
 							j.setVisible(true);
+							j.setLocation(gui.getLocationOnScreen());
 							break;
 						default:
 							throw new UnsupportedOperationException();

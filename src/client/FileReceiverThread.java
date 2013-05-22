@@ -46,6 +46,7 @@ public class FileReceiverThread extends Thread  {
         } while(bytesRead > -1);
  
         bos.write(bytearray, 0 , currentTot);
+        System.out.println(bytearray.toString());
         bos.flush();
         bos.close();
         sender.close();

@@ -57,9 +57,8 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 	
 	private Point screen;
 
-	public FileReceiverGUI(ChatClient client, int chatid, int userid, String filename, int size, Point screen) {
-		super("File from " + userid);
-		this.screen = screen;
+	public FileReceiverGUI(ChatClient client, int chatid, int userid, String filename, int size) {
+		super("You have an incoming file");
 		this.client = client;
 		this.chatid = chatid;
 		this.sender = userid;
@@ -115,8 +114,6 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 		add(topPanel, BorderLayout.NORTH);
 		
 		chooser = new JFileChooser();
-		setLocation(screen);
-
 	}
 	
 	@Override
