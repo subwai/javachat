@@ -56,8 +56,6 @@
     <!-- Wrap the rest of the page in another container to center all the content. -->
 
     <div class="container marketing">
-
-      <section class="span8"> 
         <div class="page-header">
           <h1>About us</h1>
         </div>
@@ -82,8 +80,6 @@
           dic11tan@student.lu.se<br>
           Lunds Tekniska Högskola
         </address>
-      </section>
-      
     </div>
 
 
