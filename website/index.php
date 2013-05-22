@@ -37,13 +37,13 @@
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">How to <b class="caret"></b></a>
                   <ul class="dropdown-menu">
-                    <li class="nav-header">Client</li>
+                    <li class="nav-header">Server</li>
                     <li><a href="/#feature1">Explenation#1</a></li>
+                    <li class="divider"></li>
+                    <li class="nav-header">Client</li>
                     <li><a href="/#feature2">Explenation#2</a></li>
                     <li><a href="/#feature3">Explenation#3</a></li>
                     <li><a href="/#feature4">Explenation#4</a></li>
-                    <li class="divider"></li>
-                    <li class="nav-header">Server</li>
                     <li><a href="/#feature5">Explenation#5</a></li>
                   </ul>
                 </li>
@@ -100,10 +100,19 @@
 
 
       <!-- START THE FEATURETTES -->
+      <div class="hero-unit">
+        <h1>Server</h1>
+        <div class="featurette" id="feature1">
+          <img class="featurette-image pull-right" src="/pics/server.png">
+          <h2 class="featurette-heading">And lastly, this one. <span class="muted">Checkmate.</span></h2>
+          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        </div>
+      </div>
+
 			<div class="hero-unit">
         <h1>Client</h1>
 
-		  	<div class="featurette" id="feature1">
+		  	<div class="featurette" id="feature2">
 	        <img class="featurette-image pull-right" src="/pics/chat_client_1.png">
 	        <h2 class="featurette-heading">First featurette headling.<br><span class="muted">It'll blow your mind.</span></h2>
 	        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
@@ -115,7 +124,7 @@
 
 	      <hr class="featurette-divider">
 
-	      <div class="featurette" id="feature2">
+	      <div class="featurette" id="feature3">
 	        <img class="featurette-image pull-left" src="/pics/priv_chat.png">
 	        <h2 class="featurette-heading">Oh yeah, it's that good. <span class="muted">See for yourself.</span></h2>
 	        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
@@ -123,7 +132,7 @@
 
 	      <hr class="featurette-divider">
 
-	      <div class="featurette" id="feature3">
+	      <div class="featurette" id="feature4">
 	        <img class="featurette-image pull-right" src="/pics/file_transfer_select.png">	        
 	        <h2 class="featurette-heading">Oh yeah, it's that good. <span class="muted">See for yourself.</span></h2>
 	        <p class="lead clearfix">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
@@ -134,22 +143,12 @@
 
 	      <hr class="featurette-divider">
 
-	      <div class="featurette" id="feature4">
+	      <div class="featurette" id="feature5">
 	        <img class="featurette-image pull-left" src="/pics/file_recieve.png">
 	        <h2 class="featurette-heading">Oh yeah, it's that good. <span class="muted">See for yourself.</span></h2>
 	        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
 	      </div>
 			</div>
-			<div class="hero-unit">
-        <h1>Server</h1>
-	      <div class="featurette" id="feature5">
-	        <img class="featurette-image pull-right" src="/pics/server.png">
-	        <h2 class="featurette-heading">And lastly, this one. <span class="muted">Checkmate.</span></h2>
-	        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-	      </div>
-
-	      <hr class="featurette-divider">
-	    </div>
 
       <!-- /END THE FEATURETTES -->
 
