@@ -153,6 +153,7 @@ public class ListenerThread extends Thread {
 		} catch (SocketException e) {
 			System.out.println("User disconnected: "+user.getName());
 			server.leaveAllChatrooms(user);
+			server.removeUser(user.getId());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
