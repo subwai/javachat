@@ -15,6 +15,7 @@
 </head>
 
 <body screen_capture_injected="true">
+	<div id="site-wrapper">
     <!-- NAVBAR
     ================================================== -->
 
@@ -119,22 +120,23 @@
 
       <!-- /END THE FEATURETTES -->
 
-
-      <!-- FOOTER -->
-      <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>© 2013 Nätverksprogrammering, LTH · <a href="contact.php">Contact</a></p>
-      </footer>
-
     </div><!-- /.container -->
 
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>© 2013 Nätverksprogrammering, LTH · <a href="contact.php">Contact</a></p>
+      </div>
+    </footer>
 
+  </div>
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://code.jquery.com/jquery.js"></script>
-  	<script src="bootstrap/js/bootstrap.min.js"></script>
+  <!-- Le javascript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="http://code.jquery.com/jquery.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>

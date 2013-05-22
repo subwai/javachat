@@ -15,6 +15,7 @@
 </head>
 
 <body screen_capture_injected="true">
+  <div id="site-wrapper">
     <!-- NAVBAR
     ================================================== -->
 
@@ -46,7 +47,7 @@
                   </ul>
                 </li>
               </ul>
-            </div><!--/.nav-collapse -->
+            </div><!-- /.nav-collapse -->
       	</div><!-- /.container -->
       </div><!-- /.navbar-inner -->
     </div><!-- /.navbar -->
@@ -56,39 +57,49 @@
     <!-- Wrap the rest of the page in another container to center all the content. -->
 
     <div class="container marketing">
-        <div class="page-header">
-          <h1>About us</h1>
-        </div>
-        <h3>Contacts</h3>
-        <address>
-          <strong>Adam Hansson Lyrén</strong><br>
-          dic11aha@student.lu.se<br>
-          Lunds Tekniska Högskola
-        </address>
-        <address>
-          <strong>Sven Elfgren</strong><br>
-          dic11sel@student.lu.se<br>
-          Lunds Tekniska Högskola
-        </address>
-        <address>
-          <strong>Niklas Lindskog</strong><br>
-          adi09noh@student.lu.se<br>
-          Lunds Tekniska Högskola
-        </address>
-        <address>
-          <strong>Tobias Andersson</strong><br>
-          dic11tan@student.lu.se<br>
-          Lunds Tekniska Högskola
-        </address>
-    </div>
+
+      <div class="page-header">
+        <h1>About us</h1>
+      </div>
+      <h3>Contacts</h3>
+      <address>
+        <strong>Adam Hansson Lyrén</strong><br>
+        dic11aha@student.lu.se<br>
+        Lunds Tekniska Högskola
+      </address>
+      <address>
+        <strong>Sven Elfgren</strong><br>
+        dic11sel@student.lu.se<br>
+        Lunds Tekniska Högskola
+      </address>
+      <address>
+        <strong>Niklas Lindskog</strong><br>
+        adi09noh@student.lu.se<br>
+        Lunds Tekniska Högskola
+      </address>
+      <address>
+        <strong>Tobias Andersson</strong><br>
+        dic11tan@student.lu.se<br>
+        Lunds Tekniska Högskola
+      </address>
+      
+    </div><!-- /.container -->
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>© 2013 Nätverksprogrammering, LTH · <a href="contact.php">Contact</a></p>
+      </div>
+    </footer>
+  </div><!-- /#site-wrapper -->
 
 
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://code.jquery.com/jquery.js"></script>
-  	<script src="bootstrap/js/bootstrap.min.js"></script>
+  <!-- Le javascript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="http://code.jquery.com/jquery.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>
