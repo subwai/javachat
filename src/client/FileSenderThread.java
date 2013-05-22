@@ -22,13 +22,17 @@ public class FileSenderThread extends Thread {
 
 		try {
 			Socket socket = new Socket(InetAddress.getByName(host), port);
-			byte [] bytearray  = new byte [(int)file.length()];
+			int bytesRead;
+            byte [] buffer  = new byte [1024];
 			FileInputStream fin = new FileInputStream(file);
 			BufferedInputStream bin = new BufferedInputStream(fin);
-			bin.read(bytearray,0,bytearray.length);
 			OutputStream os = socket.getOutputStream();
-			os.write(bytearray,0,bytearray.length);
-			os.flush();
+			while ((bytesRead = bin.read(buffer)) != -1) {
+				os.write(buffer, 0, bytesRead);
+				os.flush();
+			}
+			os.close();
+			bin.close();
 			socket.close();
 			gui.fileTransferComplete(chatid, file.getName());
 

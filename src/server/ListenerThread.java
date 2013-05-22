@@ -40,7 +40,7 @@ public class ListenerThread extends Thread {
 	public void run() {
 		String str = new String();
 		boolean running = true;
-		Pattern p = Pattern.compile("(?=\").+|[^\\s]+", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+		Pattern p = Pattern.compile("(?=\").+\"|[^\\s]+", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 		try {
 			while(running && (str = reader.readLine()) != null) {
 				try {

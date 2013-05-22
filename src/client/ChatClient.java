@@ -91,7 +91,7 @@ public class ChatClient {
 		try {
 			ServerSocket socket = new ServerSocket(0);
 			int port = socket.getLocalPort();
-			String host = "localhost";
+			String host = socket.getInetAddress().getLocalHost().getHostAddress();
 			Thread receiver = new FileReceiverThread(gui, chatid, socket, file, size);
 			receiver.start();
 			sendMessage(ChatProtocol.SEND_REQUEST, SUCCESS, String.valueOf(chatid), String.valueOf(userid), host, String.valueOf(port));
