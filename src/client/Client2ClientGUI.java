@@ -131,11 +131,10 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 	public void removeChatee(int userid, String name){
 		userIds.remove(name);
 		append(name + " has left the chatsession.");
-		if(userIds.isEmpty()){
-			send.setEnabled(false);
-			sendFile.setEnabled(false);
-			tf.removeActionListener(this);
-		}
+		send.setEnabled(false);
+		sendFile.setEnabled(false);
+		tf.removeActionListener(this);
+		
 		
 	}
 		
@@ -153,7 +152,7 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 		}
 
 		if (o == close){
-			setVisible(false);
+			this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 			return;
 		}
 		if (o == send || true) { // Allways true but done to show that clicking "send" or pressing enter is valid
