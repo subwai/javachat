@@ -49,6 +49,16 @@ public class ChatServer {
 	public User getUser(Integer id) {
 		return users.get(id);
 	}
+	
+	public boolean userExists(String name){
+		boolean exists = false;
+		for(User u: users.values()){
+			if(u.getName().equals(name)){
+				exists = true;
+			}
+		}
+		return exists;
+	}
 
 	public Chatroom getChatroom(Integer id) {
 		return chatrooms.get(id);

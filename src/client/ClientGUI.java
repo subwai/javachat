@@ -196,7 +196,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 							password);
 				} else {
 					client.sendMessage(ChatProtocol.LOGIN, username);
-					setTitle("Chat Client, " + username);
 				}
 				tf.setText("");
 			}
@@ -253,6 +252,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		// Action listener for when the user enter a message
 		tf.addActionListener(this);
 		connected = true;
+		setTitle("Chat Client, " + username);
 		ta.setText("Welcome to the Chat room\n");
 	}
 
@@ -274,6 +274,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		connected = false;
 		tf.setText("Anonymous");
 		username = null;
+		setTitle("Chat Client");
 		client.disconnectFromServer();
 	}
 

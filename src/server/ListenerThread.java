@@ -58,8 +58,12 @@ public class ListenerThread extends Thread {
 							chat.pushMessage(ChatProtocol.MESSAGE, "\""+user.getName()+": "+args[2].substring(1, args[2].length() - 1)+"\"");
 							break;
 						case LOGIN:
-							user.setName(args[1]);
-							user.sendMessage(ChatProtocol.LOGIN, SUCCESS, String.valueOf(user.getId()), args[1]);
+							if(!server.userExists(args[1])){
+								user.setName(args[1]);
+								user.sendMessage(ChatProtocol.LOGIN, SUCCESS, String.valueOf(user.getId()), args[1]);
+								break;
+							}
+							user.sendMessage(ChatProtocol.LOGIN, FAIL);
 							break;
 						case ADMIN_LOGIN:
 							String pw = args[2];
