@@ -31,11 +31,10 @@
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
             <div class="nav-collapse collapse">
               <ul class="nav">
-                <li><a href="/about.php">About</a></li>
-                <li><a href="/contact.php">Contact</a></li>
+                <li><a href="/about.php">About us</a></li>
                 <!-- Read about Bootstrap dropdowns at http://twitter.github.com/bootstrap/javascript.html#dropdowns -->
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">About javachat <b class="caret"></b></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">How to <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     <li class="nav-header">Server</li>
                     <li><a href="/#exp1">Javachat explenation#1</a></li>
