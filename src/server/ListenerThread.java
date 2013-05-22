@@ -122,6 +122,7 @@ public class ListenerThread extends Thread {
 							User u = server.getUser(id);
 							u.sendMessage(ChatProtocol.LOGOUT, SUCCESS);
 							server.leaveAllChatrooms(u);
+							server.removeUser(u.getId());
 							user.sendMessage(ChatProtocol.USER_KICKED, SUCCESS, u.getName());
 							break;
 						case SEND_FILE:
