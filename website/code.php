@@ -1,3 +1,41 @@
+<?php 
+class MyZipArchive extends ZipArchive{
+  public function addDirectory($dir, $base = 0) {
+    foreach(glob($dir . '/*') as $file) {
+      if(is_dir($file))
+        $this->addDirectory($file, $base);
+      else
+        $this->addFile($file, substr($file, $base));
+    }
+  }
+}
+
+function getAllFilesRecursive($dir, &$files) {
+  foreach(glob($dir."/*") as $file) {
+    if(is_dir($file))
+      getAllFilesRecursive($file, $files);
+    else
+      $files[] = $file;
+  }
+}
+
+if (isset($_POST["download"])) {
+  $path = "D:\\Users\\Programmering\\Workspace";
+  getAllFilesRecursive($path."\\javachat\\src", $files);
+  $mod_times = array_map("filemtime", $files);
+  arsort($mod_times);
+
+  if (!file_exists('javachat.zip') || array_shift($mod_times) > filemtime('javachat.zip')) {
+    $zip = new MyZipArchive;
+    $zip->open('javachat.zip', MyZipArchive::OVERWRITE);
+    $zip->addDirectory($path."\\javachat\\src", strlen($path) + 1);
+    $zip->addFile($path."\\javachat\\.classpath", "javachat\\.classpath");
+    $zip->addFile($path."\\javachat\\.project", "javachat\\.project");
+    $zip->close();
+    header("Location: javachat.zip");
+  }
+  
+} else { ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,9 +97,11 @@
     <div class="container marketing">
 
       <div class="page-header">
-        <h1>Ladda ner vår kod</h1>
+        <h1>Koden</h1>
       </div>
-      
+      <form method="post">
+        <button name="download">Download here</button>
+      </form>
       
     </div><!-- /.container -->
 
@@ -83,3 +123,4 @@
 
 </body>
 </html>
+<?php } ?>
