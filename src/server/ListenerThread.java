@@ -30,8 +30,6 @@ public class ListenerThread extends Thread {
 		try {
 			this.user = user;
 			this.server = server;
-			
-			int i;
 			reader = new BufferedReader(new InputStreamReader(user.getInputStream()));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -46,7 +44,7 @@ public class ListenerThread extends Thread {
 		try {
 			while(running && (str = reader.readLine()) != null) {
 				try {
-					System.out.println("CLIENT: "+str);
+					System.out.println("Client: "+str);
 					Matcher m = p.matcher(str);
 					List<String> matches = new ArrayList<String>();
 					while(m.find()){
