@@ -1,4 +1,5 @@
 package client;
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,7 +26,10 @@ public class ClientListenerThread extends Thread {
 	private BufferedReader reader;
 	private ChatClient client;
 	
-	public ClientListenerThread(Socket socket, ClientGUI gui, ChatClient client) {
+	private Point screen;
+	
+	public ClientListenerThread(Socket socket, ClientGUI gui, ChatClient client, Point screen) {
+		this.screen = screen;
 		this.client = client;
 		this.gui = gui;
 		try {
@@ -133,7 +137,7 @@ public class ClientListenerThread extends Thread {
 							}
 							break;
 						case SEND_REQUEST:
-							JFrame j = new FileReceiverGUI(client, Integer.valueOf(args[1]), Integer.valueOf(args[2]), args[3], Integer.valueOf(args[4]));
+							JFrame j = new FileReceiverGUI(client, Integer.valueOf(args[1]), Integer.valueOf(args[2]), args[3], Integer.valueOf(args[4]), screen);
 							j.setVisible(true);
 							break;
 						default:

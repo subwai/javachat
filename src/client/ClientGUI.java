@@ -232,6 +232,10 @@ public class ClientGUI extends JFrame implements ActionListener {
 	public String getUsername() {
 		return username;
 	}
+	
+	public Point getPoint(){
+		return screen;
+	}
 
 	protected void login(Boolean admin) {
 		this.admin = admin;

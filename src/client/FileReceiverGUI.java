@@ -2,6 +2,7 @@ package client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
@@ -53,9 +54,12 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 	private int sender;
 	private String filename;
 	private int size;
+	
+	private Point screen;
 
-	public FileReceiverGUI(ChatClient client, int chatid, int userid, String filename, int size) {
+	public FileReceiverGUI(ChatClient client, int chatid, int userid, String filename, int size, Point screen) {
 		super("File from " + userid);
+		this.screen = screen;
 		this.client = client;
 		this.chatid = chatid;
 		this.sender = userid;
@@ -111,6 +115,7 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 		add(topPanel, BorderLayout.NORTH);
 		
 		chooser = new JFileChooser();
+		setLocation(screen);
 
 	}
 	
