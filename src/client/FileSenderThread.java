@@ -14,7 +14,7 @@ public class FileSenderThread extends Thread {
 
 	public FileSenderThread(ClientGUI gui, int chatid, int userid, String host, int port, File file){
 		this.gui = gui;
-		this.chatid =chatid;
+		this.chatid = chatid;
 		this.userid = userid;
 		this.host = host;
 		this.port = port;
@@ -42,15 +42,13 @@ public class FileSenderThread extends Thread {
 				
 				byteArray = txt.getBytes();
 				OutputStream os = socket.getOutputStream();
-				//System.out.println("Sending Files...");
 				os.write(byteArray);
 				os.flush();
 				socket.close();
-
-		//System.out.println("File transfer complete");
+				gui.fileTransferComplete(chatid, file.getName());
 
 	} catch(SocketTimeoutException e){
-		// client.fileTransferTimedOut(id, file.getName());
+		gui.fileTransferTimedOut(chatid, file.getName());
 
 	} catch (IOException e) {
 		e.printStackTrace();

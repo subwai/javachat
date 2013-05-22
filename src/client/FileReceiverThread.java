@@ -6,7 +6,6 @@ public class FileReceiverThread extends Thread  {
 	
 	private ClientGUI gui;
     private int chatid;
-    private int userid;
     private ServerSocket socket;
     private File file;
     private int size;
@@ -14,7 +13,6 @@ public class FileReceiverThread extends Thread  {
 	public FileReceiverThread(ClientGUI gui, int chatid, int userid, ServerSocket socket, File file, int size){
         this.gui = gui;
         this.chatid = chatid;
-        this.userid = userid;
         this.socket = socket;
         this.file = file;
         this.size = size;
@@ -30,7 +28,7 @@ public class FileReceiverThread extends Thread  {
     public void run() {
         try{
         Socket sender = socket.accept();
-        byte [] byteArray  = new byte [size];
+        byte [] byteArray  = new byte [size+1];
         InputStream is = sender.getInputStream();
         while(is.read(byteArray) != -1){}
         FileOutputStream fos = new FileOutputStream(file);
@@ -38,10 +36,10 @@ public class FileReceiverThread extends Thread  {
         fos.close();
         sender.close();
         socket.close();
-        // client.fileTransferComplete(id, file.getName());
+        gui.fileTransferComplete(chatid, file.getName());
         }
         catch(Exception e){
-        	// client.fileTransferFailed(id, file.getName());
+        	gui.fileTransferFailed(chatid, file.getName());
         	e.printStackTrace();
         }
       }

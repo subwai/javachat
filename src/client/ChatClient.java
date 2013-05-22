@@ -99,17 +99,5 @@ public class ChatClient {
 			sendMessage(ChatProtocol.SEND_REQUEST, FAIL);
 		}
 	}
-		
-	public void fileTransferComplete(int id, String fileName){
-		gui.pushText(1, fileName + " has been sent successfully");
-	}
-	
-	public void fileTransferFailed(int id, String fileName){
-		gui.pushText(1, "An error occured while sending " + fileName);
-	}
-
-	public void fileTransferTimedOut(int id, String fileName){
-		gui.pushText(1, "Timeout occured while sending " + fileName);
-	}
 	
 }

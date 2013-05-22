@@ -136,9 +136,11 @@ public class ClientListenerThread extends Thread {
 							}
 							break;
 						case SEND_REQUEST:
+							id = Integer.valueOf(args[2]);
 							JFrame j = new FileReceiverGUI(client, Integer.valueOf(args[1]), Integer.valueOf(args[2]), args[3], Integer.valueOf(args[4]));
 							j.setVisible(true);
 							j.setLocation(gui.getLocationOnScreen());
+							gui.pushText(id, "Incoming file - " + args[3]);
 							break;
 						default:
 							throw new UnsupportedOperationException();
