@@ -34,7 +34,7 @@
                 <li><a href="/code.php">Koden</a></li>
                 <!-- Read about Bootstrap dropdowns at http://twitter.github.com/bootstrap/javascript.html#dropdowns -->
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">How to <b class="caret"></b></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Funktioner <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     <li class="nav-header">Server</li>
                     <li><a href="/#feature1">Protokollet</a></li>
@@ -88,7 +88,7 @@
     <!-- FOOTER -->
     <footer>
       <div class="container">
-        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p class="pull-right"><a href="#">Tillbaka till toppen</a></p>
         <p>© 2013 Nätverksprogrammering, LTH · <a href="about.php">Contact</a></p>
       </div>
     </footer>
