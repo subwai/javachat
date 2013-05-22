@@ -37,13 +37,13 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">How to <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     <li class="nav-header">Server</li>
-                    <li><a href="/#feature1">Explenation#1</a></li>
+                    <li><a href="/#feature1">Protokollet</a></li>
                     <li class="divider"></li>
                     <li class="nav-header">Client</li>
-                    <li><a href="/#feature2">Explenation#2</a></li>
-                    <li><a href="/#feature3">Explenation#3</a></li>
-                    <li><a href="/#feature4">Explenation#4</a></li>
-                    <li><a href="/#feature5">Explenation#5</a></li>
+                    <li><a href="/#feature2">Huvud-klienten</a></li>
+                    <li><a href="/#feature3">Privat chattrum</a></li>
+                    <li><a href="/#feature4">Fil-överföring</a></li>
+                    <li><a href="/#feature5">Fil-mottagning</a></li>
                   </ul>
                 </li>
               </ul>
