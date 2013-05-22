@@ -41,11 +41,11 @@ public class FileReceiverThread extends Thread  {
             bos.close();
             sender.close();
             socket.close();
-            gui.fileTransferComplete(chatid, file.getName());
+            gui.pushText(chatid, file.getName() + " has been sent successfully");
         }
         catch(Exception e){
         	e.printStackTrace();
-        	gui.fileTransferFailed(chatid, file.getName());
+    		gui.pushText(chatid, "An error occured while sending " + file.getName());
         }
     }
 }
