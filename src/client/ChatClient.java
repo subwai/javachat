@@ -101,20 +101,14 @@ public class ChatClient {
 		}
 	}
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 	public void fileTransferDenied(int chatid, int userid, String filename){
 		sendMessage(ChatProtocol.SEND_REQUEST, DENIED, String.valueOf(chatid), String.valueOf(userid), filename);
-=======
+	}
+
 	public boolean checkUniqueUser(String user){
 		
 		return true;
->>>>>>> 7c128b843686c7ea89299f003b99bbd75ed11838
-=======
-	public boolean checkUniqueUser(String user){
-		
-		return true;
->>>>>>> 7c128b843686c7ea89299f003b99bbd75ed11838
 	}
 	
 }
