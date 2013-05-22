@@ -83,7 +83,7 @@ public class ChatClient {
 	}
 
 	public void startSendingFile(int chatid, int userid, String host, int port) {
-		Thread sender = new FileSenderThread(gui, chatid, userid, host, port, file);
+		Thread sender = new FileSenderThread(gui, chatid, host, port, file);
 		sender.start();
 	}
 
@@ -92,7 +92,7 @@ public class ChatClient {
 			ServerSocket socket = new ServerSocket(0);
 			int port = socket.getLocalPort();
 			String host = "localhost";
-			Thread receiver = new FileReceiverThread(gui, chatid, userid, socket, file, size);
+			Thread receiver = new FileReceiverThread(gui, chatid, socket, file, size);
 			receiver.start();
 			sendMessage(ChatProtocol.SEND_REQUEST, SUCCESS, String.valueOf(chatid), String.valueOf(userid), host, String.valueOf(port));
 		} catch (IOException e) {
