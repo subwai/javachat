@@ -69,7 +69,10 @@ public class ClientListenerThread extends Thread {
 								client.sendMessage(ChatProtocol.JOIN_CHATROOM, DEFAULT_CHATROOM);	
 								Boolean admin = false;
 								gui.login(admin);
+								break;
 							}
+							gui.logout();
+							running = false;
 							break;
 						case ADMIN_LOGIN:
 							if (args[1].equals(SUCCESS)) {
@@ -77,8 +80,11 @@ public class ClientListenerThread extends Thread {
 								client.sendMessage(ChatProtocol.JOIN_CHATROOM, DEFAULT_CHATROOM);
 								Boolean admin = true;
 								gui.login(admin);
+								break;
 							}
-							break;	
+							gui.logout();
+							running = false;
+							break;
 						case LOGOUT:
 							if (args[1].equals(SUCCESS)) {
 								// Enable login buttons
