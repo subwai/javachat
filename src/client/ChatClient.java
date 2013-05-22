@@ -100,4 +100,9 @@ public class ChatClient {
 		}
 	}
 	
+	public boolean checkUniqueUser(String user){
+		
+		return true;
+	}
+	
 }
