@@ -141,6 +141,7 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == decline) {
+			client.fileTransferDenied(chatid, sender, filename);
 			dispose();
 			return;
 		}

@@ -36,7 +36,6 @@ public class FileSenderThread extends Thread {
 					sb.append(line);
 					sb.append("\n");
 					line= br.readLine();
-					System.out.println(sb.toString());
 				}
 				txt = sb.toString();
 				

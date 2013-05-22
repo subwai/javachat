@@ -13,6 +13,7 @@ import shared.ChatProtocol;
 
 
 public class ChatClient {
+	public static final String DENIED = "2";
 	public static final String SUCCESS = "1";
 	public static final String FAIL = "0";
 
@@ -96,8 +97,12 @@ public class ChatClient {
 			sendMessage(ChatProtocol.SEND_REQUEST, SUCCESS, String.valueOf(chatid), String.valueOf(userid), host, String.valueOf(port));
 		} catch (IOException e) {
 			e.printStackTrace();
-			sendMessage(ChatProtocol.SEND_REQUEST, FAIL);
+			sendMessage(ChatProtocol.SEND_REQUEST, FAIL, String.valueOf(chatid), String.valueOf(userid), file.getName());
 		}
+	}
+	
+	public void fileTransferDenied(int chatid, int userid, String filename){
+		sendMessage(ChatProtocol.SEND_REQUEST, DENIED, String.valueOf(chatid), String.valueOf(userid), filename);
 	}
 	
 }

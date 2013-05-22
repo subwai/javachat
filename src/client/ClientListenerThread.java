@@ -18,6 +18,7 @@ import shared.ChatProtocol;
 
 public class ClientListenerThread extends Thread {
 	public static final String DEFAULT_CHATROOM = "0";
+	public static final String DENIED = "2";
 	public static final String SUCCESS = "1";
 	public static final String FAIL = "0";
 	
@@ -128,20 +129,24 @@ public class ClientListenerThread extends Thread {
 							}
 							break;
 						case SEND_FILE:
+							id = Integer.valueOf(args[2]);
 							if (args[1].equals(SUCCESS)) {
-								id = Integer.valueOf(args[2]);
 								client.startSendingFile(id, Integer.valueOf(args[3]), args[4], Integer.valueOf(args[5]));
-								
 								gui.pushText(id, "File transfer request sent");
+							} else if(args[1].equals(DENIED)) {
+								gui.pushText(id, args[3] + " has been denied");
+							} else {
+								gui.pushText(id, "An error occured while transfering " + args[3]);
 							}
 							break;
 						case SEND_REQUEST:
-							id = Integer.valueOf(args[2]);
+							id = Integer.valueOf(args[1]);
 							JFrame j = new FileReceiverGUI(client, Integer.valueOf(args[1]), Integer.valueOf(args[2]), args[3], Integer.valueOf(args[4]));
 							j.setVisible(true);
 							j.setLocation(gui.getLocationOnScreen());
 							gui.pushText(id, "Incoming file - " + args[3]);
 							break;
+							
 						default:
 							throw new UnsupportedOperationException();
 					}

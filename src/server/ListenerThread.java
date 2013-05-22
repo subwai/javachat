@@ -20,6 +20,7 @@ public class ListenerThread extends Thread {
 	public static final String DEFAULT_CHATROOM = "0";
 	public static final String SUCCESS = "1";
 	public static final String FAIL = "0";
+	public static final String DENIED = "2";
 	
 	private User user;
 	private BufferedReader reader;
@@ -126,10 +127,14 @@ public class ListenerThread extends Thread {
 							u.sendMessage(ChatProtocol.SEND_REQUEST, args[1], String.valueOf(user.getId()), args[3], args[4], args[2]);
 							break;
 						case SEND_REQUEST:
+							id = Integer.valueOf(args[3]);
+							u = server.getUser(id);
 							if (args[1].equals(SUCCESS)) {
-								id = Integer.valueOf(args[3]);
-								u = server.getUser(id);
 								u.sendMessage(ChatProtocol.SEND_FILE, SUCCESS, args[2], String.valueOf(user.getId()), args[4], args[5]);
+							} else if(args[1].equals(DENIED)) {
+								u.sendMessage(ChatProtocol.SEND_FILE, DENIED, args[2], args[4]);
+							} else {
+								u.sendMessage(ChatProtocol.SEND_FILE, FAIL, args[2], args[4]);
 							}
 							break;
 						default:
