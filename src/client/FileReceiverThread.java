@@ -41,7 +41,7 @@ public class FileReceiverThread extends Thread  {
             bos.close();
             sender.close();
             socket.close();
-            gui.pushText(chatid, file.getName() + " has been sent successfully");
+            gui.pushText(chatid, file.getName() + " has been recieved successfully");
         }
         catch(Exception e){
         	e.printStackTrace();
