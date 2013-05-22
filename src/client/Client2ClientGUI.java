@@ -93,6 +93,15 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 		setVisible(true);
 		tf.requestFocus();
 		setLocation(screen);
+		
+		
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				//TODO Insert leave chat command.
+				Client2ClientGUI.this.dispose();
+			}
+		});
 	}
 
 	public void append(String str) {
