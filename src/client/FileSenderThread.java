@@ -34,10 +34,10 @@ public class FileSenderThread extends Thread {
 			os.close();
 			bin.close();
 			socket.close();
-			gui.fileTransferComplete(chatid, file.getName());
+			gui.pushText(chatid, file.getName() + " has been sent successfully");
 
 	} catch(SocketTimeoutException e){
-		gui.fileTransferTimedOut(chatid, file.getName());
+		gui.pushText(chatid, "An error occured while sending " + file.getName());
 
 	} catch (IOException e) {
 		e.printStackTrace();

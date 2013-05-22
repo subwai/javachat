@@ -130,7 +130,7 @@ public class Client2ClientGUI extends JFrame implements ActionListener {
 	
 	public void removeChatee(int userid, String name){
 		userIds.remove(name);
-		append(name + " has left the chatsession.");
+		append(name + " has left the chat session.");
 		send.setEnabled(false);
 		sendFile.setEnabled(false);
 		tf.removeActionListener(this);

@@ -297,18 +297,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 		}
 	}
 	
-	public void fileTransferComplete(int id, String fileName){
-		pushText(1, fileName + " has been sent successfully");
-	}
-	
-	public void fileTransferFailed(int id, String fileName){
-		pushText(1, "An error occured while sending " + fileName);
-	}
-
-	public void fileTransferTimedOut(int id, String fileName){
-		pushText(1, "Timeout occured while sending " + fileName);
-	}
-
 	/**
 	 * A class that listens for clicks in the name list.
 	 */
