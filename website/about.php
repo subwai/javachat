@@ -37,13 +37,14 @@
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">How to <b class="caret"></b></a>
                   <ul class="dropdown-menu">
-                    <li class="nav-header">Server</li>
-                    <li><a href="/#exp1">Javachat explenation#1</a></li>
-                    <li><a href="/#exp2">Javachat explenation#2</a></li>
-                    <li class="divider"></li>
                     <li class="nav-header">Client</li>
-                    <li><a href="/#exp3">Javachat explenation#3</a></li>
-                    <li><a href="/#exp4">Javachat explenation#4</a></li>
+                    <li><a href="/#feature1">Explenation#1</a></li>
+                    <li><a href="/#feature2">Explenation#2</a></li>
+                    <li><a href="/#feature3">Explenation#3</a></li>
+                    <li><a href="/#feature4">Explenation#4</a></li>
+                    <li class="divider"></li>
+                    <li class="nav-header">Server</li>
+                    <li><a href="/#feature5">Explenation#5</a></li>
                   </ul>
                 </li>
               </ul>
@@ -89,7 +90,7 @@
     <footer>
       <div class="container">
         <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>© 2013 Nätverksprogrammering, LTH · <a href="contact.php">Contact</a></p>
+        <p>© 2013 Nätverksprogrammering, LTH · <a href="about.php">Contact</a></p>
       </div>
     </footer>
   </div><!-- /#site-wrapper -->
