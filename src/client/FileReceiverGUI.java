@@ -133,7 +133,7 @@ public class FileReceiverGUI extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == accept && file != null) {
-			client.setupFileReciever(chatid, sender, file, size);
+			client.setupFileReciever(chatid, sender, file, size, filename);
 			dispose();
 			return;
 		}

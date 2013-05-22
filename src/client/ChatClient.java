@@ -77,9 +77,9 @@ public class ChatClient {
 		}
 	}
 	
-	public void setupFileSender(int chatid, int userid, String fileName, File file) {
+	public void setupFileSender(int chatid, int userid, String filename, File file) {
 		this.file = file;
-		sendMessage(ChatProtocol.SEND_FILE, String.valueOf(chatid), String.valueOf(userid), fileName, String.valueOf(file.length()));
+		sendMessage(ChatProtocol.SEND_FILE, String.valueOf(chatid), String.valueOf(userid), "\""+filename+"\"", String.valueOf(file.length()));
 	}
 
 	public void startSendingFile(int chatid, int userid, String host, int port) {
@@ -87,7 +87,7 @@ public class ChatClient {
 		sender.start();
 	}
 
-	public void setupFileReciever(int chatid, int userid, File file, int size) {
+	public void setupFileReciever(int chatid, int userid, File file, int size, String originalName) {
 		try {
 			ServerSocket socket = new ServerSocket(0);
 			int port = socket.getLocalPort();
@@ -97,13 +97,13 @@ public class ChatClient {
 			sendMessage(ChatProtocol.SEND_REQUEST, SUCCESS, String.valueOf(chatid), String.valueOf(userid), host, String.valueOf(port));
 		} catch (IOException e) {
 			e.printStackTrace();
-			sendMessage(ChatProtocol.SEND_REQUEST, FAIL, String.valueOf(chatid), String.valueOf(userid), file.getName());
+			sendMessage(ChatProtocol.SEND_REQUEST, FAIL, String.valueOf(chatid), String.valueOf(userid), "\""+originalName+"\"");
 		}
 	}
 	
 
 	public void fileTransferDenied(int chatid, int userid, String filename){
-		sendMessage(ChatProtocol.SEND_REQUEST, DENIED, String.valueOf(chatid), String.valueOf(userid), filename);
+		sendMessage(ChatProtocol.SEND_REQUEST, DENIED, String.valueOf(chatid), String.valueOf(userid), "\""+filename+"\"");
 	}
 
 	public boolean checkUniqueUser(String user){

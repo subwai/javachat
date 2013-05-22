@@ -140,17 +140,20 @@ public class ClientListenerThread extends Thread {
 								client.startSendingFile(id, Integer.valueOf(args[3]), args[4], Integer.valueOf(args[5]));
 								gui.pushText(id, "File transfer request sent");
 							} else if(args[1].equals(DENIED)) {
-								gui.pushText(id, args[3] + " has been denied");
+								String filename = args[3].substring(1, args[3].length() - 1);
+								gui.pushText(id, filename + " has been denied");
 							} else {
-								gui.pushText(id, "An error occured while transfering " + args[3]);
+								String filename = args[3].substring(1, args[3].length() - 1);
+								gui.pushText(id, "An error occured while transfering " + filename);
 							}
 							break;
 						case SEND_REQUEST:
 							id = Integer.valueOf(args[1]);
-							JFrame j = new FileReceiverGUI(client, Integer.valueOf(args[1]), Integer.valueOf(args[2]), args[3], Integer.valueOf(args[4]));
+							String filename = args[3].substring(1, args[3].length() - 1);
+							JFrame j = new FileReceiverGUI(client, Integer.valueOf(args[1]), Integer.valueOf(args[2]), filename, Integer.valueOf(args[4]));
 							j.setVisible(true);
 							j.setLocation(gui.getLocationOnScreen());
-							gui.pushText(id, "Incoming file - " + args[3]);
+							gui.pushText(id, "Incoming file - " + filename);
 							break;
 							
 						default:
