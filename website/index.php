@@ -62,24 +62,41 @@
       <!-- Three columns of text below the carousel -->
       <div class="row">
         <div class="span4">
-          <img class="img-circle" data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;" src="/pics/threads.png">
+          <img style="width: 140px; height: 140px;" src="/pics/threads.png">
           <h2>Trådning</h2>
-          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
-          <p><a class="btn" href="#">View details »</a></p>
+          <p>Varje klienten får sin egen tråd på servern som svarar på allt klienten frågar efter.</p>
+          <p><a class="btn" href="javascript:showDetails('threads');">View details »</a></p>
         </div><!-- /.span4 -->
         <div class="span4">
-          <img class="img-circle" data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;" src="/pics/protocol.png">
+          <img style="width: 140px; height: 140px;" src="/pics/protocol.png">
           <h2>Protokoll</h2>
-          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn" href="#">View details »</a></p>
+          <p>Vårt chatprogram konverserar genom vårt egna protokoll som finns i <code>shared/ChatProtocol.java</code>.</p>
+          <p><a class="btn" href="javascript:showDetails('protocol');">View details »</a></p>
         </div><!-- /.span4 -->
         <div class="span4">
-          <img class="img-circle" data-src="holder.js/140x140" alt="140x140" style="width: 140px; height: 140px;" src="/pics/connection.png">
+          <img style="width: 140px; height: 140px;" src="/pics/connection.png">
           <h2>Anslutning</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn" href="#">View details »</a></p>
+          <p>Anslutningen sker genom en enkel TCP socket, utan någon form av kryptering.</p>
+          <p><a class="btn" href="javascript:showDetails('connection');">View details »</a></p>
         </div><!-- /.span4 -->
       </div><!-- /.row -->
+      <div id="details-wrap">
+      	<div id="threads-d" hidden>
+      		<hr>
+      		<h2>Trådning</h2>
+      		<p>Vi andvänder trådar... Varje klienten får sin egen tråd på servern som svarar på allt klienten frågar efter. Klienten har en nästan lika dan tråd som lystnar på allt servern svarar med. Vid fil överföring startas individuella trådar hos de två involverade användarna. Dessa trådars uppgift är endast att skicka / ta emot en fil, sedan stängs de av.</p>
+      	</div>
+      	<div id="protocol-d" hidden>
+      		<hr>
+      		<h2>Protokoll</h2>
+      		<p>Vårt chatprogram konverserar genom vårt egna protokoll som finns i <code>shared/ChatProtocol.java</code>. Denna fil är en enum med alla olika interaktioner man skulle kunna göra mellan klient/server. Varje gång man klient pratar med servern eller vice versa, så börjar meddelandet med ett av protokollets typer, förljt av alla argument som kan tänka behövas. Argumenten är skillt med mellanrum, dock med specialfall för citationstecken då man måste kunna skriva mellanslag i chatmeddelanden.</p>
+      	</div>
+      	<div id="connection-d" hidden>
+      		<hr>
+      		<h2>Anslutning</h2>
+      		<p>Anslutningen sker genom en enkel TCP socket, utan någon form av kryptering. Anslutningen skapas först då användaren trycker på <b>Login</b>.</p>
+      	</div>
+      </div>
 
 
       <!-- START THE FEATURETTES -->
@@ -153,6 +170,15 @@
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="http://code.jquery.com/jquery.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
-
+	<script>
+		var current;
+		function showDetails(val) {
+			if (current != val) {
+				$("#details-wrap div").hide("fast");
+				$("#"+val+"-d").show("fast");
+				current = val;
+			}
+		}
+	</script>
 </body>
 </html>
