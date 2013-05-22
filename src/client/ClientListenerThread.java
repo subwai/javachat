@@ -49,7 +49,7 @@ public class ClientListenerThread extends Thread {
 		try {
 			while(running && (str = reader.readLine()) != null) {
 				try {
-					System.out.println("SERVER: "+str);
+					System.out.println("Server: "+str);
 					Matcher m = p.matcher(str);
 					List<String> matches = new ArrayList<String>();
 					while(m.find()){
