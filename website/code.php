@@ -32,8 +32,9 @@ if (isset($_POST["download"])) {
     $zip->addFile($path."\\javachat\\.classpath", "javachat\\.classpath");
     $zip->addFile($path."\\javachat\\.project", "javachat\\.project");
     $zip->close();
-    header("Location: javachat.zip");
   }
+
+  header("Location: javachat.zip");
   
 } else { ?>
 <!DOCTYPE html>
